@@ -1,53 +1,593 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Concise CSS references connected directly to CSS Casebook investigations.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Concise CSS references connected directly to CSS Casebook investigations."
+  >
+
   <title>Field Guide | CSS Casebook</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <header class="public-header"><a class="brand" href="index.html"><span class="brand-mark">CC</span><span>CSS Casebook</span></a><nav aria-label="Primary navigation"><a href="index.html">Home</a><a href="cases.html">Case Library</a><a class="is-current" href="field-guide.html">Field Guide</a></nav><a class="header-cta" href="case-001.html">Open Case 001</a></header>
-  <main class="guide-layout public-main">
-    <aside class="guide-index"><p class="eyebrow">Field Guide index</p><label for="guide-search">Find a collection</label><input id="guide-search" type="search" placeholder="Search CSS topics…"><nav id="guide-nav" aria-label="Field Guide collections"></nav></aside>
-    <article class="guide-article" id="flexbox">
-      <p class="eyebrow">Chapter 09 · CSS Flexbox</p><h1>Flexbox field guide</h1>
-      <p class="guide-deck">Seven compact lessons and a live control room for understanding direction, wrapping and alignment without memorizing isolated property values.</p>
-      <nav class="lesson-jump" aria-label="Flexbox lessons"><a href="#lesson-1">L01 Axes</a><a href="#lesson-2">L02 Direction</a><a href="#lesson-3">L03 Wrap</a><a href="#lesson-4">L04 Flex flow</a><a href="#lesson-5">L05 Justify</a><a href="#lesson-6">L06 Align</a><a href="#lesson-7">L07 Centering</a><a href="#control-room">Interactive lab</a></nav>
 
-      <section id="lesson-1"><p class="lesson-number">Lesson 01</p><h2>Main and cross axes</h2><p>A flex container has a <strong>main axis</strong> and a perpendicular <strong>cross axis</strong>. The main axis follows <code>flex-direction</code>; the cross axis always runs across it.</p><div class="axis-demo"><div class="axis-line main-axis">Main axis →</div><div class="axis-line cross-axis">Cross<br>axis<br>↓</div><div class="axis-cards"><i>1</i><i>2</i><i>3</i></div></div><p class="memory-note"><strong>Common mistake:</strong> assuming the main axis is always horizontal. It changes when the direction becomes a column.</p></section>
-      <section id="lesson-2"><p class="lesson-number">Lesson 02</p><h2>flex-direction</h2><p><code>row</code> and <code>row-reverse</code> create a horizontal main axis. <code>column</code> and <code>column-reverse</code> create a vertical one. Reverse values also reverse the visual start and end.</p><div class="value-strip"><span><code>row</code> →</span><span><code>row-reverse</code> ←</span><span><code>column</code> ↓</span><span><code>column-reverse</code> ↑</span></div></section>
-      <section id="lesson-3"><p class="lesson-number">Lesson 03</p><h2>flex-wrap</h2><p>Flex items stay on one line with <code>nowrap</code>, even when space becomes tight. <code>wrap</code> permits new flex lines, while <code>wrap-reverse</code> reverses the cross-axis stacking direction.</p><div class="mini-wrap-demo"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i></div></section>
-      <section id="lesson-4"><p class="lesson-number">Lesson 04</p><h2>flex-flow</h2><p><code>flex-flow</code> combines direction and wrapping in one shorthand. Write the direction first and wrapping behavior second.</p><pre>.container {
+<body>
+  <header class="public-header">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">CC</span>
+      <span>CSS Casebook</span>
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="cases.html">Case Library</a>
+      <a class="is-current" href="field-guide.html">Field Guide</a>
+    </nav>
+
+    <a class="header-cta" href="case-001.html">Open Case 001</a>
+  </header>
+
+  <main class="guide-layout public-main">
+    <aside class="guide-index">
+      <p class="eyebrow">Field Guide index</p>
+
+      <label for="guide-search">Find a collection</label>
+
+      <input
+        id="guide-search"
+        type="search"
+        placeholder="Search CSS topics…"
+      >
+
+      <nav
+        id="guide-nav"
+        aria-label="Field Guide collections"
+      ></nav>
+    </aside>
+
+    <article class="guide-article" id="flexbox">
+      <p class="eyebrow">Chapter 09 · CSS Flexbox</p>
+
+      <h1>Flexbox field guide</h1>
+
+      <p class="guide-deck">
+        Seven compact lessons and a live control room for understanding
+        direction, wrapping and alignment without memorizing isolated
+        property values.
+      </p>
+
+      <div class="chapter-brief">
+        <div>
+          <p class="lesson-number">Learning objectives</p>
+
+          <ul>
+            <li>Identify the main and cross axes for every direction.</li>
+            <li>Control direction, wrapping and item distribution.</li>
+            <li>Choose the correct alignment property without guessing.</li>
+            <li>Diagnose and explain a common Flexbox layout failure.</li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="lesson-number">Before you begin</p>
+
+          <p>
+            Know basic CSS declarations, class selectors, width and height.
+            Flexbox item sizing is outside this first chapter release.
+          </p>
+
+          <p>
+            <strong>Estimated chapter time:</strong> 30–45 minutes
+          </p>
+        </div>
+      </div>
+
+      <nav class="lesson-jump" aria-label="Flexbox lessons">
+        <a href="#lesson-1">L01 Axes</a>
+        <a href="#lesson-2">L02 Direction</a>
+        <a href="#lesson-3">L03 Wrap</a>
+        <a href="#lesson-4">L04 Flex flow</a>
+        <a href="#lesson-5">L05 Justify</a>
+        <a href="#lesson-6">L06 Align</a>
+        <a href="#lesson-7">L07 Centering</a>
+        <a href="#control-room">Interactive lab</a>
+      </nav>
+
+      <section id="lesson-1">
+        <p class="lesson-number">Lesson 01</p>
+
+        <h2>Main and cross axes</h2>
+
+        <p>
+          A flex container has a <strong>main axis</strong> and a
+          perpendicular <strong>cross axis</strong>. The main axis follows
+          <code>flex-direction</code>; the cross axis always runs across it.
+        </p>
+
+        <div class="axis-demo">
+          <div class="axis-line main-axis">Main axis →</div>
+
+          <div class="axis-line cross-axis">
+            Cross<br>
+            axis<br>
+            ↓
+          </div>
+
+          <div class="axis-cards">
+            <i>1</i>
+            <i>2</i>
+            <i>3</i>
+          </div>
+        </div>
+
+        <p class="memory-note">
+          <strong>Common mistake:</strong> assuming the main axis is always
+          horizontal. It changes when the direction becomes a column.
+        </p>
+      </section>
+
+      <section id="lesson-2">
+        <p class="lesson-number">Lesson 02</p>
+
+        <h2>flex-direction</h2>
+
+        <p>
+          <code>row</code> and <code>row-reverse</code> create a horizontal
+          main axis. <code>column</code> and <code>column-reverse</code>
+          create a vertical one. Reverse values also reverse the visual
+          start and end.
+        </p>
+
+        <div class="value-strip">
+          <span><code>row</code> →</span>
+          <span><code>row-reverse</code> ←</span>
+          <span><code>column</code> ↓</span>
+          <span><code>column-reverse</code> ↑</span>
+        </div>
+      </section>
+
+      <section id="lesson-3">
+        <p class="lesson-number">Lesson 03</p>
+
+        <h2>flex-wrap</h2>
+
+        <p>
+          Flex items stay on one line with <code>nowrap</code>, even when
+          space becomes tight. <code>wrap</code> permits new flex lines,
+          while <code>wrap-reverse</code> reverses the cross-axis stacking
+          direction.
+        </p>
+
+        <div class="mini-wrap-demo">
+          <i>1</i>
+          <i>2</i>
+          <i>3</i>
+          <i>4</i>
+          <i>5</i>
+        </div>
+      </section>
+
+      <section id="lesson-4">
+        <p class="lesson-number">Lesson 04</p>
+
+        <h2>flex-flow</h2>
+
+        <p>
+          <code>flex-flow</code> combines direction and wrapping in one
+          shorthand. Write the direction first and wrapping behavior second.
+        </p>
+
+        <pre>.container {
   display: flex;
   flex-flow: row wrap;
-}</pre></section>
-      <section id="lesson-5"><p class="lesson-number">Lesson 05</p><h2>justify-content</h2><p>This distributes items along the <strong>main axis</strong>. Use start or end alignment, center the group, or distribute remaining space between and around items.</p><div class="value-strip"><span>flex-start</span><span>center</span><span>flex-end</span><span>space-between</span><span>space-around</span><span>space-evenly</span></div></section>
-      <section id="lesson-6"><p class="lesson-number">Lesson 06</p><h2>align-items</h2><p>This aligns items on the <strong>cross axis</strong>. <code>stretch</code> is the default when items do not have a fixed cross size; start, center and end position the items as a group.</p><div class="rule-pair"><div><code>justify-content</code><strong>Main axis</strong><p>Follows the selected direction.</p></div><div><code>align-items</code><strong>Cross axis</strong><p>Works perpendicular to it.</p></div></div></section>
-      <section id="lesson-7"><p class="lesson-number">Lesson 07</p><h2>The centering pattern</h2><pre>.container {
+}</pre>
+      </section>
+
+      <section id="lesson-5">
+        <p class="lesson-number">Lesson 05</p>
+
+        <h2>justify-content</h2>
+
+        <p>
+          This distributes items along the <strong>main axis</strong>.
+          Use start or end alignment, center the group, or distribute
+          remaining space between and around items.
+        </p>
+
+        <div class="value-strip">
+          <span>flex-start</span>
+          <span>center</span>
+          <span>flex-end</span>
+          <span>space-between</span>
+          <span>space-around</span>
+          <span>space-evenly</span>
+        </div>
+      </section>
+
+      <section id="lesson-6">
+        <p class="lesson-number">Lesson 06</p>
+
+        <h2>align-items</h2>
+
+        <p>
+          This aligns items on the <strong>cross axis</strong>.
+          <code>stretch</code> is the default when items do not have a fixed
+          cross size; start, center and end position the items as a group.
+        </p>
+
+        <div class="rule-pair">
+          <div>
+            <code>justify-content</code>
+            <strong>Main axis</strong>
+            <p>Follows the selected direction.</p>
+          </div>
+
+          <div>
+            <code>align-items</code>
+            <strong>Cross axis</strong>
+            <p>Works perpendicular to it.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="lesson-7">
+        <p class="lesson-number">Lesson 07</p>
+
+        <h2>The centering pattern</h2>
+
+        <pre>.container {
   display: flex;
   justify-content: center; /* main axis */
   align-items: center;     /* cross axis */
-}</pre><p>Both declarations are needed because each property controls only one axis. The container also needs available space for the centering to be visible.</p></section>
+}</pre>
 
-      <section class="control-room" id="control-room"><p class="lesson-number">Interactive lab</p><h2>Flexbox Control Room</h2><p>Change one control at a time and watch the axes, item order and generated CSS update together.</p>
+        <p>
+          Both declarations are needed because each property controls only
+          one axis. The container also needs available space for the
+          centering to be visible.
+        </p>
+      </section>
+
+      <section class="control-room" id="control-room">
+        <p class="lesson-number">Interactive lab</p>
+
+        <h2>Flexbox Control Room</h2>
+
+        <p>
+          Change one control at a time and watch the axes, item order and
+          generated CSS update together.
+        </p>
+
         <div class="lab-layout">
           <form class="lab-controls" id="flex-controls">
-            <label>Direction<select name="direction"><option>row</option><option>row-reverse</option><option>column</option><option>column-reverse</option></select></label>
-            <label>Wrapping<select name="wrap"><option>nowrap</option><option>wrap</option><option>wrap-reverse</option></select></label>
-            <label>Justify content<select name="justify"><option>flex-start</option><option>center</option><option>flex-end</option><option>space-between</option><option>space-around</option><option>space-evenly</option></select></label>
-            <label>Align items<select name="align"><option>stretch</option><option>flex-start</option><option>center</option><option>flex-end</option></select></label>
-            <button class="secondary-button" id="lab-reset" type="button">Reset controls</button>
+            <label>
+              Direction
+
+              <select name="direction">
+                <option>row</option>
+                <option>row-reverse</option>
+                <option>column</option>
+                <option>column-reverse</option>
+              </select>
+            </label>
+
+            <label>
+              Wrapping
+
+              <select name="wrap">
+                <option>nowrap</option>
+                <option>wrap</option>
+                <option>wrap-reverse</option>
+              </select>
+            </label>
+
+            <label>
+              Justify content
+
+              <select name="justify">
+                <option>flex-start</option>
+                <option>center</option>
+                <option>flex-end</option>
+                <option>space-between</option>
+                <option>space-around</option>
+                <option>space-evenly</option>
+              </select>
+            </label>
+
+            <label>
+              Align items
+
+              <select name="align">
+                <option>stretch</option>
+                <option>flex-start</option>
+                <option>center</option>
+                <option>flex-end</option>
+              </select>
+            </label>
+
+            <button
+              class="secondary-button"
+              id="lab-reset"
+              type="button"
+            >
+              Reset controls
+            </button>
           </form>
-          <div class="lab-output"><div class="lab-preview" id="lab-preview" aria-label="Live Flexbox preview"><span class="lab-axis lab-main-axis" id="lab-main-axis">Main axis →</span><span class="lab-axis lab-cross-axis" id="lab-cross-axis">Cross axis ↓</span><div class="lab-item">1</div><div class="lab-item">2</div><div class="lab-item">3</div><div class="lab-item">4</div><div class="lab-item">5</div></div><p class="lab-explanation" id="lab-explanation" aria-live="polite"></p><pre id="generated-css"></pre></div>
+
+          <div class="lab-output">
+            <div
+              class="lab-preview"
+              id="lab-preview"
+              aria-label="Live Flexbox preview"
+            >
+              <span
+                class="lab-axis lab-main-axis"
+                id="lab-main-axis"
+              >
+                Main axis →
+              </span>
+
+              <span
+                class="lab-axis lab-cross-axis"
+                id="lab-cross-axis"
+              >
+                Cross axis ↓
+              </span>
+
+              <div class="lab-item">1</div>
+              <div class="lab-item">2</div>
+              <div class="lab-item">3</div>
+              <div class="lab-item">4</div>
+              <div class="lab-item">5</div>
+            </div>
+
+            <p
+              class="lab-explanation"
+              id="lab-explanation"
+              aria-live="polite"
+            ></p>
+
+            <pre id="generated-css"></pre>
+          </div>
         </div>
       </section>
-      <footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Case #001 · The Missing Center</h2><p>Apply this model to diagnose a layout that only centers on one axis.</p></div><a class="primary-button button-link" href="case-001.html">Open case →</a></footer>
+
+      <section class="chapter-review" id="chapter-review">
+        <p class="lesson-number">Chapter review</p>
+
+        <h2>Close the Flexbox file</h2>
+
+        <p>
+          Answer all five questions. Each explanation appears after
+          submission so the review teaches the reasoning, not only the score.
+        </p>
+
+        <form id="flexbox-review">
+          <fieldset data-question="1">
+            <legend>
+              <span>01</span>
+              Which property establishes a flex formatting context?
+            </legend>
+
+            <label>
+              <input type="radio" name="q1" value="a">
+              <code>position: flex</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q1" value="b">
+              <code>display: flex</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q1" value="c">
+              <code>layout: flex</code>
+            </label>
+
+            <p class="answer-explanation" hidden></p>
+          </fieldset>
+
+          <fieldset data-question="2">
+            <legend>
+              <span>02</span>
+              With <code>flex-direction: row</code>, which property controls
+              vertical alignment?
+            </legend>
+
+            <label>
+              <input type="radio" name="q2" value="a">
+              <code>align-items</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q2" value="b">
+              <code>justify-content</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q2" value="c">
+              <code>flex-wrap</code>
+            </label>
+
+            <p class="answer-explanation" hidden></p>
+          </fieldset>
+
+          <fieldset data-question="3">
+            <legend>
+              <span>03</span>
+              What changes when <code>flex-direction</code> becomes
+              <code>column</code>?
+            </legend>
+
+            <label>
+              <input type="radio" name="q3" value="a">
+              Flexbox becomes two-dimensional
+            </label>
+
+            <label>
+              <input type="radio" name="q3" value="b">
+              The main axis becomes vertical
+            </label>
+
+            <label>
+              <input type="radio" name="q3" value="c">
+              The cross axis disappears
+            </label>
+
+            <p class="answer-explanation" hidden></p>
+          </fieldset>
+
+          <fieldset data-question="4">
+            <legend>
+              <span>04</span>
+              Which value allows items to move onto another flex line?
+            </legend>
+
+            <label>
+              <input type="radio" name="q4" value="a">
+              <code>flex-wrap: wrap</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q4" value="b">
+              <code>flex-flow: nowrap</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q4" value="c">
+              <code>align-items: stretch</code>
+            </label>
+
+            <p class="answer-explanation" hidden></p>
+          </fieldset>
+
+          <fieldset data-question="5">
+            <legend>
+              <span>05</span>
+              Which shorthand correctly combines direction and wrapping?
+            </legend>
+
+            <label>
+              <input type="radio" name="q5" value="a">
+              <code>flex: row wrap</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q5" value="b">
+              <code>flex-flow: row wrap</code>
+            </label>
+
+            <label>
+              <input type="radio" name="q5" value="c">
+              <code>flex-direction: row wrap</code>
+            </label>
+
+            <p class="answer-explanation" hidden></p>
+          </fieldset>
+
+          <div class="review-actions">
+            <button class="primary-button" type="submit">
+              Check review →
+            </button>
+
+            <button
+              class="secondary-button"
+              id="review-reset"
+              type="button"
+            >
+              Reset answers
+            </button>
+          </div>
+
+          <p
+            class="review-status"
+            id="review-status"
+            role="status"
+            aria-live="polite"
+          >
+            Answer all five questions to complete the review.
+          </p>
+        </form>
+      </section>
+
+      <section
+        class="chapter-summary"
+        id="chapter-summary"
+        aria-labelledby="summary-title"
+      >
+        <div class="summary-stamp" id="summary-stamp">
+          In progress
+        </div>
+
+        <div>
+          <p class="lesson-number">Chapter 09 progress</p>
+
+          <h2 id="summary-title">Flexbox investigation summary</h2>
+
+          <p id="chapter-status-text">
+            Complete the review and resolve Case #001 to close this chapter.
+          </p>
+
+          <ul>
+            <li id="lessons-status">
+              ✓ Seven Field Guide lessons available
+            </li>
+
+            <li id="review-progress">
+              ○ Five-question review pending
+            </li>
+
+            <li id="case-progress">
+              ○ Case #001 pending
+            </li>
+          </ul>
+
+          <p class="next-chapter">
+            <strong>Suggested next chapter:</strong>
+            CH01 CSS Fundamentals, the first chapter in learning order and
+            the next planned development phase.
+          </p>
+        </div>
+      </section>
+
+      <footer class="guide-case-link">
+        <div>
+          <p class="eyebrow">Related investigation</p>
+          <h2>Case #001 · The Missing Center</h2>
+
+          <p>
+            Apply this model to diagnose a layout that only centers on one
+            axis.
+          </p>
+        </div>
+
+        <a
+          class="primary-button button-link"
+          href="case-001.html"
+        >
+          Open case →
+        </a>
+      </footer>
     </article>
   </main>
-  <footer class="public-footer"><span>Content adapted from CSS Master Study Notes</span><a href="cases.html">Browse cases →</a></footer>
-  <script src="library.js"></script><script src="flexbox-lab.js"></script>
+
+  <footer class="public-footer">
+    <span>Content adapted from CSS Master Study Notes</span>
+    <a href="cases.html">Browse cases →</a>
+  </footer>
+
+  <script src="library.js"></script>
+  <script src="flexbox-lab.js"></script>
 </body>
 </html>
