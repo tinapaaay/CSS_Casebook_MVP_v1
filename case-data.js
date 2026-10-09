@@ -304,6 +304,12 @@ installAuthoredChapterCases("07", "Styling Forms", [
   { id: "024", title: "The Label That Lost Its Target", property: "display", starter: "none", target: "block", label: "LABEL", prompt: "The control needs a visible explanation of what it asks for.", objective: "Keep the label present so the control remains understandable and usable.", expected: "Control has a visible label", observed: "Field appears without context", remember: "A visible, associated label is not a placeholder.", question: "Which display value keeps the label visible?", next: "025" }
 ]);
 
+installAuthoredChapterCases("08", "Layouts & Effects", [
+  { id: "025", title: "The Overflowing Card", property: "overflow", starter: "visible", target: "hidden", label: "LAYOUT", prompt: "The decorative edge treatment should stay inside its card.", objective: "Contain the decorative edge treatment inside the card boundary.", expected: "Decoration stays inside card", observed: "Decoration leaks outside", remember: "Clip only content that is intentionally decorative or safely replaceable.", question: "Which overflow value contains the decoration?", next: "026" },
+  { id: "026", title: "The Unexpected Extra Width", property: "boxSizing", starter: "content-box", target: "border-box", label: "BOX MODEL", prompt: "The declared card width should include its padding and border.", objective: "Keep the declared card width inclusive of its padding and border.", expected: "Rendered width respects declaration", observed: "Card exceeds its track", remember: "border-box includes content, padding and border in the declared size.", question: "Which box-sizing value includes padding and border?", next: "027" },
+  { id: "027", title: "The Transforming Hit Area", property: "transform", starter: "none", target: "translateY(-4px)", label: "EFFECT", prompt: "Lift the card visually without disturbing its neighbors.", objective: "Lift the card visually without changing the layout space reserved for it.", expected: "Visual lift without reflow", observed: "Card position changes the layout model", remember: "Transforms move pixels; they do not rewrite normal flow.", question: "Which transform creates the visual lift?", next: "028" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
