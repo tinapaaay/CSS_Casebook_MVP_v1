@@ -189,11 +189,11 @@ function renderGuideNav(query = "") {
     .filter((item) =>
       `${item[0]} ${item[1]} ${item[2]}`.toLowerCase().includes(q),
     )
-    .map(([number, title]) =>
-      number === "09"
-        ? `<a class="is-current" href="#flexbox"><span>${number}</span>${title}<small>Available</small></a>`
-        : `<span class="guide-nav-item is-disabled"><span>${number}</span>${title}<small>Planned</small></span>`,
-    )
+    .map(([number, title, description, cases]) => {
+      const playableCount = cases.filter((name) => playableCases[name]).length;
+      const guideHash = number === "09" ? "flexbox" : `chapter-${number}`;
+      return `<a class="guide-nav-item" href="field-guide.html#${guideHash}"><span>${number}</span>${title}<small>${playableCount} cases · Guide</small></a>`;
+    })
     .join("");
 }
 
