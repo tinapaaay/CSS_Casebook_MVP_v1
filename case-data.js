@@ -310,6 +310,12 @@ installAuthoredChapterCases("08", "Layouts & Effects", [
   { id: "027", title: "The Transforming Hit Area", property: "transform", starter: "none", target: "translateY(-4px)", label: "EFFECT", prompt: "Lift the card visually without disturbing its neighbors.", objective: "Lift the card visually without changing the layout space reserved for it.", expected: "Visual lift without reflow", observed: "Card position changes the layout model", remember: "Transforms move pixels; they do not rewrite normal flow.", question: "Which transform creates the visual lift?", next: "028" }
 ]);
 
+installAuthoredChapterCases("10", "CSS Typography", [
+  { id: "028", title: "The Misaligned Heading", property: "fontWeight", starter: "400", target: "700", label: "TYPE NOTE", prompt: "The page title should lead through weight as well as size.", objective: "Restore the heading weight so its role is clear in the type hierarchy.", expected: "Heading leads through weight", observed: "Heading is visually equal to labels", remember: "Weight is one part of hierarchy; line-height and contrast matter too.", question: "Which weight restores the heading hierarchy?", next: "029" },
+  { id: "029", title: "The Missing Web Font", property: "fontFamily", starter: "Arial", target: "Georgia", label: "DISPLAY FACE", prompt: "The editorial display face should appear with a predictable fallback.", objective: "Apply the intended display face while retaining a predictable fallback in the stack.", expected: "Display face with fallback", observed: "Everything uses the body face", remember: "A fallback is part of the design, not an afterthought.", question: "Which family applies the intended display face?", next: "030" },
+  { id: "030", title: "The Line-height That Drifted", property: "lineHeight", starter: "1", target: "1.6", label: "READING COPY", prompt: "Paragraph lines should have enough room for comfortable reading.", objective: "Restore enough line spacing for the paragraph to remain readable.", expected: "Comfortable line spacing", observed: "Lines feel compressed", remember: "Leading controls the distance between lines; it is not the same as tracking.", question: "Which line-height restores readable spacing?", next: "031" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
