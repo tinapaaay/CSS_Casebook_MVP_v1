@@ -26,7 +26,7 @@
         ><a class="is-current" aria-current="page" href="cases.html">Case Library</a
         ><a href="field-guide.html">Field Guide</a>
       </nav>
-      <a class="header-cta" href="case.html?id=001">Continue case</a>
+      <a class="header-cta" data-continue-link href="case.html?id=001">Continue case</a>
     </header>
     <main class="public-main library-page">
       <header class="page-heading">
@@ -50,6 +50,10 @@
           mapped
         </p>
       </div>
+      <div class="progress-summary" aria-label="Case progress">
+        <div><strong data-progress-count>0 of 48 cases complete</strong><span data-progress-percent>0%</span></div>
+        <div class="progress-bar" data-progress-bar role="progressbar" aria-label="Case completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+      </div>
       <section
         class="case-library-grid"
         id="case-library"
@@ -60,6 +64,6 @@
       <span>CSS Casebook · Case Library</span
       ><a href="field-guide.html">Open Field Guide →</a>
     </footer>
-    <script src="library.js"></script>
+    <script src="progress.js"></script><script src="library.js"></script>
   </body>
 </html>

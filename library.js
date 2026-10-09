@@ -172,7 +172,7 @@ function renderLibrary(filter = "all") {
         .map((name) => {
           const caseId = playableCases[name];
           if (caseId)
-            return `<li><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a></li>`;
+            return `<li class="${window.CasebookProgress?.readCase(caseId).completed === true ? "is-complete" : ""}"><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a>${window.CasebookProgress?.readCase(caseId).completed === true ? '<small>✓ Complete</small>' : ""}</li>`;
           return `<li><span>${name}</span><small>Coming soon</small></li>`;
         })
         .join("")}</ul>
