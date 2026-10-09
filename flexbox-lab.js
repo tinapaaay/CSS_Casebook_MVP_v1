@@ -148,14 +148,29 @@ document.addEventListener("submit", (event) => {
     note.innerHTML = `<strong>${isCorrect ? "Correct." : "Review this one."}</strong> ${explanation}`;
   });
   reviewStatus.innerHTML = `<strong>Review complete: ${score}/5.</strong> Read the explanations above, then retry anytime if you want a higher score.`;
+  const previous = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("css-casebook-ch09") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+  const bestScore = Math.max(previous.bestScore || 0, score);
   localStorage.setItem(
     "css-casebook-ch09",
     JSON.stringify({
-      reviewCompleted: true,
+      attempted: true,
+      reviewCompleted: bestScore >= 4,
       score,
-      completedAt: new Date().toISOString(),
+      latestScore: score,
+      bestScore,
+      completedAt: bestScore >= 4 ? new Date().toISOString() : previous.completedAt,
+      attemptedAt: new Date().toISOString(),
     }),
   );
+  reviewStatus.innerHTML = bestScore >= 4
+    ? `<strong>Review passed: ${score}/5.</strong> Best score ${bestScore}/5. Read the explanations above, then retry anytime if you want a higher score.`
+    : `<strong>Review attempted: ${score}/5.</strong> You need 4/5 to complete it. Read the explanations above and retry.`;
   updateChapterProgress();
 });
 
@@ -173,8 +188,16 @@ document.addEventListener("click", (event) => {
     note.hidden = true;
     note.textContent = "";
   });
-  document.querySelector("#review-status").textContent =
-    "Answers cleared. Your recorded completion remains saved.";
+  const saved = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("css-casebook-ch09") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+  document.querySelector("#review-status").textContent = saved.attempted
+    ? `Answers cleared. Best score ${saved.bestScore}/5 is saved.`
+    : "Answer all five questions to complete the review.";
 });
 
 updateChapterProgress();

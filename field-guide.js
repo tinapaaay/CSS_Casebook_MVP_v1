@@ -1243,7 +1243,12 @@ function renderFlexboxLab() {
 }
 
 function renderReview() {
-  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Close the Flexbox file</h2><p>Answer five questions to check whether the axis model is ready for the investigation cases.</p><form id="flexbox-review"><fieldset data-question="1"><legend><span>01</span> Which property establishes a flex formatting context?</legend><label><input type="radio" name="q1" value="a"> <code>position: flex</code></label><label><input type="radio" name="q1" value="b"> <code>display: flex</code></label><label><input type="radio" name="q1" value="c"> <code>layout: flex</code></label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="2"><legend><span>02</span> With <code>flex-direction: row</code>, which property controls vertical alignment?</legend><label><input type="radio" name="q2" value="a"> <code>align-items</code></label><label><input type="radio" name="q2" value="b"> <code>justify-content</code></label><label><input type="radio" name="q2" value="c"> <code>flex-wrap</code></label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="3"><legend><span>03</span> What changes when <code>flex-direction</code> becomes <code>column</code>?</legend><label><input type="radio" name="q3" value="a"> Flexbox becomes two-dimensional</label><label><input type="radio" name="q3" value="b"> The main axis becomes vertical</label><label><input type="radio" name="q3" value="c"> The cross axis disappears</label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="4"><legend><span>04</span> Which value allows items to move onto another flex line?</legend><label><input type="radio" name="q4" value="a"> <code>flex-wrap: wrap</code></label><label><input type="radio" name="q4" value="b"> <code>flex-flow: nowrap</code></label><label><input type="radio" name="q4" value="c"> <code>align-items: stretch</code></label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="5"><legend><span>05</span> Which shorthand combines direction and wrapping?</legend><label><input type="radio" name="q5" value="a"> <code>flex: row wrap</code></label><label><input type="radio" name="q5" value="b"> <code>flex-flow: row wrap</code></label><label><input type="radio" name="q5" value="c"> <code>flex-direction: row wrap</code></label><p class="answer-explanation" hidden></p></fieldset><div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="review-reset" type="button">Reset answers</button></div><p class="review-status" id="review-status" role="status" aria-live="polite">Answer all five questions to complete the review.</p></form></section>`;
+  const options = (items) => items
+    .map(([label, value]) => ({ label, value, sort: Math.random() }))
+    .sort((left, right) => left.sort - right.sort)
+    .map(({ label, value }) => `<label><input type="radio" name="${value.name}" value="${value.answer}"> ${label}</label>`)
+    .join("");
+  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Close the Flexbox file</h2><p>Answer five questions. Score at least 4/5 to complete the review; explanations remain available after every attempt.</p><form id="flexbox-review"><fieldset data-question="1"><legend><span>01</span> Which property establishes a flex formatting context?</legend>${options([["<code>position: flex</code>", { name: "q1", answer: "a" }], ["<code>display: flex</code>", { name: "q1", answer: "b" }], ["<code>layout: flex</code>", { name: "q1", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="2"><legend><span>02</span> With <code>flex-direction: row</code>, which property controls vertical alignment?</legend>${options([["<code>align-items</code>", { name: "q2", answer: "a" }], ["<code>justify-content</code>", { name: "q2", answer: "b" }], ["<code>flex-wrap</code>", { name: "q2", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="3"><legend><span>03</span> What changes when <code>flex-direction</code> becomes <code>column</code>?</legend>${options([["Flexbox becomes two-dimensional", { name: "q3", answer: "a" }], ["The main axis becomes vertical", { name: "q3", answer: "b" }], ["The cross axis disappears", { name: "q3", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="4"><legend><span>04</span> Which value allows items to move onto another flex line?</legend>${options([["<code>flex-wrap: wrap</code>", { name: "q4", answer: "a" }], ["<code>flex-flow: nowrap</code>", { name: "q4", answer: "b" }], ["<code>align-items: stretch</code>", { name: "q4", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="5"><legend><span>05</span> Which shorthand combines direction and wrapping?</legend>${options([["<code>flex: row wrap</code>", { name: "q5", answer: "a" }], ["<code>flex-flow: row wrap</code>", { name: "q5", answer: "b" }], ["<code>flex-direction: row wrap</code>", { name: "q5", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="review-reset" type="button">Reset answers</button></div><p class="review-status" id="review-status" role="status" aria-live="polite">Answer all five questions to complete the review.</p></form></section>`;
 }
 
 function chapterReviewKey(number) {
@@ -1258,17 +1263,27 @@ function readChapterReview(number) {
   }
 }
 
+function shuffleOptions(options) {
+  return options
+    .map((option, index) => ({ option, index, sort: Math.random() }))
+    .sort((left, right) => left.sort - right.sort)
+    .map(({ option, index }) => ({ option, index }));
+}
+
 function renderChapterReview(chapter) {
   const questions = chapterReviews[chapter.number] || [];
-  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions to confirm the chapter's core ideas and get a short explanation for each answer.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${options.map((option, optionIndex) => `<label><input type="radio" name="q${questionIndex + 1}" value="${optionIndex}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
+  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions. Score at least 2/3 to complete the review; explanations remain available after every attempt.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${shuffleOptions(options).map(({ option, index }) => `<label><input type="radio" name="q${questionIndex + 1}" value="${index}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
 }
 
 function updateChapterReviewSummary(chapter, state) {
   const progress = document.querySelector("#review-progress");
   if (!progress) return;
+  const bestScore = state?.bestScore ?? state?.score ?? 0;
   progress.textContent = state?.completed
-    ? `✓ Review completed · ${state.score}/${chapterReviews[chapter.number].length}`
-    : "→ Chapter review pending";
+    ? `✓ Review completed · ${bestScore}/${chapterReviews[chapter.number].length}`
+    : state?.attempted
+      ? `→ Review in progress · best ${bestScore}/${chapterReviews[chapter.number].length}`
+      : "→ Chapter review pending";
 }
 
 function initializeChapterReview(chapter) {
@@ -1280,8 +1295,13 @@ function initializeChapterReview(chapter) {
   const status = document.querySelector("#chapter-review-status");
   const stored = readChapterReview(chapter.number);
   updateChapterReviewSummary(chapter, stored);
-  if (stored?.completed && status)
-    status.textContent = `Review completed: ${stored.score}/${questions.length}. Retake it any time to improve your understanding.`;
+  if (stored?.attempted && status)
+    {
+      const bestScore = stored.bestScore ?? stored.score ?? 0;
+    status.textContent = stored.completed
+      ? `Review completed: best ${bestScore}/${questions.length}. Retake it any time to improve your understanding.`
+      : `Review attempted: best ${bestScore}/${questions.length}. Score 2/${questions.length} to complete it.`;
+    }
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -1315,10 +1335,16 @@ function initializeChapterReview(chapter) {
       firstMissing.querySelector("input")?.focus();
       return;
     }
+    const previous = readChapterReview(chapter.number) || {};
+    const bestScore = Math.max(previous.bestScore || 0, score);
     const state = {
-      completed: true,
+      attempted: true,
+      completed: bestScore >= 2,
       score,
-      completedAt: new Date().toISOString(),
+      latestScore: score,
+      bestScore,
+      completedAt: bestScore >= 2 ? new Date().toISOString() : previous.completedAt,
+      attemptedAt: new Date().toISOString(),
     };
     localStorage.setItem(
       chapterReviewKey(chapter.number),
@@ -1326,7 +1352,9 @@ function initializeChapterReview(chapter) {
     );
     updateChapterReviewSummary(chapter, state);
     updateChapterSummary(chapter);
-    status.textContent = `Review complete: ${score}/${questions.length}. Read the explanations, then continue to the cases.`;
+    status.textContent = state.completed
+      ? `Review passed: ${score}/${questions.length}. Best score ${bestScore}/${questions.length}. Read the explanations, then continue to the cases.`
+      : `Review attempted: ${score}/${questions.length}. You need 2/${questions.length} to complete it; read the explanations and retry.`;
   });
 
   document
@@ -1339,10 +1367,12 @@ function initializeChapterReview(chapter) {
         explanation.hidden = true;
         explanation.textContent = "";
       });
-      localStorage.removeItem(chapterReviewKey(chapter.number));
-      updateChapterReviewSummary(chapter, null);
+      const saved = readChapterReview(chapter.number);
+      updateChapterReviewSummary(chapter, saved);
       updateChapterSummary(chapter);
-      status.textContent = "Answer all three questions to complete the review.";
+      status.textContent = saved?.attempted
+        ? `Answers cleared. Best score ${saved.bestScore}/${questions.length} is saved.`
+        : "Answer all three questions to complete the review.";
     });
 }
 
