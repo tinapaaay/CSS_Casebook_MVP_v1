@@ -61,12 +61,15 @@ function initializeCase(data) {
       JSON.stringify({
         css: editor.value,
         hintCount,
+        visited: current.visited === true || extra.visited === true,
         attempted: current.attempted === true || extra.attempted === true,
         completed: current.completed === true,
         ...extra,
       }),
     );
   }
+
+  saveState({ visited: true });
 
   function buildPreviewDocument(css) {
     const safeCSS = css.replace(/<\/style/gi, "<\\/style");
@@ -446,7 +449,7 @@ function initializeCase(data) {
       editor.value === data.starterCSS ? "Starter file" : "Draft saved";
     updateLineNumbers();
     renderPreview(editor.value, "current");
-    saveState();
+    saveState({ attempted: true });
   });
 
   document
@@ -457,7 +460,7 @@ function initializeCase(data) {
   hintButton.addEventListener("click", () => {
     if (hintCount < data.hints.length) hintCount += 1;
     renderHints();
-    saveState();
+    saveState({ attempted: true });
   });
   hideHintsButton.addEventListener("click", () => {
     hintList.hidden = !hintList.hidden;
@@ -469,6 +472,7 @@ function initializeCase(data) {
   checkButton.addEventListener("click", () => {
     if (checking) return;
     checking = true;
+    saveState({ attempted: true });
     checkButton.disabled = true;
     setFeedback("", data.checkingTitle, data.checkingText);
     const onLoad = () => {
