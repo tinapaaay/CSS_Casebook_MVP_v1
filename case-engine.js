@@ -625,12 +625,16 @@ function populateCaseContent(data) {
   const chapterCode = data.chapter.slice(2, 4);
   const chapterAnchor =
     chapterCode === "09" ? "#flexbox" : `#chapter-${chapterCode}`;
-  const chapterCases = Object.values(window.CASEBOOK_CASES || {})
-    .filter((item) => item.chapter === data.chapter)
-    .sort((left, right) => Number(left.id) - Number(right.id));
+  const allCases = Object.values(window.CASEBOOK_CASES || {});
+  const curriculumOrder = window.CasebookProgress?.curriculumOrder || allCases.map((item) => item.id);
+  const orderedCases = curriculumOrder.map((id) => allCases.find((item) => item.id === id)).filter(Boolean);
+  const chapterCases = (window.CasebookProgress?.chapterCaseIds?.(chapterCode) || [])
+    .map((id) => allCases.find((item) => item.id === id))
+    .filter(Boolean);
   const position = chapterCases.findIndex((item) => item.id === data.id) + 1;
-  const previous = chapterCases[position - 2];
-  const next = chapterCases[position];
+  const curriculumPosition = orderedCases.findIndex((item) => item.id === data.id);
+  const previous = orderedCases[curriculumPosition - 1];
+  const next = orderedCases[curriculumPosition + 1];
   const previousLink = document.querySelector("#previous-case-link");
   const topNextLink = document.querySelector("#top-next-case-link");
   const chapterLink = document.querySelector("#chapter-overview-link");
@@ -652,9 +656,9 @@ function populateCaseContent(data) {
     topNextLink.hidden = true;
   }
   const nextCaseLink = document.querySelector("#next-case-link");
-  if (data.nextCase) {
-    nextCaseLink.href = `case.html?id=${data.nextCase}`;
-    nextCaseLink.textContent = `Open Case #${data.nextCase} →`;
+  if (next) {
+    nextCaseLink.href = `case.html?id=${next.id}`;
+    nextCaseLink.textContent = `Open Case #${next.id} →`;
     nextCaseLink.hidden = false;
   } else {
     nextCaseLink.hidden = true;

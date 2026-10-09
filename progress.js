@@ -18,6 +18,9 @@
     "15": ["043", "044", "045"],
     "16": ["046", "047", "048"],
   };
+  const curriculumOrder = Object.keys(chapterCaseRegistry)
+    .sort((left, right) => Number(left) - Number(right))
+    .flatMap((chapter) => chapterCaseRegistry[chapter]);
 
   function readStorage(key) {
     try {
@@ -103,6 +106,6 @@
     }
   }
 
-  window.CasebookProgress = { getState, readCase, render, chapterCaseRegistry, chapterCaseIds, readLesson, readReview, getChapterState };
+  window.CasebookProgress = { getState, readCase, render, chapterCaseRegistry, curriculumOrder, chapterCaseIds, readLesson, readReview, getChapterState };
   render();
 })();
