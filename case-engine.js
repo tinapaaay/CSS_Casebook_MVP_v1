@@ -449,21 +449,6 @@ function initializeCase(data) {
     saveState();
   });
 
-  editor.addEventListener("keydown", (event) => {
-    if (event.key !== "Tab") return;
-    // Shift+Tab must leave the editor normally. Plain Tab keeps the
-    // authoring shortcut, while the reverse direction remains keyboard-safe.
-    if (event.shiftKey) return;
-    event.preventDefault();
-    const start = editor.selectionStart;
-    editor.value =
-      editor.value.slice(0, start) +
-      "  " +
-      editor.value.slice(editor.selectionEnd);
-    editor.selectionStart = editor.selectionEnd = start + 2;
-    editor.dispatchEvent(new Event("input"));
-  });
-
   document
     .querySelectorAll(".view-switcher button")
     .forEach((button) =>

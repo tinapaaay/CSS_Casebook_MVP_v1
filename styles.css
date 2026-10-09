@@ -1894,6 +1894,16 @@ dialog p:not(.eyebrow) {
   main {
     padding: 34px 16px 60px;
   }
+  .paper-section {
+    padding: 22px 18px;
+  }
+  .paper-section h2 {
+    font-size: 23px;
+  }
+  .panel-header {
+    min-height: 70px;
+    padding: 15px 16px;
+  }
   .case-heading {
     display: block;
   }
