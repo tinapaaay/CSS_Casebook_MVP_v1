@@ -4559,10 +4559,29 @@ const transferCaseIds = new Set([
   "045",
   "048",
 ]);
+const transferPrompts = {
+  "003": "Transfer challenge: keep the same box-model intent on a card with a different content length without changing the markup.",
+  "006": "Transfer challenge: apply the spacing model to a toolbar with a different number of controls and preserve even rhythm.",
+  "009": "Transfer challenge: restore the boundary on a second surface while preserving its existing padding and contrast.",
+  "012": "Transfer challenge: carry the hierarchy decision into a denser dashboard without making secondary content compete with the primary action.",
+  "015": "Transfer challenge: keep the formula stable when the container changes size instead of tuning it to one viewport.",
+  "018": "Transfer challenge: apply the structural selector to a repeated component with one extra sibling and avoid styling the wrong item.",
+  "021": "Transfer challenge: preserve readable contrast when the same color treatment is placed over a different surface.",
+  "024": "Transfer challenge: keep the form relationship usable when the label and control are rearranged visually.",
+  "027": "Transfer challenge: preserve the hit area after the visual transformation changes direction.",
+  "030": "Transfer challenge: keep the type hierarchy readable in a longer heading without changing the family.",
+  "033": "Transfer challenge: retain an obvious focus location on a second control with a different background.",
+  "036": "Transfer challenge: preserve the stacking order when the modal is nested inside another positioned region.",
+  "039": "Transfer challenge: match the language selector to another locale token without styling unrelated content.",
+  "042": "Transfer challenge: keep overflow content reachable at a narrower breakpoint instead of hiding it.",
+  "045": "Transfer challenge: make a new banner span the gallery while keeping the sidebar and content tracks intact.",
+  "048": "Transfer challenge: disable only nonessential motion while keeping the preference card and its message available.",
+};
 transferCaseIds.forEach((id) => {
   const item = window.CASEBOOK_CASES[id];
   if (!item) return;
   item.isTransferCase = true;
   item.transferPrompt =
+    transferPrompts[id] ||
     "Transfer challenge: apply the same diagnosis to a different interface surface, then make the smallest rule change that preserves the surrounding design.";
 });
