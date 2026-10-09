@@ -328,6 +328,12 @@ installAuthoredChapterCases("12", "CSS Positioning", [
   { id: "036", title: "The Layer Behind the Modal", property: "zIndex", starter: "0", target: "100", label: "STACK", prompt: "The modal layer should sit above the page content.", objective: "Place the modal layer above the page content within its stacking context.", expected: "Modal is above page content", observed: "Page layer covers modal", remember: "A large z-index cannot escape an ancestor stacking context.", question: "Which value raises the modal layer?", next: "037" }
 ]);
 
+installAuthoredChapterCases("13", "CSS Attribute Selectors", [
+  { id: "037", title: "The Selector Mystery", property: "textDecorationLine", starter: "none", target: "underline", label: "ATTRIBUTE", prompt: "The matched resource link needs a visible cue.", objective: "Make the attribute-matched link visibly distinct from ordinary text.", expected: "Matched link is recognizable", observed: "Matched link looks ordinary", remember: "Start from the attribute relationship, then add only the specificity you need.", question: "Which value distinguishes the matched link?", next: "038" },
+  { id: "038", title: "The Wrong Download Link", property: "color", starter: "#173d2c", target: "#a44d2f", label: "DOWNLOAD", prompt: "The PDF download should signal its file type.", objective: "Signal the PDF download link with the intended file-type treatment.", expected: "Download link is distinct", observed: "File type is invisible", remember: "The $= operator matches the end of an attribute value.", question: "Which color applies the download treatment?", next: "039" },
+  { id: "039", title: "The Language That Was Missed", property: "fontStyle", starter: "normal", target: "italic", label: "LANGUAGE", prompt: "The language-specific note should be visibly signposted.", objective: "Apply the language-specific typographic cue to the matched content.", expected: "Language variant is signposted", observed: "Language variant looks unmarked", remember: "The |= operator matches a language token such as en or en-US.", question: "Which style marks the language-specific note?", next: "040" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
