@@ -1402,31 +1402,30 @@ function renderChapter(number) {
 
 renderNav();
 guideSearch.addEventListener("input", (event) => renderNav(event.target.value));
-window.addEventListener("hashchange", () => {
-  const hash = location.hash.replace("#", "");
-  const lessonMatch = hash.match(
-    /^(flexbox|chapter-[0-9]{2})-lesson-([0-9]+)$/,
-  );
+
+function parseGuideHash(value) {
+  const hash = String(value || "").replace(/^#/, "");
+  const lessonMatch = hash.match(/^(flexbox|chapter-[0-9]{2})-lesson-([0-9]+)$/);
   if (lessonMatch) {
-    const number =
-      lessonMatch[1] === "flexbox"
-        ? "09"
-        : lessonMatch[1].replace("chapter-", "");
-    renderChapter(number);
-    requestAnimationFrame(() =>
-      document
-        .getElementById(hash)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" }),
-    );
-    return;
+    return {
+      number: lessonMatch[1] === "flexbox" ? "09" : lessonMatch[1].replace("chapter-", ""),
+      target: hash,
+    };
   }
-  const number = hash === "flexbox" ? "09" : hash.replace("chapter-", "");
-  renderChapter(/^[0-9]{2}$/.test(number) ? number : "01");
-});
-renderChapter(
-  location.hash
-    ? location.hash === "#flexbox"
-      ? "09"
-      : location.hash.replace("#chapter-", "")
-    : "01",
-);
+  if (hash === "flexbox") return { number: "09", target: null };
+  const chapterMatch = hash.match(/^chapter-([0-9]{2})$/);
+  return { number: chapterMatch ? chapterMatch[1] : "01", target: null };
+}
+
+function renderFromHash(behavior = "auto") {
+  const parsed = parseGuideHash(location.hash);
+  renderChapter(parsed.number);
+  if (parsed.target) {
+    requestAnimationFrame(() =>
+      document.getElementById(parsed.target)?.scrollIntoView({ behavior, block: "start" }),
+    );
+  }
+}
+
+window.addEventListener("hashchange", () => renderFromHash("smooth"));
+renderFromHash();
