@@ -298,6 +298,12 @@ installAuthoredChapterCases("06", "CSS Colors", [
   { id: "021", title: "The Transparent Overlay", property: "backgroundColor", starter: "rgba(255,255,255,1)", target: "rgba(255,255,255,.72)", label: "LAYER", prompt: "The illustration beneath the panel should remain subtly visible.", objective: "Restore the translucent overlay so the background remains part of the composition.", expected: "Background remains subtly visible", observed: "Overlay blocks the layer beneath", remember: "Transparency changes the color users actually perceive.", question: "Which value lets the layer beneath remain visible?", next: "022" }
 ]);
 
+installAuthoredChapterCases("07", "Styling Forms", [
+  { id: "022", title: "The Broken Checkbox", property: "appearance", starter: "auto", target: "none", label: "FORM FIELD", prompt: "The design system needs a predictable checkbox starting point.", objective: "Create a predictable starting point for a custom checkbox while keeping the state work visible.", expected: "Predictable custom-control base", observed: "Browser chrome varies", remember: "appearance: none removes native styling; it does not create the replacement.", question: "Which value creates the custom-control starting point?", next: "023" },
+  { id: "023", title: "The Unclear Error State", property: "borderColor", starter: "#738078", target: "#a44d2f", label: "VALIDATION", prompt: "The invalid field should look different from a neutral field.", objective: "Make the invalid control state visible without relying on color alone.", expected: "Error state is visually distinct", observed: "Invalid control looks neutral", remember: "Error styling should be obvious and should support the message text.", question: "Which border color signals the invalid state?", next: "024" },
+  { id: "024", title: "The Label That Lost Its Target", property: "display", starter: "none", target: "block", label: "LABEL", prompt: "The control needs a visible explanation of what it asks for.", objective: "Keep the label present so the control remains understandable and usable.", expected: "Control has a visible label", observed: "Field appears without context", remember: "A visible, associated label is not a placeholder.", question: "Which display value keeps the label visible?", next: "025" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
