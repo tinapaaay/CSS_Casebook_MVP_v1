@@ -1,252 +1,81 @@
+const sharedPreviewCSS = `
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
+`;
+
+function makeCase(data) {
+  return { level: "Beginner", duration: "5–10 min", ...data };
+}
+
 window.CASEBOOK_CASES = {
-  "001": {
-    id: "001",
-    fileCode: "FC-001",
-    chapter: "CH09 Flexbox",
-    topic: "Flexbox",
-    level: "Beginner",
-    duration: "5–10 min",
-    title: "The Missing Center",
-    objective:
-      "Center the three cards horizontally and vertically—without changing the HTML or removing Flexbox.",
-    incidentTitle: "The layout lost its center.",
-    incident:
-      "Three interface cards should sit in the middle of their container. They are centered from left to right, but remain pinned near the top.",
-    evidence: [
-      ["Expected", "Centered on both axes"],
-      ["Observed", "Horizontal only"],
-      ["Constraint", "Keep HTML and Flexbox"],
-    ],
-    selector: ".container",
-    starterCSS: `.container {
-  display: flex;
-  height: 180px;
-  justify-content: center;
-  align-items: flex-start;
-}`,
-    originalCSS:
-      "display:flex;height:180px;justify-content:center;align-items:flex-start",
-    targetCSS:
-      "display:flex;height:180px;justify-content:center;align-items:center",
-    originalCaption: "Original — immutable starter layout",
-    targetCaption: "Target — intended centered layout",
-    previewLabel: "layout",
-    previewHTML: `<div class="container"><article class="card"><span>01</span><strong>Profile</strong><small>Case subject</small></article><article class="card"><span>02</span><strong>Archive</strong><small>Filed notes</small></article><article class="card"><span>03</span><strong>Settings</strong><small>Preferences</small></article></div>`,
-    previewBaseCSS: `* { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
-.container { width: min(100%, 510px); min-height: 180px; border: 1px dashed #738078; background: rgba(255, 253, 247, .9); }
-.card { width: 112px; min-height: 92px; padding: 13px; border: 1px solid #5c6d62; background: #fdfbf4; box-shadow: 3px 3px 0 rgba(49, 91, 71, .14); }
-.card span { color: #a44d2f; font: 700 9px/1 monospace; }
-.card strong, .card small { display: block; }
-.card strong { margin: 15px 0 4px; font: 700 18px/1 Georgia, serif; }
-.card small { color: #657067; font-size: 10px; }`,
-    hints: [
-      [
-        "Observation",
-        "The cards are already centered horizontally. Which direction still needs adjustment?",
-      ],
-      [
-        "Concept",
-        "With flex-direction: row, justify-content controls the horizontal main axis, while align-items controls the vertical cross axis.",
-      ],
-      [
-        "Targeted clue",
-        "Inspect align-items. Which value centers flex items on the cross axis?",
-      ],
-    ],
-    checkingTitle: "Inspecting the layout…",
-    checkingText: " Comparing the rendered result with the case requirements.",
-    successText: " All three cards meet the alignment requirements.",
-    validator: "centered-cards",
-    rootCause:
-      "In a row-direction flex container, the cross axis is vertical. align-items: flex-start placed the cards at the top of that axis.",
-    remember:
-      "justify-content aligns on the main axis. align-items aligns on the cross axis.",
-    recommendedCSS: `.container {
-  display: flex;
-  height: 180px;
-  justify-content: center;
-  align-items: center;
-}`,
-    question:
-      "If flex-direction becomes column, which direction does justify-content control?",
-    choices: [
-      ["Horizontal", false],
-      ["Vertical", true],
-    ],
-    correctFeedback: "Correct. In a column, the main axis runs vertically.",
-    incorrectFeedback:
-      "Not quite. justify-content follows the main axis, which becomes vertical in a column.",
-    guideHref: "field-guide.html#lesson-7",
-    guideLabel: "Review centering →",
-    nextCase: "002",
-    storageKey: "css-casebook-fc001",
-  },
-  "002": {
-    id: "002",
-    fileCode: "FC-002",
-    chapter: "CH09 Flexbox",
-    topic: "Flexbox",
-    level: "Beginner",
-    duration: "5–10 min",
-    title: "The Reversed Navigation",
-    objective:
-      "Restore the navigation’s logical left-to-right order—without changing the HTML or removing Flexbox.",
-    incidentTitle: "The menu reads backward.",
-    incident:
-      "The HTML contains Home, Cases, Field Guide and Contact in the correct order, but the rendered navigation displays them from last to first.",
-    evidence: [
-      ["Expected", "Home appears first"],
-      ["Observed", "Contact appears first"],
-      ["Constraint", "Keep HTML and Flexbox"],
-    ],
-    selector: ".nav-links",
-    starterCSS: `.nav-links {
-  display: flex;
-  flex-direction: row-reverse;
-  gap: 24px;
-}`,
-    originalCSS: "display:flex;flex-direction:row-reverse;gap:24px",
-    targetCSS: "display:flex;flex-direction:row;gap:24px",
-    originalCaption: "Original — reversed starter layout",
-    targetCaption: "Target — logical HTML order",
-    previewLabel: "navigation",
-    previewHTML: `<nav class="nav-links" aria-label="Demonstration navigation"><a href="#">Home</a><a href="#">Cases</a><a href="#">Field Guide</a><a href="#">Contact</a></nav>`,
-    previewBaseCSS: `* { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
-.nav-links { width: min(100%, 570px); min-height: 96px; align-items: center; padding: 20px; border: 1px dashed #738078; background: rgba(255, 253, 247, .9); }
-.nav-links a { flex: 0 0 auto; padding: 10px 12px; color: #173d2c; border-bottom: 2px solid transparent; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }`,
-    hints: [
-      [
-        "Observation",
-        "Compare the first and last links. The links exist, but their direction appears reversed.",
-      ],
-      [
-        "Concept",
-        "flex-direction controls the main-axis direction and can reverse the visual order of flex items.",
-      ],
-      [
-        "Targeted clue",
-        "Inspect row-reverse. Which direction value preserves the same order as the HTML?",
-      ],
-    ],
-    checkingTitle: "Inspecting the navigation…",
-    checkingText: " Comparing the rendered order with the trusted HTML.",
-    successText: " The navigation now follows the logical HTML order.",
-    validator: "logical-navigation",
-    rootCause:
-      "flex-direction: row-reverse reversed the visual main-axis direction while leaving the HTML source unchanged.",
-    remember:
-      "Visual reordering does not necessarily change keyboard or screen-reader order. Keep the HTML logical and reverse layouts only deliberately.",
-    recommendedCSS: `.nav-links {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-}`,
-    question:
-      "If the navigation used column-reverse, where would the first HTML item appear?",
-    choices: [
-      ["At the bottom", true],
-      ["At the top", false],
-    ],
-    correctFeedback:
-      "Correct. Reversing a column places the first HTML item at the bottom.",
-    incorrectFeedback:
-      "Not quite. column-reverse reverses the vertical main-axis direction.",
-    guideHref: "field-guide.html#lesson-2",
-    guideLabel: "Review flex-direction →",
-    nextCase: "003",
-    storageKey: "css-casebook-fc002",
-  },
-  "003": {
-    id: "003",
-    fileCode: "CF-003",
-    chapter: "CH01 CSS Fundamentals",
-    topic: "Cascade",
-    level: "Beginner",
-    duration: "5–10 min",
-    title: "Overridden Style",
-    objective:
-      "Restore the approved status color by diagnosing which CSS rule wins—without changing the trusted HTML.",
-    incidentTitle: "The approved badge turned red.",
-    incident:
-      "A profile card contains an Approved status badge. The general badge rule sets the correct forest green, but another declaration overrides it inside the card.",
-    evidence: [
-      ["Expected", "Green Approved badge"],
-      ["Observed", "Red Approved badge"],
-      ["Constraint", "Do not edit the HTML"],
-    ],
-    selector: ".status-badge",
-    starterCSS: `.status-badge {
-  background: #315d4c;
-  color: white;
-}
-
-.profile-card .status-badge {
-  background: #a44d2f;
-}`,
-    targetCSS: "background:#315d4c;color:white",
-    targetPreviewCSS: `.status-badge {
-  background: #315d4c;
-  color: white;
-}
-
-.profile-card .status-badge {
-  background: #315d4c;
-}`,
-    originalCaption: "Original — overridden badge color",
-    targetCaption: "Target — approved forest badge",
-    previewLabel: "status card",
-    previewHTML: `<article class="profile-card"><div class="avatar" aria-hidden="true">CE</div><div><p class="name">Christine Espiritu</p><p class="role">Frontend investigator</p></div><span class="status-badge">Approved</span></article>`,
-    previewBaseCSS: `* { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
-.profile-card { width: min(100%, 520px); display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 24px; border: 1px solid #738078; border-radius: 8px; background: #fffefa; box-shadow: 4px 4px 0 rgba(49, 93, 76, .12); }
-.avatar { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: white; background: #173d2c; font-weight: 700; }
-.name { margin: 0 0 5px; font-weight: 700; }
-.role { margin: 0; color: #657067; font-size: 12px; }
-.status-badge { padding: 8px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }`,
-    hints: [
-      [
-        "Observation",
-        "The badge has two background declarations. Which one appears later and targets it more specifically?",
-      ],
-      [
-        "Concept",
-        "When declarations conflict, the cascade compares importance, origin, specificity and then source order.",
-      ],
-      [
-        "Targeted clue",
-        "Inspect .profile-card .status-badge. Its selector is more specific than .status-badge.",
-      ],
-    ],
-    checkingTitle: "Tracing the cascade…",
-    checkingText:
-      " Comparing the badge’s computed color with the approved design.",
-    successText: " The Approved badge now uses the required forest green.",
-    validator: "green-status",
-    rootCause:
-      "The descendant selector .profile-card .status-badge has greater specificity than .status-badge, so its red background declaration won the cascade.",
-    remember:
-      "When two declarations target the same property, compare specificity before assuming the nearest-looking rule should win.",
-    recommendedCSS: `.status-badge {
-  background: #315d4c;
-  color: white;
-}
-
-.profile-card .status-badge {
-  background: #315d4c;
-}`,
-    question: "Which selector is more specific?",
-    choices: [
-      [".status-badge", false],
-      [".profile-card .status-badge", true],
-    ],
-    correctFeedback:
-      "Correct. Two class selectors are more specific than one class selector.",
-    incorrectFeedback: "Not quite. Count the class selectors in each selector.",
-    guideHref: "cases.html",
-    guideLabel: "Back to Case Library →",
-    nextCase: null,
-    storageKey: "css-casebook-cf003",
-  },
+  "001": makeCase({
+    id: "001", fileCode: "CF-001", chapter: "CH01 CSS Fundamentals", topic: "Cascade", title: "The Selector That Wins",
+    objective: "Restore the approved status color by diagnosing which CSS rule wins—without changing the trusted HTML.", incidentTitle: "The approved badge turned red.", incident: "A profile card contains an Approved status badge. The general badge rule is correct, but a more specific declaration overrides it inside the card.", evidence: [["Expected", "Green Approved badge"], ["Observed", "Red Approved badge"], ["Constraint", "Do not edit the HTML"]], selector: ".status-badge",
+    starterCSS: `.status-badge {\n  background: #315d4c;\n  color: white;\n}\n\n.profile-card .status-badge {\n  background: #a44d2f;\n}`,
+    originalCSS: "background:#315d4c;color:white;profile-card background:#a44d2f", targetCSS: "background:#315d4c;color:white", originalCaption: "Original — overridden badge color", targetCaption: "Target — approved forest badge", previewLabel: "status card",
+    previewHTML: `<article class="profile-card"><div class="avatar">CE</div><div><p class="name">Christine Espiritu</p><p class="role">Frontend investigator</p></div><span class="status-badge">Approved</span></article>`,
+    previewBaseCSS: sharedPreviewCSS + `.profile-card { width: min(100%, 520px); display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 24px; border: 1px solid #738078; border-radius: 8px; background: #fffefa; } .avatar { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: white; background: #173d2c; font-weight: 700; } .name { margin: 0 0 5px; font-weight: 700; } .role { margin: 0; color: #657067; font-size: 12px; } .status-badge { padding: 8px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }`,
+    targetPreviewCSS: `.status-badge { background: #315d4c; color: white; }\n.profile-card .status-badge { background: #315d4c; }`,
+    hints: [["Observation", "The badge has two background declarations."], ["Concept", "The cascade compares specificity before source order."], ["Targeted clue", "Two class selectors are more specific than one."]], checkingTitle: "Tracing the cascade…", checkingText: " Comparing the badge’s computed color with the approved design.", successText: " The Approved badge now uses the required forest green.", validator: "green-status",
+    rootCause: "The descendant selector .profile-card .status-badge has greater specificity than .status-badge, so its red declaration wins.", remember: "When declarations conflict, compare specificity before assuming the nearest-looking rule should win.", recommendedCSS: `.status-badge {\n  background: #315d4c;\n  color: white;\n}\n\n.profile-card .status-badge {\n  background: #315d4c;\n}`,
+    question: "Which selector is more specific?", choices: [[".status-badge", false], [".profile-card .status-badge", true]], correctFeedback: "Correct. Two class selectors are more specific than one class selector.", incorrectFeedback: "Not quite. Count the class selectors in each selector.", guideHref: "cases.html", guideLabel: "Back to Case Library →", nextCase: "002", storageKey: "css-casebook-cf001",
+  }),
+  "002": makeCase({
+    id: "002", fileCode: "CF-002", chapter: "CH01 CSS Fundamentals", topic: "Combinators", title: "The Sibling That Would Not Match",
+    objective: "Add the divider only between adjacent case items without changing the HTML.", incidentTitle: "The case list lost its dividers.", incident: "Every item should be separated from the item immediately before it, but the current selector targets the wrong relationship.", evidence: [["Expected", "Dividers between items"], ["Observed", "No reliable adjacent divider"], ["Constraint", "Keep the HTML unchanged"]], selector: ".case-list",
+    starterCSS: `.case-list {\n  display: grid;\n  gap: 0;\n}\n\n.case-item + .case-item {\n  border-top: 0 solid #738078;\n}`,
+    originalCSS: "display:grid;gap:0;border-top:0", targetCSS: "gap:0;border-top:1px solid #738078", originalCaption: "Original — missing sibling divider", targetCaption: "Target — adjacent dividers", previewLabel: "case list",
+    previewHTML: `<section class="case-list"><article class="case-item"><strong>01</strong><span>Selectors</span></article><article class="case-item"><strong>02</strong><span>Combinators</span></article><article class="case-item"><strong>03</strong><span>Specificity</span></article></section>`,
+    previewBaseCSS: sharedPreviewCSS + `.case-list { width: min(100%, 420px); padding: 8px 20px; border: 1px dashed #738078; background: #fffefa; } .case-item { display: flex; justify-content: space-between; padding: 18px 0; } .case-item strong { color: #a44d2f; font: 700 12px monospace; } .case-item span { font: 600 18px Georgia, serif; }`,
+    targetPreviewCSS: `.case-list { display: grid; gap: 0; }\n.case-item + .case-item { border-top: 1px solid #738078; }`,
+    hints: [["Observation", "The selector already describes adjacent siblings."], ["Concept", "The selector must apply a visible one-pixel border to items after the first."], ["Targeted clue", "Keep the + relationship and change the border width from 0 to 1px."]], checkingTitle: "Checking the sibling relationship…", checkingText: " Comparing the rendered dividers between adjacent items.", successText: " The list now separates only adjacent case items.", validator: "sibling-divider",
+    rootCause: "The adjacent-sibling rule was present, but its border width was zero, so the intended relationship produced no visible divider.", remember: "The + combinator selects an element immediately preceded by a matching sibling.", recommendedCSS: `.case-item + .case-item {\n  border-top: 1px solid #738078;\n}`,
+    question: "What does the + combinator select?", choices: [["Every later sibling", false], ["The immediately following sibling", true]], correctFeedback: "Correct. + selects the next matching sibling only.", incorrectFeedback: "Not quite. The general sibling combinator ~ reaches later siblings; + selects the immediate next one.", guideHref: "cases.html", guideLabel: "Back to Case Library →", nextCase: "003", storageKey: "css-casebook-cf002",
+  }),
+  "003": makeCase({
+    id: "003", fileCode: "CF-003", chapter: "CH01 CSS Fundamentals", topic: "Box Model", title: "The Box That Grew",
+    objective: "Make the ticket fit its assigned width while keeping its padding and border.", incidentTitle: "The ticket is wider than its column.", incident: "The card is assigned a fixed width, but padding and borders make its rendered box overflow the available track.", evidence: [["Expected", "Ticket fits its 320px column"], ["Observed", "Ticket grows beyond the column"], ["Constraint", "Keep the visual padding"]], selector: ".ticket",
+    starterCSS: `.ticket {\n  width: 320px;\n  padding: 24px;\n  border: 4px solid #315d4c;\n  box-sizing: content-box;\n}`,
+    originalCSS: "width:320px;padding:24px;border:4px;box-sizing:content-box", targetCSS: "width:320px;padding:24px;border:4px solid #315d4c;box-sizing:border-box", originalCaption: "Original — content-box overflow", targetCaption: "Target — contained ticket", previewLabel: "ticket",
+    previewHTML: `<article class="ticket"><strong>Case file 003</strong><p>The box model should keep this ticket inside its assigned column.</p></article>`,
+    previewBaseCSS: sharedPreviewCSS + `.ticket { width: 320px; min-height: 150px; color: #fffefa; background: #173d2c; } .ticket strong { font: 700 12px monospace; } .ticket p { max-width: 230px; line-height: 1.5; }`,
+    hints: [["Observation", "The declared width excludes padding and border under content-box."], ["Concept", "border-box includes padding and border in the declared width."], ["Targeted clue", "Keep the 320px width, but change the box-sizing model."]], checkingTitle: "Measuring the ticket…", checkingText: " Comparing the rendered box with its assigned width.", successText: " The ticket now fits while retaining its padding and border.", validator: "contained-box",
+    rootCause: "content-box adds padding and borders outside the declared width, causing the ticket to render wider than 320px.", remember: "Use border-box when a declared width should include padding and borders.", recommendedCSS: `.ticket {\n  width: 320px;\n  padding: 24px;\n  border: 4px solid #315d4c;\n  box-sizing: border-box;\n}`,
+    question: "What does border-box include in the declared width?", choices: [["Only content", false], ["Content, padding and border", true]], correctFeedback: "Correct. border-box keeps padding and border inside the declared dimensions.", incorrectFeedback: "Not quite. content-box excludes padding and border from the declared width.", guideHref: "cases.html", guideLabel: "Back to Case Library →", nextCase: "004", storageKey: "css-casebook-cf003",
+  }),
+  "004": makeCase({
+    id: "004", fileCode: "FX-001", chapter: "CH09 Flexbox", topic: "Flexbox", title: "The Cards That Refuse to Wrap",
+    objective: "Keep all three cards inside the case panel when the available width becomes narrow.", incidentTitle: "The cards spill out of the panel.", incident: "The row works on a wide screen but overflows when the case panel narrows. The cards need permission to move onto another line.", evidence: [["Expected", "Cards remain inside the panel"], ["Observed", "The last card overflows"], ["Constraint", "Keep Flexbox and card widths"]], selector: ".card-row",
+    starterCSS: `.card-row {\n  display: flex;\n  flex-wrap: nowrap;\n  gap: 12px;\n}`,
+    originalCSS: "display:flex;flex-wrap:nowrap;gap:12px", targetCSS: "display:flex;flex-wrap:wrap;gap:12px", originalCaption: "Original — overflowing row", targetCaption: "Target — wrapped cards", previewLabel: "card row",
+    previewHTML: `<section class="card-row"><article class="card">Selectors</article><article class="card">Cascade</article><article class="card">Box model</article></section>`,
+    previewBaseCSS: sharedPreviewCSS + `.card-row { width: 350px; padding: 16px; border: 1px dashed #738078; background: #fffefa; } .card { flex: 0 0 150px; min-height: 86px; padding: 16px; background: #fdfbf4; border: 1px solid #5c6d62; font-weight: 700; }`,
+    hints: [["Observation", "The row is wider than the available panel."], ["Concept", "flex-wrap controls whether items may form additional lines."], ["Targeted clue", "Replace nowrap with the value that permits multiple lines."]], checkingTitle: "Testing the row…", checkingText: " Comparing the rendered cards with the panel bounds.", successText: " The cards now wrap inside the available panel.", validator: "wrapped-row",
+    rootCause: "flex-wrap: nowrap forces all flex items onto one line, so the fixed-width cards overflow the narrow panel.", remember: "Flexbox is single-line by default; use flex-wrap: wrap when items must form additional lines.", recommendedCSS: `.card-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n}`,
+    question: "What does flex-wrap: wrap allow?", choices: [["Items to form additional lines", true], ["Items to reverse their HTML order", false]], correctFeedback: "Correct. Wrapping lets flex items continue on another line.", incorrectFeedback: "Not quite. Direction values such as row-reverse change order; wrap controls additional lines.", guideHref: "field-guide.html#lesson-4", guideLabel: "Review wrapping →", nextCase: "005", storageKey: "css-casebook-fx001",
+  }),
+  "005": makeCase({
+    id: "005", fileCode: "FX-002", chapter: "CH09 Flexbox", topic: "Flexbox", title: "The Toolbar Won’t Share Space",
+    objective: "Make the toolbar controls share the available row without causing horizontal overflow.", incidentTitle: "The toolbar pushes past its panel.", incident: "Each control keeps its full preferred width, leaving no room for the toolbar container. The controls should share available space.", evidence: [["Expected", "Three controls fit in one row"], ["Observed", "The final control overflows"], ["Constraint", "Keep all controls visible"]], selector: ".toolbar",
+    starterCSS: `.toolbar {\n  display: flex;\n  gap: 8px;\n}\n\n.toolbar button {\n  flex: 0 0 150px;\n}`,
+    originalCSS: "display:flex;gap:8px;button flex:0 0 150px", targetCSS: "display:flex;gap:8px;button:flex:1 1 0", originalCaption: "Original — rigid toolbar items", targetCaption: "Target — shared toolbar space", previewLabel: "toolbar",
+    previewHTML: `<nav class="toolbar"><button>Previous</button><button>Review</button><button>Next</button></nav>`,
+    previewBaseCSS: sharedPreviewCSS + `.toolbar { width: 360px; padding: 12px; border: 1px dashed #738078; background: #fffefa; } .toolbar button { min-width: 0; padding: 12px 8px; border: 1px solid #5c6d62; background: #fdfbf4; color: #173d2c; font-weight: 700; }`,
+    targetPreviewCSS: `.toolbar { display: flex; gap: 8px; }\n.toolbar button { flex: 1 1 0; }`,
+    hints: [["Observation", "Each button insists on 150px even though the row is narrower."], ["Concept", "flex-grow and flex-shrink control how items share free and insufficient space."], ["Targeted clue", "Give each button equal flexible space with flex: 1 1 0."]], checkingTitle: "Balancing the toolbar…", checkingText: " Comparing the rendered controls with the toolbar bounds.", successText: " The controls now share the toolbar without overflow.", validator: "shared-toolbar",
+    rootCause: "flex: 0 0 150px disables both growth and shrinking, so the preferred widths cannot adapt to the available row.", remember: "flex: 1 1 0 lets sibling items grow and shrink from an equal basis.", recommendedCSS: `.toolbar {\n  display: flex;\n  gap: 8px;\n}\n\n.toolbar button {\n  flex: 1 1 0;\n}`,
+    question: "Which flex shorthand gives an item room to grow and shrink?", choices: [["flex: 0 0 150px", false], ["flex: 1 1 0", true]], correctFeedback: "Correct. The first two values enable growth and shrinking.", incorrectFeedback: "Not quite. 0 0 fixes the item and prevents it from sharing space.", guideHref: "field-guide.html#lesson-5", guideLabel: "Review flex sizing →", nextCase: "006", storageKey: "css-casebook-fx002",
+  }),
+  "006": makeCase({
+    id: "006", fileCode: "FX-003", chapter: "CH09 Flexbox", topic: "Flexbox", title: "The Uneven Gaps",
+    objective: "Create consistent spacing between the investigation filters using the Flexbox gap property.", incidentTitle: "The filter row has drifting spacing.", incident: "The first two filters use different margins, so the row looks uneven. The spacing should come from one shared Flexbox rule.", evidence: [["Expected", "Equal 12px spacing"], ["Observed", "The middle gap is larger"], ["Constraint", "Keep the filters in one row"]], selector: ".filter-row",
+    starterCSS: `.filter-row {\n  display: flex;\n  gap: 0;\n}\n\n.filter + .filter {\n  margin-left: 24px;\n}`,
+    originalCSS: "display:flex;gap:0;filter margin-left:24px", targetCSS: "display:flex;gap:12px;filter margin-left:0", originalCaption: "Original — mixed spacing rules", targetCaption: "Target — consistent Flexbox gap", previewLabel: "filter row",
+    previewHTML: `<div class="filter-row"><button class="filter">All cases</button><button class="filter">Playable</button><button class="filter">Planned</button></div>`,
+    previewBaseCSS: sharedPreviewCSS + `.filter-row { width: 420px; padding: 18px; border: 1px dashed #738078; background: #fffefa; } .filter { padding: 10px 12px; border: 1px solid #5c6d62; background: #fdfbf4; color: #173d2c; font-weight: 700; }`,
+    targetPreviewCSS: `.filter-row { display: flex; gap: 12px; }\n.filter + .filter { margin-left: 0; }`,
+    hints: [["Observation", "The spacing is being added by the second and third items separately."], ["Concept", "gap creates consistent space between flex items without item-specific margins."], ["Targeted clue", "Set gap to 12px and neutralize the sibling margin."]], checkingTitle: "Measuring the gaps…", checkingText: " Comparing the distance between each adjacent filter.", successText: " The filters now use one consistent spacing rule.", validator: "even-gaps",
+    rootCause: "A 24px sibling margin combined with gap: 0 created spacing that depended on which item was being inspected.", remember: "Prefer gap for consistent spacing between Flexbox items; use margins for relationships that are intentionally asymmetric.", recommendedCSS: `.filter-row {\n  display: flex;\n  gap: 12px;\n}\n\n.filter + .filter {\n  margin-left: 0;\n}`,
+    question: "What is the main benefit of gap in a flex row?", choices: [["Consistent spacing between items", true], ["Changing the HTML reading order", false]], correctFeedback: "Correct. gap applies consistent spacing between adjacent flex items.", incorrectFeedback: "Not quite. gap affects spacing, while order and direction affect arrangement.", guideHref: "field-guide.html#lesson-6", guideLabel: "Review distribution →", nextCase: null, storageKey: "css-casebook-fx003",
+  }),
 };

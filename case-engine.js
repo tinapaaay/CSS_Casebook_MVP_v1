@@ -261,6 +261,64 @@ function initializeCase(data) {
       return { ok: true };
     }
 
+    if (data.validator === "sibling-divider") {
+      const dividers = [...root.querySelectorAll(".case-item + .case-item")];
+      const valid = dividers.length === 2 && dividers.every((item) => {
+        const style = doc.defaultView.getComputedStyle(item);
+        return style.borderTopStyle !== "none" && parseFloat(style.borderTopWidth) >= 1;
+      });
+      return valid
+        ? { ok: true }
+        : { ok: false, message: "The adjacent case items still need visible top borders." };
+    }
+
+    if (data.validator === "contained-box") {
+      const width = root.getBoundingClientRect().width;
+      const style = doc.defaultView.getComputedStyle(root);
+      return style.boxSizing === "border-box" && Math.abs(width - 320) <= 2
+        ? { ok: true }
+        : { ok: false, message: "The ticket still grows beyond its declared 320px width." };
+    }
+
+    if (data.validator === "wrapped-row") {
+      const items = [...root.children];
+      const container = root.getBoundingClientRect();
+      const inside = items.every((item) => {
+        const rect = item.getBoundingClientRect();
+        return rect.left >= container.left - 2 && rect.right <= container.right + 2;
+      });
+      return doc.defaultView.getComputedStyle(root).flexWrap === "wrap" && inside
+        ? { ok: true }
+        : { ok: false, message: "The cards still need to wrap inside the panel." };
+    }
+
+    if (data.validator === "shared-toolbar") {
+      const buttons = [...root.querySelectorAll("button")];
+      const container = root.getBoundingClientRect();
+      const inside = buttons.every((button) => {
+        const rect = button.getBoundingClientRect();
+        return rect.left >= container.left - 2 && rect.right <= container.right + 2;
+      });
+      const flexible = buttons.every((button) => parseFloat(doc.defaultView.getComputedStyle(button).flexGrow) > 0);
+      return inside && flexible
+        ? { ok: true }
+        : { ok: false, message: "The controls still need to share the available toolbar width." };
+    }
+
+    if (data.validator === "even-gaps") {
+      const items = [...root.querySelectorAll(".filter")];
+      const style = doc.defaultView.getComputedStyle(root);
+      const gaps = items.slice(1).map((item, index) => {
+        const previous = items[index].getBoundingClientRect();
+        return item.getBoundingClientRect().left - previous.right;
+      });
+      const even = gaps.length === 2 && gaps.every((gap) => Math.abs(gap - 12) <= 2);
+      const cleanMargins = items.every((item) => parseFloat(doc.defaultView.getComputedStyle(item).marginLeft) === 0);
+      return style.gap === "12px" && even && cleanMargins
+        ? { ok: true }
+        : { ok: false, message: "The filters still have uneven spacing. Use one 12px gap rule." };
+    }
+
     return {
       ok: false,
       message: "This case does not have a registered validator.",

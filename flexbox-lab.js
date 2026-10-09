@@ -66,7 +66,7 @@ const answers = {
 function readCaseCompletion() {
   try {
     return (
-      JSON.parse(localStorage.getItem("css-casebook-fc001") || "{}")
+      JSON.parse(localStorage.getItem("css-casebook-fx001") || "{}")
         .completed === true
     );
   } catch {
@@ -86,6 +86,7 @@ function readReviewCompletion() {
 }
 
 function updateChapterProgress() {
+  if (!controls) return;
   const reviewDone = readReviewCompletion();
   const caseDone = readCaseCompletion();
   const completed = reviewDone && caseDone;
@@ -98,9 +99,9 @@ function updateChapterProgress() {
   stamp.classList.toggle("is-complete", completed);
   status.textContent = completed
     ? "Chapter 09 is complete. You finished the reference lessons, review and first investigation."
-    : "Complete the review and resolve Case #001 to close this chapter.";
+    : "Complete the review and resolve Case #004 to close this chapter.";
   reviewProgress.textContent = `${reviewDone ? "✓" : "○"} Five-question review ${reviewDone ? "completed" : "pending"}`;
-  caseProgress.textContent = `${caseDone ? "✓" : "○"} Case #001 ${caseDone ? "resolved" : "pending"}`;
+  caseProgress.textContent = `${caseDone ? "✓" : "○"} Case #004 ${caseDone ? "resolved" : "pending"}`;
   localStorage.setItem(
     "css-casebook-ch09-status",
     completed ? "completed" : "in-progress",

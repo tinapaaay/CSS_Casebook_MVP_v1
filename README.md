@@ -18,9 +18,8 @@ Then visit `http://localhost:8000`.
 
 - `index.html` — product home and featured investigation
 - `cases.html` — all 16 curriculum collections and proposed cases
-- `case.html?id=001` — The Missing Center through the reusable Case Engine
-- `case.html?id=002` — The Reversed Navigation through the reusable Case Engine
-- `case.html?id=003` — Overridden Style, the first Chapter 01 cascade investigation
+- `case.html?id=001` through `case.html?id=003` — three Chapter 01 investigations
+- `case.html?id=004` through `case.html?id=006` — three Chapter 09 Flexbox investigations
 - `case-data.js` — case-specific content, preview markup, hints and validation type
 - `case-engine.js` — shared editor, preview, hints, checking, reset and resolution behavior
 - `field-guide.html` — seven complete Flexbox lessons and interactive Control Room
@@ -38,6 +37,6 @@ Then visit `http://localhost:8000`.
 - Flexbox controls for direction, wrapping, justification and alignment with synchronized generated CSS
 - Sandboxed iframe previews that support complete multi-selector CSS without affecting the Casebook interface
 - Five-question Flexbox review with answer explanations
-- Chapter 09 completion summary linked to Case #001 progress
+- Chapter 09 completion summary linked to Case #004 progress
 
-The remaining cases and Field Guide chapters are deliberately marked as planned. Their case-specific bugs, trusted HTML, hints, validation rules, and resolution content should be designed before implementation.
+The remaining chapters are mapped with three planned cases each. Their case-specific bugs, trusted HTML, hints, validation rules, and resolution content can be added in the next content pass.
