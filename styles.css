@@ -1957,7 +1957,7 @@ dialog p:not(.eyebrow) {
     padding: 16px;
   }
   .demo-container {
-    min-width: 390px;
+    min-width: min(390px, 100%);
   }
   .action-bar {
     position: sticky;
