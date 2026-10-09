@@ -198,6 +198,47 @@ additionalCases.forEach(([id, chapter, topic, title, property, starter, target, 
   });
 });
 
+// Chapter 03 uses purpose-built previews so design fundamentals are tested as
+// interface decisions, not as generic property swaps.
+const chapterThreeCases = {
+  "010": {
+    title: "The Confusing Interface", topic: "Design Fundamentals", property: "display", starter: "block", target: "grid",
+    objective: "Restore a clear two-dimensional structure so the dashboard regions are easy to scan.",
+    incidentTitle: "The dashboard regions lost their grouping.", incident: "The summary, activity feed and action panel are all present, but block flow turns the dashboard into one long stream. The design brief calls for visible relationships between regions.", evidence: [["Expected", "Grouped dashboard regions"], ["Observed", "One unstructured column"], ["Constraint", "Keep the existing content order"]],
+    selector: ".dashboard-layout", label: "dashboard layout", html: `<section class="dashboard-layout"><article><span>AT A GLANCE</span><strong>12 open investigations</strong><small>Three need a second pass.</small></article><article><span>RECENT ACTIVITY</span><p>Case #010 was reopened</p><p>Case #008 was resolved</p></article><aside><span>NEXT ACTION</span><strong>Review the evidence</strong><button type="button">Open case →</button></aside></section>`,
+    base: `.dashboard-layout { width: min(100%, 560px); padding: 14px; background: #f3f0e6; border: 1px solid #c6cbc2; } .dashboard-layout article, .dashboard-layout aside { display: flex; flex-direction: column; gap: 8px; min-height: 110px; padding: 18px; border: 1px solid #d5d8d1; background: #fffefa; color: #18221c; } .dashboard-layout span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .dashboard-layout strong { font: 600 24px/1.15 Georgia, serif; } .dashboard-layout small, .dashboard-layout p { margin: 0; color: #657067; line-height: 1.45; } .dashboard-layout button { align-self: flex-start; margin-top: auto; padding: 8px 12px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font: 700 12px inherit; }`,
+    targetCSS: `.dashboard-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }`, remember: "Use Grid when the design depends on rows and columns working together.", guide: "Review design fundamentals →", next: "011", question: "Which display value creates the dashboard structure?", choices: [["display: block", false], ["display: grid", true]]
+  },
+  "011": {
+    title: "The Unclear Checkout", topic: "Design Fundamentals", property: "justifyContent", starter: "flex-start", target: "space-between",
+    objective: "Separate the order summary and primary action so the next step is easy to find.",
+    incidentTitle: "The checkout action became hard to find.", incident: "The order total and Continue button are both present, but the row packs them together at the start of the available space. The intended composition gives the decision and action room to breathe.", evidence: [["Expected", "Summary and action separated"], ["Observed", "Controls cluster together"], ["Constraint", "Keep one horizontal row"]],
+    selector: ".checkout-bar", label: "checkout bar", html: `<div class="checkout-bar"><div><span>ORDER SUMMARY</span><strong>CSS Masterclass · $48</strong></div><button type="button">Continue →</button></div>`,
+    base: `.checkout-bar { width: min(100%, 560px); display: flex; align-items: center; gap: 18px; padding: 20px 22px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .checkout-bar > div { display: flex; flex-direction: column; gap: 7px; } .checkout-bar span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .checkout-bar strong { font: 600 20px/1.15 Georgia, serif; } .checkout-bar button { flex: 0 0 auto; padding: 11px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font: 700 12px inherit; }`,
+    targetCSS: `.checkout-bar { display: flex; justify-content: space-between; }`, remember: "Good composition uses available space to clarify relationships and priority.", guide: "Review design fundamentals →", next: "012", question: "Which value separates the first and last item?", choices: [["justify-content: flex-start", false], ["justify-content: space-between", true]]
+  },
+  "012": {
+    title: "The Hierarchy That Collapsed", topic: "Design Fundamentals", property: "fontSize", starter: "14px", target: "24px",
+    objective: "Restore the heading scale so the primary message is noticed before its supporting copy.",
+    incidentTitle: "The page headline became ordinary text.", incident: "A shared typography rule reduced the page heading to the same scale as its supporting copy. The message is still correct, but the visual hierarchy no longer tells the reader where to begin.", evidence: [["Expected", "Primary message leads"], ["Observed", "Heading and body look equal"], ["Constraint", "Keep the editorial copy"]],
+    selector: ".hierarchy-card h2", label: "content hierarchy", html: `<article class="hierarchy-card"><span>DESIGN PRINCIPLE</span><h2>Make the first glance useful.</h2><p>Hierarchy turns a collection of content into a path through the interface.</p><a href="#">Read the evidence →</a></article>`,
+    base: `.hierarchy-card { width: min(100%, 500px); padding: 28px; border-left: 5px solid #1f5b43; background: #fffefa; color: #18221c; } .hierarchy-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .hierarchy-card h2 { margin: 14px 0 8px; font: 600 14px/1.15 Georgia, serif; } .hierarchy-card p { max-width: 390px; margin: 0 0 18px; color: #657067; line-height: 1.55; } .hierarchy-card a { color: #1f5b43; font-weight: 700; text-decoration: underline; }`,
+    targetCSS: `.hierarchy-card h2 { font-size: 24px; }`, remember: "Hierarchy is the order in which users notice information, not decoration added after the content.", guide: "Review design fundamentals →", next: "013", question: "Which size restores the primary heading?", choices: [["font-size: 14px", false], ["font-size: 24px", true]]
+  }
+};
+
+Object.entries(chapterThreeCases).forEach(([id, item]) => {
+  const cssProperty = item.property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+  window.CASEBOOK_CASES[id] = makeCase({
+    id, fileCode: `C03-${id.slice(-1).padStart(3, "0")}`, chapter: "CH03 Design Fundamentals", topic: item.topic, title: item.title,
+    objective: item.objective, incidentTitle: item.incidentTitle, incident: item.incident, evidence: item.evidence, selector: item.selector,
+    starterCSS: `${item.selector} {\n  ${cssProperty}: ${item.starter};\n}`, originalCSS: `${cssProperty}:${item.starter}`, targetCSS: `${cssProperty}:${item.target}`, targetPreviewCSS: item.targetCSS,
+    originalCaption: `Original — ${item.title.toLowerCase()}`, targetCaption: `Target — resolved ${item.title.toLowerCase()}`, previewLabel: item.label, previewHTML: item.html, previewBaseCSS: sharedPreviewCSS + item.base,
+    hints: [["Observation", "Read the expected and observed behavior before editing."], ["Concept", `${cssProperty} controls the interface decision described in the incident.`], ["Targeted clue", `Try the documented target value: ${cssProperty}: ${item.target}.`]], checkingTitle: `Inspecting ${item.label}…`, checkingText: " Comparing the rendered result with the approved design pattern.", successText: " The rendered interface now matches the intended design decision.", validator: "computed-style", expectedProperty: item.property, expectedValue: item.target,
+    rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended design decision.`, remember: item.remember, recommendedCSS: `${item.selector} {\n  ${cssProperty}: ${item.target};\n}`, question: item.question, choices: item.choices, correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented design behavior.`, incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`, guideHref: "field-guide.html#chapter-03", guideLabel: item.guide, nextCase: item.next, storageKey: `css-casebook-c${id}`
+  });
+});
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
