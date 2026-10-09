@@ -608,6 +608,12 @@ function populateCaseContent(data) {
   document.querySelector("#case-objective").textContent = data.isTransferCase
     ? `${data.objective} ${data.transferPrompt}`
     : data.objective;
+  const method = document.querySelector("#investigation-method");
+  if (method) {
+    const property = String(data.expectedProperty || "the relevant CSS rule")
+      .replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+    method.innerHTML = `<strong>Debug method</strong><span>1. Observe the failure</span><span>2. Inspect <code>${property}</code></span><span>3. Recheck the constraint after editing</span>`;
+  }
   document.querySelector("#incident-title").textContent = data.incidentTitle;
   document.querySelector("#incident-text").textContent = data.incident;
   document.querySelector("#evidence-list").innerHTML = data.evidence
