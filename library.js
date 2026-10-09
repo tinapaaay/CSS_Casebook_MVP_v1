@@ -245,6 +245,15 @@ function renderLibrary(filter = "all") {
     </article>`;
     })
     .join("");
+  const resultStatus = document.querySelector("#library-results");
+  if (resultStatus) {
+    const caseCount = visibleCollections.reduce(
+      (total, item) =>
+        total + item[3].filter((name) => playableCases[name]).length,
+      0,
+    );
+    resultStatus.textContent = `${caseCount} playable case${caseCount === 1 ? "" : "s"} across ${visibleCollections.length} chapter${visibleCollections.length === 1 ? "" : "s"}.`;
+  }
 }
 
 function renderGuideNav(query = "") {
@@ -260,15 +269,6 @@ function renderGuideNav(query = "") {
       return `<a class="guide-nav-item" href="field-guide.html#${guideHash}"><span>${number}</span>${title}<small>${playableCount} cases · Guide</small></a>`;
     })
     .join("");
-  const resultStatus = document.querySelector("#library-results");
-  if (resultStatus) {
-    const caseCount = visibleCollections.reduce(
-      (total, item) =>
-        total + item[3].filter((name) => playableCases[name]).length,
-      0,
-    );
-    resultStatus.textContent = `${caseCount} playable case${caseCount === 1 ? "" : "s"} across ${visibleCollections.length} chapter${visibleCollections.length === 1 ? "" : "s"}.`;
-  }
 }
 
 renderLibrary();
