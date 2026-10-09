@@ -363,6 +363,9 @@ function initializeCase(data) {
 
   editor.addEventListener("keydown", (event) => {
     if (event.key !== "Tab") return;
+    // Shift+Tab must leave the editor normally. Plain Tab keeps the
+    // authoring shortcut, while the reverse direction remains keyboard-safe.
+    if (event.shiftKey) return;
     event.preventDefault();
     const start = editor.selectionStart;
     editor.value =

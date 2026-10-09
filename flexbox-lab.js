@@ -1,16 +1,19 @@
-const controls = document.querySelector("#flex-controls");
-const preview = document.querySelector("#lab-preview");
-const generated = document.querySelector("#generated-css");
-const explanation = document.querySelector("#lab-explanation");
-const mainLabel = document.querySelector("#lab-main-axis");
-const crossLabel = document.querySelector("#lab-cross-axis");
-
 const defaults = {
   direction: "row",
   wrap: "nowrap",
   justify: "flex-start",
   align: "stretch",
 };
+
+function initializeFlexboxLab() {
+const controls = document.querySelector("#flex-controls");
+const preview = document.querySelector("#lab-preview");
+const generated = document.querySelector("#generated-css");
+const explanation = document.querySelector("#lab-explanation");
+const mainLabel = document.querySelector("#lab-main-axis");
+const crossLabel = document.querySelector("#lab-cross-axis");
+if (!controls || controls.dataset.initialized === "true") return;
+controls.dataset.initialized = "true";
 
 function updateLab() {
   if (!controls) return;
@@ -41,8 +44,11 @@ document.querySelector("#lab-reset")?.addEventListener("click", () => {
   updateLab();
 });
 updateLab();
+}
 
-const review = document.querySelector("#flexbox-review");
+window.initializeFlexboxLab = initializeFlexboxLab;
+initializeFlexboxLab();
+
 const answers = {
   q1: [
     "b",
@@ -86,7 +92,6 @@ function readReviewCompletion() {
 }
 
 function updateChapterProgress() {
-  if (!controls) return;
   const reviewDone = readReviewCompletion();
   const caseDone = readCaseCompletion();
   const completed = reviewDone && caseDone;
@@ -108,7 +113,9 @@ function updateChapterProgress() {
   );
 }
 
-review?.addEventListener("submit", (event) => {
+document.addEventListener("submit", (event) => {
+  const review = event.target.closest("#flexbox-review");
+  if (!review) return;
   event.preventDefault();
   const formData = new FormData(review);
   const unanswered = Object.keys(answers).filter((name) => !formData.get(name));
@@ -142,7 +149,10 @@ review?.addEventListener("submit", (event) => {
   updateChapterProgress();
 });
 
-document.querySelector("#review-reset")?.addEventListener("click", () => {
+document.addEventListener("click", (event) => {
+  if (!event.target.closest("#review-reset")) return;
+  const review = document.querySelector("#flexbox-review");
+  if (!review) return;
   review.reset();
   review
     .querySelectorAll("fieldset")

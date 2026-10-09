@@ -184,7 +184,8 @@ function renderNav(query = "") {
 function renderLesson(lesson, index, chapterNumber) {
   const [title, body, code, memory] = lesson;
   const extension = lessonExtensions[chapterNumber]?.[index] || ["Try the idea in a small isolated example before applying it to a larger interface.", "Watch for a rule that solves the symptom while creating a new layout or access problem.", "Can you explain the result before changing another declaration?"];
-  return `<section id="lesson-${index + 1}"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
+  const sectionId = `${chapterId(chapterNumber)}-lesson-${index + 1}`;
+  return `<section id="${sectionId}"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
 }
 
 function renderFlexboxLab() {
@@ -198,19 +199,27 @@ function renderReview() {
 function renderChapter(number) {
   const chapter = chapters.find((item) => item.number === number) || chapters[0];
   const id = chapterId(chapter.number);
-  const jumpLinks = chapter.lessons.map((lesson, index) => `<a href="#lesson-${index + 1}">L${String(index + 1).padStart(2, "0")} ${lesson[0]}</a>`).join("");
+  const jumpLinks = chapter.lessons.map((lesson, index) => `<a href="#${id}-lesson-${index + 1}">L${String(index + 1).padStart(2, "0")} ${lesson[0]}</a>`).join("");
   const labLink = chapter.lab ? `<a href="#control-room">Interactive lab</a>` : "";
   const next = chapters[Number(chapter.number) % chapters.length];
   article.id = id;
   article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 8}–${chapter.lessons.length * 12} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : ""}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, complete the practice prompts, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} detailed lessons available</li><li id="review-progress">→ Complete the Try it and Check yourself prompts</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
   document.title = `Chapter ${chapter.number} ${chapter.title} | CSS Casebook`;
   renderNav(guideSearch.value);
+  window.initializeFlexboxLab?.();
 }
 
 renderNav();
 guideSearch.addEventListener("input", (event) => renderNav(event.target.value));
 window.addEventListener("hashchange", () => {
   const hash = location.hash.replace("#", "");
+  const lessonMatch = hash.match(/^(flexbox|chapter-[0-9]{2})-lesson-([0-9]+)$/);
+  if (lessonMatch) {
+    const number = lessonMatch[1] === "flexbox" ? "09" : lessonMatch[1].replace("chapter-", "");
+    renderChapter(number);
+    requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    return;
+  }
   const number = hash === "flexbox" ? "09" : hash.replace("chapter-", "");
   renderChapter(/^[0-9]{2}$/.test(number) ? number : "01");
 });
