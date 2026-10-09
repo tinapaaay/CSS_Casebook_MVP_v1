@@ -136,6 +136,7 @@ document.addEventListener("submit", (event) => {
     return;
   }
   let score = 0;
+  const passingScore = window.CSSCasebookCurriculum?.get("09")?.reviewPassingScore || 4;
   Object.entries(answers).forEach(([name, [correct, explanation]], index) => {
     const fieldset = review.querySelector(`[data-question="${index + 1}"]`);
     const chosen = formData.get(name);
@@ -160,17 +161,17 @@ document.addEventListener("submit", (event) => {
     "css-casebook-ch09",
     JSON.stringify({
       attempted: true,
-      reviewCompleted: bestScore >= 4,
+      reviewCompleted: bestScore >= passingScore,
       score,
       latestScore: score,
       bestScore,
-      completedAt: bestScore >= 4 ? new Date().toISOString() : previous.completedAt,
+      completedAt: bestScore >= passingScore ? new Date().toISOString() : previous.completedAt,
       attemptedAt: new Date().toISOString(),
     }),
   );
-  reviewStatus.innerHTML = bestScore >= 4
+  reviewStatus.innerHTML = bestScore >= passingScore
     ? `<strong>Review passed: ${score}/5.</strong> Best score ${bestScore}/5. Read the explanations above, then retry anytime if you want a higher score.`
-    : `<strong>Review attempted: ${score}/5.</strong> You need 4/5 to complete it. Read the explanations above and retry.`;
+    : `<strong>Review attempted: ${score}/5.</strong> You need ${passingScore}/5 to complete it. Read the explanations above and retry.`;
   updateChapterProgress();
 });
 

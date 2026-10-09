@@ -1,26 +1,8 @@
 (function () {
-  const totalCases = 48;
-  const chapterCaseRegistry = {
-    "01": ["001", "002", "003"],
-    "02": ["007", "008", "009"],
-    "03": ["010", "011", "012"],
-    "04": ["013", "014", "015"],
-    "05": ["016", "017", "018"],
-    "06": ["019", "020", "021"],
-    "07": ["022", "023", "024"],
-    "08": ["025", "026", "027"],
-    "09": ["004", "005", "006"],
-    "10": ["028", "029", "030"],
-    "11": ["031", "032", "033"],
-    "12": ["034", "035", "036"],
-    "13": ["037", "038", "039"],
-    "14": ["040", "041", "042"],
-    "15": ["043", "044", "045"],
-    "16": ["046", "047", "048"],
-  };
-  const curriculumOrder = Object.keys(chapterCaseRegistry)
-    .sort((left, right) => Number(left) - Number(right))
-    .flatMap((chapter) => chapterCaseRegistry[chapter]);
+  const curriculum = window.CSSCasebookCurriculum;
+  const totalCases = curriculum.curriculumOrder.length;
+  const chapterCaseRegistry = curriculum.chapterCaseRegistry;
+  const curriculumOrder = curriculum.curriculumOrder;
 
   function readStorage(key) {
     try {

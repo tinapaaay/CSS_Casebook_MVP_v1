@@ -1,4 +1,4 @@
-const collections = [
+const legacyCollections = [
   [
     "01",
     "CSS Fundamentals",
@@ -157,7 +157,7 @@ const collections = [
   ],
 ];
 
-const playableCases = {
+const legacyPlayableCases = {
   "The Selector That Wins": "001",
   "The Sibling That Would Not Match": "002",
   "The Box That Grew": "003",
@@ -207,6 +207,20 @@ const playableCases = {
   "The Button That Moves Too Much": "047",
   "The Motion That Ignored Preferences": "048",
 };
+
+const curriculum = window.CSSCasebookCurriculum;
+const collections = curriculum.chapters.map((chapter) => [
+  chapter.number,
+  chapter.title,
+  chapter.description,
+  chapter.caseIds.map((id) => window.CASEBOOK_CASES[id]?.title || `Case #${id}`),
+]);
+const playableCases = Object.fromEntries(
+  curriculum.chapters.flatMap((chapter) =>
+    chapter.caseIds.map((id) => [window.CASEBOOK_CASES[id]?.title || `Case #${id}`, id]),
+  ),
+);
+curriculum.validate(window.CASEBOOK_CASES);
 
 const library = document.querySelector("#case-library");
 const guideNav = document.querySelector("#guide-nav");

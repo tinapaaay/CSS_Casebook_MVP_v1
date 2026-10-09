@@ -1,4 +1,4 @@
-const chapters = [
+const lessonChapters = [
   {
     number: "01",
     title: "CSS Fundamentals",
@@ -497,6 +497,22 @@ const chapters = [
     ],
   },
 ];
+
+const curriculum = window.CSSCasebookCurriculum;
+const chapters = curriculum.chapters.map((chapter) => {
+  const content = lessonChapters.find((item) => item.number === chapter.number) || {};
+  return {
+    ...content,
+    number: chapter.number,
+    title: chapter.title,
+    deck: chapter.description,
+    hash: chapter.hash,
+    lessonIds: chapter.lessonIds,
+    fieldGuideDestination: chapter.destination,
+    reviewPassingScore: chapter.reviewPassingScore,
+  };
+});
+curriculum.validate(window.CASEBOOK_CASES);
 
 const lessonExtensions = {
   "01": [
@@ -1116,7 +1132,7 @@ function escapeHTML(value) {
 }
 
 function chapterId(number) {
-  return number === "09" ? "flexbox" : `chapter-${number}`;
+  return curriculum.get(number)?.hash || `chapter-${String(number).padStart(2, "0")}`;
 }
 
 function renderNav(query = "") {
@@ -1272,7 +1288,8 @@ function shuffleOptions(options) {
 
 function renderChapterReview(chapter) {
   const questions = chapterReviews[chapter.number] || [];
-  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions. Score at least 2/3 to complete the review; explanations remain available after every attempt.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${shuffleOptions(options).map(({ option, index }) => `<label><input type="radio" name="q${questionIndex + 1}" value="${index}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
+  const passingScore = chapter.reviewPassingScore;
+  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions. Score at least ${passingScore}/${questions.length} to complete the review; explanations remain available after every attempt.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${shuffleOptions(options).map(({ option, index }) => `<label><input type="radio" name="q${questionIndex + 1}" value="${index}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
 }
 
 function updateChapterReviewSummary(chapter, state) {
@@ -1300,7 +1317,7 @@ function initializeChapterReview(chapter) {
       const bestScore = stored.bestScore ?? stored.score ?? 0;
     status.textContent = stored.completed
       ? `Review completed: best ${bestScore}/${questions.length}. Retake it any time to improve your understanding.`
-      : `Review attempted: best ${bestScore}/${questions.length}. Score 2/${questions.length} to complete it.`;
+      : `Review attempted: best ${bestScore}/${questions.length}. Score ${chapter.reviewPassingScore}/${questions.length} to complete it.`;
     }
 
   form.addEventListener("submit", (event) => {
@@ -1339,11 +1356,11 @@ function initializeChapterReview(chapter) {
     const bestScore = Math.max(previous.bestScore || 0, score);
     const state = {
       attempted: true,
-      completed: bestScore >= 2,
+      completed: bestScore >= chapter.reviewPassingScore,
       score,
       latestScore: score,
       bestScore,
-      completedAt: bestScore >= 2 ? new Date().toISOString() : previous.completedAt,
+      completedAt: bestScore >= chapter.reviewPassingScore ? new Date().toISOString() : previous.completedAt,
       attemptedAt: new Date().toISOString(),
     };
     localStorage.setItem(
@@ -1354,7 +1371,7 @@ function initializeChapterReview(chapter) {
     updateChapterSummary(chapter);
     status.textContent = state.completed
       ? `Review passed: ${score}/${questions.length}. Best score ${bestScore}/${questions.length}. Read the explanations, then continue to the cases.`
-      : `Review attempted: ${score}/${questions.length}. You need 2/${questions.length} to complete it; read the explanations and retry.`;
+      : `Review attempted: ${score}/${questions.length}. You need ${chapter.reviewPassingScore}/${questions.length} to complete it; read the explanations and retry.`;
   });
 
   document
