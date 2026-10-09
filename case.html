@@ -48,25 +48,31 @@
       <nav class="mobile-tabs" aria-label="Workspace panels" role="tablist">
         <button
           class="mobile-tab is-active"
+          id="editor-tab"
           role="tab"
           aria-selected="true"
           aria-controls="editor-panel"
+          tabindex="0"
           data-tab="editor"
         >
           Editor</button
         ><button
           class="mobile-tab"
+          id="preview-tab"
           role="tab"
           aria-selected="false"
           aria-controls="preview-panel"
+          tabindex="-1"
           data-tab="preview"
         >
           Preview</button
         ><button
           class="mobile-tab"
+          id="clues-tab"
           role="tab"
           aria-selected="false"
           aria-controls="clues-panel"
+          tabindex="-1"
           data-tab="clues"
         >
           Clues
@@ -77,6 +83,9 @@
           class="case-notes mobile-panel"
           id="clues-panel"
           data-panel="clues"
+          role="tabpanel"
+          aria-labelledby="clues-tab"
+          tabindex="0"
         >
           <section class="paper-section">
             <div class="section-kicker"><span>01</span> Incident report</div>
@@ -105,6 +114,9 @@
             class="editor-card mobile-panel is-active"
             id="editor-panel"
             data-panel="editor"
+            role="tabpanel"
+            aria-labelledby="editor-tab"
+            tabindex="0"
             aria-labelledby="editor-title"
           >
             <header class="panel-header">
@@ -135,6 +147,9 @@
             class="preview-card mobile-panel"
             id="preview-panel"
             data-panel="preview"
+            role="tabpanel"
+            aria-labelledby="preview-tab"
+            tabindex="0"
             aria-labelledby="preview-title"
           >
             <header class="panel-header preview-header">

@@ -466,23 +466,35 @@ function initializeCase(data) {
           : data.incorrectFeedback;
     }),
   );
-  document.querySelectorAll(".mobile-tab").forEach((tab) =>
-    tab.addEventListener("click", () => {
-      document.querySelectorAll(".mobile-tab").forEach((item) => {
-        const selected = item === tab;
-        item.classList.toggle("is-active", selected);
-        item.setAttribute("aria-selected", selected);
-      });
-      document
-        .querySelectorAll(".mobile-panel")
-        .forEach((panel) =>
-          panel.classList.toggle(
-            "is-active",
-            panel.dataset.panel === tab.dataset.tab,
-          ),
-        );
-    }),
-  );
+  const mobileTabs = Array.from(document.querySelectorAll(".mobile-tab"));
+  function selectMobileTab(tab, moveFocus = false) {
+    mobileTabs.forEach((item) => {
+      const selected = item === tab;
+      item.classList.toggle("is-active", selected);
+      item.setAttribute("aria-selected", String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    document
+      .querySelectorAll(".mobile-panel")
+      .forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === tab.dataset.tab));
+    if (moveFocus) tab.focus();
+  }
+  mobileTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectMobileTab(tab));
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? mobileTabs.length - 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? (index - 1 + mobileTabs.length) % mobileTabs.length : (index + 1) % mobileTabs.length;
+      selectMobileTab(mobileTabs[nextIndex], true);
+    });
+  });
+  /* Keep the selected tab and panel relationship explicit after startup. */
+  const activeMobileTab = mobileTabs.find((tab) => tab.classList.contains("is-active")) || mobileTabs[0];
+  if (activeMobileTab) selectMobileTab(activeMobileTab);
+  /*
+    The keyboard behavior above follows the WAI-ARIA tabs pattern: arrow keys
+    move among tabs, while focus remains inside the tablist.
+  */
 }
 
 function populateCaseContent(data) {
