@@ -61,6 +61,7 @@ function initializeCase(data) {
       JSON.stringify({
         css: editor.value,
         hintCount,
+        attempted: current.attempted === true || extra.attempted === true,
         completed: current.completed === true,
         ...extra,
       }),
