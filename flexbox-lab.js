@@ -69,15 +69,18 @@ const answers = {
   q5: ["b", "flex-flow combines flex-direction and flex-wrap in that order."],
 };
 
-function readCaseCompletion() {
-  try {
-    return (
-      JSON.parse(localStorage.getItem("css-casebook-fx001") || "{}")
-        .completed === true
-    );
-  } catch {
-    return false;
-  }
+function readCaseCompletionCount() {
+  return ["004", "005", "006"].filter((id) => {
+    try {
+      return JSON.parse(localStorage.getItem(`css-casebook-c${id}`) || "{}").completed === true;
+    } catch {
+      return false;
+    }
+  }).length;
+}
+
+function readLessonCompletionCount() {
+  return [1, 2, 3].filter((index) => localStorage.getItem(`css-casebook-lesson-09-${index}`) === "complete").length;
 }
 
 function readReviewCompletion() {
@@ -93,8 +96,9 @@ function readReviewCompletion() {
 
 function updateChapterProgress() {
   const reviewDone = readReviewCompletion();
-  const caseDone = readCaseCompletion();
-  const completed = reviewDone && caseDone;
+  const lessonCount = readLessonCompletionCount();
+  const caseCount = readCaseCompletionCount();
+  const completed = reviewDone && lessonCount === 3 && caseCount === 3;
   const stamp = document.querySelector("#summary-stamp");
   const status = document.querySelector("#chapter-status-text");
   const reviewProgress = document.querySelector("#review-progress");
@@ -103,15 +107,17 @@ function updateChapterProgress() {
   stamp.textContent = completed ? "Chapter closed" : "In progress";
   stamp.classList.toggle("is-complete", completed);
   status.textContent = completed
-    ? "Chapter 09 is complete. You finished the reference lessons, review and first investigation."
-    : "Complete the review and resolve Case #004 to close this chapter.";
+    ? "Chapter 09 is complete. You finished all three lessons, the review and all three chapter cases."
+    : "Complete all three lessons, the review and Cases #004–#006 to close this chapter.";
   reviewProgress.textContent = `${reviewDone ? "✓" : "○"} Five-question review ${reviewDone ? "completed" : "pending"}`;
-  caseProgress.textContent = `${caseDone ? "✓" : "○"} Case #004 ${caseDone ? "resolved" : "pending"}`;
+  caseProgress.textContent = `${caseCount === 3 ? "✓" : "○"} Lessons ${lessonCount}/3 · Cases ${caseCount}/3 complete`;
   localStorage.setItem(
     "css-casebook-ch09-status",
     completed ? "completed" : "in-progress",
   );
 }
+
+window.updateFlexboxChapterProgress = updateChapterProgress;
 
 document.addEventListener("submit", (event) => {
   const review = event.target.closest("#flexbox-review");

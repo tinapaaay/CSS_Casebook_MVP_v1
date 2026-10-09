@@ -1159,16 +1159,19 @@ function chapterCaseId(number) {
   return String(caseNumber).padStart(3, "0");
 }
 
-function readChapterCaseCompletion(number) {
-  try {
-    return (
-      JSON.parse(
-        localStorage.getItem(`css-casebook-c${chapterCaseId(number)}`) || "{}",
-      ).completed === true
-    );
-  } catch {
-    return false;
-  }
+function chapterCaseIds(number) {
+  const first = Number(chapterCaseId(number));
+  return [0, 1, 2].map((offset) => String(first + offset).padStart(3, "0"));
+}
+
+function readChapterCaseCount(number) {
+  return chapterCaseIds(number).filter((caseId) => {
+    try {
+      return JSON.parse(localStorage.getItem(`css-casebook-c${caseId}`) || "{}").completed === true;
+    } catch {
+      return false;
+    }
+  }).length;
 }
 
 function updateChapterSummary(chapter) {
@@ -1177,7 +1180,8 @@ function updateChapterSummary(chapter) {
     readLessonCompletion(`${chapter.number}-${index + 1}`),
   );
   const reviewDone = readChapterReview(chapter.number)?.completed === true;
-  const caseDone = readChapterCaseCompletion(chapter.number);
+  const completedCases = readChapterCaseCount(chapter.number);
+  const caseDone = completedCases === chapterCaseIds(chapter.number).length;
   const complete = lessonsDone && reviewDone && caseDone;
   const stamp = document.querySelector("#summary-stamp");
   const status = document.querySelector("#chapter-status-text");
@@ -1189,12 +1193,12 @@ function updateChapterSummary(chapter) {
   }
   if (status)
     status.textContent = complete
-      ? `Chapter ${chapter.number} is complete. Lessons, review and Case #${chapterCaseId(chapter.number)} are finished.`
-      : `Finish the lessons, chapter review and Case #${chapterCaseId(chapter.number)} to close this chapter.`;
+      ? `Chapter ${chapter.number} is complete. Lessons, review and all three chapter cases are finished.`
+      : `Finish the lessons, chapter review and all three chapter cases to close this chapter.`;
   if (reviewProgress)
     reviewProgress.textContent = `${reviewDone ? "✓" : "→"} Chapter review ${reviewDone ? "completed" : "pending"}`;
   if (caseProgress)
-    caseProgress.textContent = `${caseDone ? "✓" : "→"} Case #${chapterCaseId(chapter.number)} ${caseDone ? "resolved" : "pending"}`;
+    caseProgress.textContent = `${caseDone ? "✓" : "→"} Cases ${completedCases}/${chapterCaseIds(chapter.number).length} complete`;
   localStorage.setItem(
     `css-casebook-ch${chapter.number}-status`,
     complete ? "completed" : "in-progress",
@@ -1209,6 +1213,7 @@ function updateLessonSummary(chapter) {
   if (status)
     status.textContent = `${completed === chapter.lessons.length ? "✓" : "→"} ${completed}/${chapter.lessons.length} lessons marked complete`;
   updateChapterSummary(chapter);
+  window.updateFlexboxChapterProgress?.();
 }
 
 function initializeLessonProgress(chapter) {
