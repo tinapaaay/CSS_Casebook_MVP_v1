@@ -268,6 +268,30 @@ Object.entries(chapterFourCases).forEach(([id, item]) => {
   });
 });
 
+function installAuthoredChapterCases(chapterCode, chapterName, entries) {
+  entries.forEach((item) => {
+    const cssProperty = item.property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+    const narrative = caseNarratives[item.id];
+    const selector = `.authored-case-${item.id}`;
+    const label = item.label;
+    const html = `<article class="authored-surface authored-case-${item.id}"><span>${label}</span><h3>${item.title}</h3><p>${item.prompt}</p><div class="authored-detail"><b>Expected</b><em>${narrative?.[2] || item.expected}</em></div></article>`;
+    const base = sharedPreviewCSS + `.authored-surface { width: min(100%, 540px); min-height: 210px; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .authored-surface > span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .authored-surface h3 { margin: 0; font: 600 27px/1.1 Georgia, serif; } .authored-surface p { max-width: 430px; margin: 0; color: #657067; line-height: 1.5; } .authored-detail { display: flex; gap: 10px; align-items: baseline; padding-top: 12px; border-top: 1px solid #d5d8d1; font-size: 12px; } .authored-detail b { color: #1f5b43; font: 700 10px monospace; letter-spacing: .08em; text-transform: uppercase; } .authored-detail em { color: #657067; font-style: normal; }`;
+    window.CASEBOOK_CASES[item.id] = makeCase({
+      id: item.id, fileCode: `C${chapterCode}-${item.id.slice(-1).padStart(3, "0")}`, chapter: `CH${chapterCode} ${chapterName}`, topic: chapterName, title: item.title,
+      objective: item.objective, incidentTitle: narrative?.[0] || `${item.title} needs investigation.`, incident: narrative?.[1] || item.incident, evidence: [["Expected", narrative?.[2] || item.expected], ["Observed", narrative?.[3] || item.observed], ["Constraint", "Keep the trusted HTML"]], selector,
+      starterCSS: `${selector} {\n  ${cssProperty}: ${item.starter};\n}`, originalCSS: `${cssProperty}:${item.starter}`, targetCSS: `${cssProperty}:${item.target}`, targetPreviewCSS: `${selector} { ${cssProperty}: ${item.target}; }`, originalCaption: `Original — ${item.title.toLowerCase()}`, targetCaption: `Target — resolved ${item.title.toLowerCase()}`, previewLabel: label, previewHTML: html, previewBaseCSS: base,
+      hints: [["Observation", "Read the expected and observed behavior before editing."], ["Concept", `${cssProperty} controls the chapter concept described in the incident.`], ["Targeted clue", `Try the documented target value: ${cssProperty}: ${item.target}.`]], checkingTitle: `Inspecting ${label.toLowerCase()}…`, checkingText: " Comparing the rendered result with the approved chapter pattern.", successText: " The rendered case surface now matches the target behavior.", validator: "computed-style", expectedProperty: item.property, expectedValue: item.target,
+      rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended behavior.`, remember: item.remember, recommendedCSS: `${selector} {\n  ${cssProperty}: ${item.target};\n}`, question: item.question, choices: [[item.starter, false], [item.target, true]], correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented behavior.`, incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`, guideHref: `field-guide.html#chapter-${chapterCode}`, guideLabel: `Review ${chapterName} →`, nextCase: item.next, storageKey: `css-casebook-c${item.id}`
+    });
+  });
+}
+
+installAuthoredChapterCases("05", "Pseudo-classes & Pseudo-elements", [
+  { id: "016", title: "The Unresponsive Button", property: "outlineStyle", starter: "none", target: "solid", label: "FOCUS STATE", prompt: "A keyboard focus ring should be obvious.", objective: "Restore a visible focus indicator when the button receives keyboard focus.", expected: "Visible focus ring", observed: "Focused control looks unchanged", remember: "Focus is an interaction state that must remain visible.", question: "Which outline style keeps focus visible?", next: "017" },
+  { id: "017", title: "The Miscounted Child", property: "fontWeight", starter: "400", target: "700", label: "STRUCTURE", prompt: "The intended evidence row should carry the emphasis.", objective: "Emphasize the intended structural item without changing the HTML order.", expected: "The intended evidence row is emphasized", observed: "An unrelated sibling is bold", remember: "Check whether the design means nth-child or nth-of-type.", question: "Which value emphasizes the matched structural item?", next: "018" },
+  { id: "018", title: "The Content That Appeared Twice", property: "borderStyle", starter: "double", target: "solid", label: "GENERATED PART", prompt: "One generated visual boundary is enough.", objective: "Use one clear generated-content boundary instead of a doubled visual treatment.", expected: "One clear visual boundary", observed: "Double treatment around the note", remember: "Pseudo-elements add a visual part; keep the source content singular.", question: "Which border style removes the doubled treatment?", next: "019" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
