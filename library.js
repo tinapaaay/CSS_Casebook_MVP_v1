@@ -165,9 +165,13 @@ function renderLibrary(filter = "all") {
   library.innerHTML = visibleCollections
     .map(([number, title, description, cases]) => {
       const playableCount = cases.filter((name) => playableCases[name]).length;
+      const completedCount = cases.filter((name) => {
+        const caseId = playableCases[name];
+        return caseId && window.CasebookProgress?.readCase(caseId).completed === true;
+      }).length;
       const available = playableCount > 0;
       return `<article class="collection-card ${available ? "is-available" : ""}">
-      <header><span>${number}</span><small>${available ? `${playableCount} playable` : "Planned"}</small></header>
+      <header><span>${number}</span><small>${available ? `${completedCount}/${playableCount} complete` : "Planned"}</small></header>
       <h2>${title}</h2><p>${description}</p>
       <ul>${cases
         .map((name) => {
