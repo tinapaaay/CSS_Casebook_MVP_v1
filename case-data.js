@@ -1365,7 +1365,12 @@ Object.entries(chapterThreeCases).forEach(([id, item]) => {
       " Comparing the rendered result with the approved design pattern.",
     successText:
       " The rendered interface now matches the intended design decision.",
-    validator: "computed-style",
+    validator:
+      {
+        "010": "hierarchy-grid",
+        "011": "checkout-distribution",
+        "012": "meaningful-hierarchy",
+      }[id] || "computed-style",
     expectedProperty: item.property,
     expectedValue: item.target,
     rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended design decision.`,
@@ -1517,7 +1522,12 @@ Object.entries(chapterFourCases).forEach(([id, item]) => {
       " Comparing the rendered result with the approved unit behavior.",
     successText:
       " The rendered surface now respects the intended sizing constraint.",
-    validator: "computed-style",
+    validator:
+      {
+        "013": "contained-reading",
+        "014": "reachable-overflow",
+        "015": "contained-formula",
+      }[id] || "computed-style",
     expectedProperty: item.property,
     expectedValue: item.target,
     rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended unit behavior.`,
@@ -4392,7 +4402,7 @@ Object.assign(window.CASEBOOK_CASES, {
     checkingTitle: "Inspecting the hero…",
     checkingText: " Comparing the rendered banner with the editorial target.",
     successText: " The hero now fills the banner without empty bands.",
-    validator: "computed-style",
+    validator: "hero-cover",
     expectedProperty: "backgroundSize",
     expectedValue: "cover",
     rootCause:
@@ -4454,7 +4464,7 @@ Object.assign(window.CASEBOOK_CASES, {
     checkingTitle: "Checking the evidence list…",
     checkingText: " Comparing the marker treatment with the casebook pattern.",
     successText: " The evidence list now reads as a structured collection.",
-    validator: "computed-style",
+    validator: "list-marker",
     expectedProperty: "listStyleType",
     expectedValue: "circle",
     rootCause:
@@ -4519,7 +4529,7 @@ Object.assign(window.CASEBOOK_CASES, {
     checkingText:
       " Comparing the rendered boundary with the evidence card target.",
     successText: " The evidence card now has a clear, restrained boundary.",
-    validator: "computed-style",
+    validator: "visible-border",
     expectedProperty: "borderStyle",
     expectedValue: "solid",
     rootCause:

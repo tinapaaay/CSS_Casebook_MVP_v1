@@ -387,7 +387,126 @@ function initializeCase(data) {
             ok: false,
             message:
               "The filters still have uneven spacing. Use one 12px gap rule.",
-          };
+      };
+    }
+
+    const boxIsUsable = (element) => {
+      const rect = element?.getBoundingClientRect();
+      const elementStyle = element && doc.defaultView.getComputedStyle(element);
+      return Boolean(
+        element &&
+          rect?.width > 0 &&
+          rect?.height > 0 &&
+          elementStyle?.display !== "none" &&
+          elementStyle?.visibility !== "hidden",
+      );
+    };
+    const contained = (element, container, tolerance = 2) => {
+      const rect = element.getBoundingClientRect();
+      const parent = container.getBoundingClientRect();
+      return (
+        rect.left >= parent.left - tolerance &&
+        rect.right <= parent.right + tolerance &&
+        rect.top >= parent.top - tolerance &&
+        rect.bottom <= parent.bottom + tolerance
+      );
+    };
+
+    if (data.validator === "hero-cover") {
+      if (style.backgroundSize !== "cover")
+        return { ok: false, message: "The hero still leaves empty bands. Use a fill mode that covers the frame." };
+      if (style.backgroundImage === "none" || style.backgroundRepeat !== "no-repeat")
+        return { ok: false, message: "The hero lost its usable background treatment. Keep one non-repeating image surface." };
+      if (!boxIsUsable(root.querySelector("h2")) || root.scrollWidth > root.clientWidth + 2)
+        return { ok: false, message: "The hero content is not fully usable inside its frame." };
+      return { ok: true };
+    }
+
+    if (data.validator === "list-marker") {
+      const listItems = [...root.querySelectorAll("li")];
+      if (style.listStyleType !== "circle")
+        return { ok: false, message: "The list marker is still missing. Restore a visible circle marker." };
+      if (listItems.length !== 3 || !listItems.every(boxIsUsable))
+        return { ok: false, message: "All three list items must remain visible and usable." };
+      if (root.scrollWidth > root.clientWidth + 2)
+        return { ok: false, message: "The list marker or item text is pushing the list outside its container." };
+      return { ok: true };
+    }
+
+    if (data.validator === "visible-border") {
+      const borderColor = style.borderTopColor.replace(/\s/g, "");
+      const approvedColor = ["rgb(115,128,120)", "rgba(115,128,120,1)"].includes(borderColor);
+      if (parseFloat(style.borderTopWidth) < 1 || style.borderTopStyle !== "solid")
+        return { ok: false, message: "The panel edge is not visible yet. It needs a solid border with measurable width." };
+      if (!approvedColor)
+        return { ok: false, message: "The border is visible but its color does not match the approved panel boundary." };
+      if (!boxIsUsable(root.querySelector("h2")) || root.scrollWidth > root.clientWidth + 2)
+        return { ok: false, message: "The bordered panel must remain readable and contained." };
+      return { ok: true };
+    }
+
+    if (data.validator === "hierarchy-grid") {
+      const blocks = [...root.children];
+      if (style.display !== "grid")
+        return { ok: false, message: "The interface regions are not forming the required two-dimensional grid." };
+      if (blocks.length !== 3 || !blocks.every((block) => boxIsUsable(block) && contained(block, root)))
+        return { ok: false, message: "All three dashboard regions must remain visible inside the grid." };
+      if (Math.abs(blocks[0].getBoundingClientRect().top - blocks[1].getBoundingClientRect().top) > 8)
+        return { ok: false, message: "The primary and supporting regions are not aligned into the intended row." };
+      if (root.scrollWidth > root.clientWidth + 2)
+        return { ok: false, message: "The grid alignment introduced horizontal overflow." };
+      return { ok: true };
+    }
+
+    if (data.validator === "checkout-distribution") {
+      const button = root.querySelector("button");
+      const summary = root.querySelector(".checkout-bar > div, span");
+      if (style.justifyContent !== "space-between")
+        return { ok: false, message: "The checkout items are not distributed across the available row." };
+      if (!boxIsUsable(summary) || !boxIsUsable(button))
+        return { ok: false, message: "The order summary and Continue action must both remain visible and usable." };
+      if (button.getBoundingClientRect().left - summary.getBoundingClientRect().right < 16)
+        return { ok: false, message: "The checkout action is too close to the summary; preserve a clear separation." };
+      if (root.scrollWidth > root.clientWidth + 2)
+        return { ok: false, message: "The checkout row no longer fits its container." };
+      return { ok: true };
+    }
+
+    if (data.validator === "meaningful-hierarchy") {
+      const heading = root.matches("h2, h3") ? root : root.querySelector("h2, h3");
+      const hierarchySurface = root.matches("h2, h3") ? root.parentElement : root;
+      const paragraph = hierarchySurface?.querySelector("p");
+      if (!heading || !paragraph)
+        return { ok: false, message: "The hierarchy needs both a primary heading and supporting copy." };
+      const headingStyle = doc.defaultView.getComputedStyle(heading);
+      const paragraphStyle = doc.defaultView.getComputedStyle(paragraph);
+      if (parseFloat(headingStyle.fontSize) < 24 || parseFloat(headingStyle.fontSize) - parseFloat(paragraphStyle.fontSize) < 4)
+        return { ok: false, message: "The primary heading is not meaningfully larger than the supporting copy." };
+      if (!boxIsUsable(heading) || !boxIsUsable(paragraph) || hierarchySurface.scrollWidth > hierarchySurface.clientWidth + 2)
+        return { ok: false, message: "The hierarchy text must remain visible and contained." };
+      return { ok: true };
+    }
+
+    if (data.validator === "contained-reading" || data.validator === "contained-formula") {
+      const child = root.querySelector("p");
+      const maximum = data.validator === "contained-reading" ? 900 : 720;
+      if (parseFloat(style.maxWidth) < maximum)
+        return { ok: false, message: `The reading surface needs its ${maximum}px maximum width guardrail.` };
+      if (!boxIsUsable(child) || !contained(root, root.parentElement, 2))
+        return { ok: false, message: "The content surface or its text is no longer contained and readable." };
+      if (root.scrollWidth > root.clientWidth + 2)
+        return { ok: false, message: "The sizing rule introduced horizontal overflow." };
+      return { ok: true };
+    }
+
+    if (data.validator === "reachable-overflow") {
+      if (style.overflow !== "auto")
+        return { ok: false, message: "The narrow panel still hides overflow. Use a reachable scrolling path." };
+      if (root.scrollHeight <= root.clientHeight && root.scrollWidth <= root.clientWidth)
+        return { ok: false, message: "The panel does not expose the additional evidence through a reachable scrollable area." };
+      if (!boxIsUsable(root.querySelector("strong")) || !root.textContent.trim())
+        return { ok: false, message: "The viewport case must keep its heading and evidence visible." };
+      return { ok: true };
     }
 
     if (data.validator === "computed-style") {
