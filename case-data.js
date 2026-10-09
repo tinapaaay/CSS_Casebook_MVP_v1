@@ -9,233 +9,1374 @@ function makeCase(data) {
 
 window.CASEBOOK_CASES = {
   "001": makeCase({
-    id: "001", fileCode: "CF-001", chapter: "CH01 CSS Fundamentals", topic: "Cascade", title: "The Selector That Wins",
-    objective: "Restore the approved status color by diagnosing which CSS rule wins—without changing the trusted HTML.", incidentTitle: "The approved badge turned red.", incident: "A profile card contains an Approved status badge. The general badge rule is correct, but a more specific declaration overrides it inside the card.", evidence: [["Expected", "Green Approved badge"], ["Observed", "Red Approved badge"], ["Constraint", "Do not edit the HTML"]], selector: ".status-badge",
+    id: "001",
+    fileCode: "CF-001",
+    chapter: "CH01 CSS Fundamentals",
+    topic: "Cascade",
+    title: "The Selector That Wins",
+    objective:
+      "Restore the approved status color by diagnosing which CSS rule wins—without changing the trusted HTML.",
+    incidentTitle: "The approved badge turned red.",
+    incident:
+      "A profile card contains an Approved status badge. The general badge rule is correct, but a more specific declaration overrides it inside the card.",
+    evidence: [
+      ["Expected", "Green Approved badge"],
+      ["Observed", "Red Approved badge"],
+      ["Constraint", "Do not edit the HTML"],
+    ],
+    selector: ".status-badge",
     starterCSS: `.status-badge {\n  background: #315d4c;\n  color: white;\n}\n\n.profile-card .status-badge {\n  background: #a44d2f;\n}`,
-    originalCSS: "background:#315d4c;color:white;profile-card background:#a44d2f", targetCSS: "background:#315d4c;color:white", originalCaption: "Original — overridden badge color", targetCaption: "Target — approved forest badge", previewLabel: "status card",
+    originalCSS:
+      "background:#315d4c;color:white;profile-card background:#a44d2f",
+    targetCSS: "background:#315d4c;color:white",
+    originalCaption: "Original — overridden badge color",
+    targetCaption: "Target — approved forest badge",
+    previewLabel: "status card",
     previewHTML: `<article class="profile-card"><div class="avatar">CE</div><div><p class="name">Christine Espiritu</p><p class="role">Frontend investigator</p></div><span class="status-badge">Approved</span></article>`,
-    previewBaseCSS: sharedPreviewCSS + `.profile-card { width: min(100%, 520px); display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 24px; border: 1px solid #738078; border-radius: 8px; background: #fffefa; } .avatar { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: white; background: #173d2c; font-weight: 700; } .name { margin: 0 0 5px; font-weight: 700; } .role { margin: 0; color: #657067; font-size: 12px; } .status-badge { padding: 8px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.profile-card { width: min(100%, 520px); display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 24px; border: 1px solid #738078; border-radius: 8px; background: #fffefa; } .avatar { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: white; background: #173d2c; font-weight: 700; } .name { margin: 0 0 5px; font-weight: 700; } .role { margin: 0; color: #657067; font-size: 12px; } .status-badge { padding: 8px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }`,
     targetPreviewCSS: `.status-badge { background: #315d4c; color: white; }\n.profile-card .status-badge { background: #315d4c; }`,
-    hints: [["Observation", "The badge has two background declarations."], ["Concept", "The cascade compares specificity before source order."], ["Targeted clue", "Two class selectors are more specific than one."]], checkingTitle: "Tracing the cascade…", checkingText: " Comparing the badge’s computed color with the approved design.", successText: " The Approved badge now uses the required forest green.", validator: "green-status",
-    rootCause: "The descendant selector .profile-card .status-badge has greater specificity than .status-badge, so its red declaration wins.", remember: "When declarations conflict, compare specificity before assuming the nearest-looking rule should win.", recommendedCSS: `.status-badge {\n  background: #315d4c;\n  color: white;\n}\n\n.profile-card .status-badge {\n  background: #315d4c;\n}`,
-    question: "Which selector is more specific?", choices: [[".status-badge", false], [".profile-card .status-badge", true]], correctFeedback: "Correct. Two class selectors are more specific than one class selector.", incorrectFeedback: "Not quite. Count the class selectors in each selector.", guideHref: "cases.html", guideLabel: "Back to Case Library →", nextCase: "002", storageKey: "css-casebook-cf001",
+    hints: [
+      ["Observation", "The badge has two background declarations."],
+      ["Concept", "The cascade compares specificity before source order."],
+      ["Targeted clue", "Two class selectors are more specific than one."],
+    ],
+    checkingTitle: "Tracing the cascade…",
+    checkingText:
+      " Comparing the badge’s computed color with the approved design.",
+    successText: " The Approved badge now uses the required forest green.",
+    validator: "green-status",
+    rootCause:
+      "The descendant selector .profile-card .status-badge has greater specificity than .status-badge, so its red declaration wins.",
+    remember:
+      "When declarations conflict, compare specificity before assuming the nearest-looking rule should win.",
+    recommendedCSS: `.status-badge {\n  background: #315d4c;\n  color: white;\n}\n\n.profile-card .status-badge {\n  background: #315d4c;\n}`,
+    question: "Which selector is more specific?",
+    choices: [
+      [".status-badge", false],
+      [".profile-card .status-badge", true],
+    ],
+    correctFeedback:
+      "Correct. Two class selectors are more specific than one class selector.",
+    incorrectFeedback: "Not quite. Count the class selectors in each selector.",
+    guideHref: "cases.html",
+    guideLabel: "Back to Case Library →",
+    nextCase: "002",
+    storageKey: "css-casebook-cf001",
   }),
   "002": makeCase({
-    id: "002", fileCode: "CF-002", chapter: "CH01 CSS Fundamentals", topic: "Combinators", title: "The Sibling That Would Not Match",
-    objective: "Add the divider only between adjacent case items without changing the HTML.", incidentTitle: "The case list lost its dividers.", incident: "Every item should be separated from the item immediately before it, but the current selector targets the wrong relationship.", evidence: [["Expected", "Dividers between items"], ["Observed", "No reliable adjacent divider"], ["Constraint", "Keep the HTML unchanged"]], selector: ".case-list",
+    id: "002",
+    fileCode: "CF-002",
+    chapter: "CH01 CSS Fundamentals",
+    topic: "Combinators",
+    title: "The Sibling That Would Not Match",
+    objective:
+      "Add the divider only between adjacent case items without changing the HTML.",
+    incidentTitle: "The case list lost its dividers.",
+    incident:
+      "Every item should be separated from the item immediately before it, but the current selector targets the wrong relationship.",
+    evidence: [
+      ["Expected", "Dividers between items"],
+      ["Observed", "No reliable adjacent divider"],
+      ["Constraint", "Keep the HTML unchanged"],
+    ],
+    selector: ".case-list",
     starterCSS: `.case-list {\n  display: grid;\n  gap: 0;\n}\n\n.case-item + .case-item {\n  border-top: 0 solid #738078;\n}`,
-    originalCSS: "display:grid;gap:0;border-top:0", targetCSS: "gap:0;border-top:1px solid #738078", originalCaption: "Original — missing sibling divider", targetCaption: "Target — adjacent dividers", previewLabel: "case list",
+    originalCSS: "display:grid;gap:0;border-top:0",
+    targetCSS: "gap:0;border-top:1px solid #738078",
+    originalCaption: "Original — missing sibling divider",
+    targetCaption: "Target — adjacent dividers",
+    previewLabel: "case list",
     previewHTML: `<section class="case-list"><article class="case-item"><strong>01</strong><span>Selectors</span></article><article class="case-item"><strong>02</strong><span>Combinators</span></article><article class="case-item"><strong>03</strong><span>Specificity</span></article></section>`,
-    previewBaseCSS: sharedPreviewCSS + `.case-list { width: min(100%, 420px); padding: 8px 20px; border: 1px dashed #738078; background: #fffefa; } .case-item { display: flex; justify-content: space-between; padding: 18px 0; } .case-item strong { color: #a44d2f; font: 700 12px monospace; } .case-item span { font: 600 18px Georgia, serif; }`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.case-list { width: min(100%, 420px); padding: 8px 20px; border: 1px dashed #738078; background: #fffefa; } .case-item { display: flex; justify-content: space-between; padding: 18px 0; } .case-item strong { color: #a44d2f; font: 700 12px monospace; } .case-item span { font: 600 18px Georgia, serif; }`,
     targetPreviewCSS: `.case-list { display: grid; gap: 0; }\n.case-item + .case-item { border-top: 1px solid #738078; }`,
-    hints: [["Observation", "The selector already describes adjacent siblings."], ["Concept", "The selector must apply a visible one-pixel border to items after the first."], ["Targeted clue", "Keep the + relationship and change the border width from 0 to 1px."]], checkingTitle: "Checking the sibling relationship…", checkingText: " Comparing the rendered dividers between adjacent items.", successText: " The list now separates only adjacent case items.", validator: "sibling-divider",
-    rootCause: "The adjacent-sibling rule was present, but its border width was zero, so the intended relationship produced no visible divider.", remember: "The + combinator selects an element immediately preceded by a matching sibling.", recommendedCSS: `.case-item + .case-item {\n  border-top: 1px solid #738078;\n}`,
-    question: "What does the + combinator select?", choices: [["Every later sibling", false], ["The immediately following sibling", true]], correctFeedback: "Correct. + selects the next matching sibling only.", incorrectFeedback: "Not quite. The general sibling combinator ~ reaches later siblings; + selects the immediate next one.", guideHref: "cases.html", guideLabel: "Back to Case Library →", nextCase: "003", storageKey: "css-casebook-cf002",
+    hints: [
+      ["Observation", "The selector already describes adjacent siblings."],
+      [
+        "Concept",
+        "The selector must apply a visible one-pixel border to items after the first.",
+      ],
+      [
+        "Targeted clue",
+        "Keep the + relationship and change the border width from 0 to 1px.",
+      ],
+    ],
+    checkingTitle: "Checking the sibling relationship…",
+    checkingText: " Comparing the rendered dividers between adjacent items.",
+    successText: " The list now separates only adjacent case items.",
+    validator: "sibling-divider",
+    rootCause:
+      "The adjacent-sibling rule was present, but its border width was zero, so the intended relationship produced no visible divider.",
+    remember:
+      "The + combinator selects an element immediately preceded by a matching sibling.",
+    recommendedCSS: `.case-item + .case-item {\n  border-top: 1px solid #738078;\n}`,
+    question: "What does the + combinator select?",
+    choices: [
+      ["Every later sibling", false],
+      ["The immediately following sibling", true],
+    ],
+    correctFeedback: "Correct. + selects the next matching sibling only.",
+    incorrectFeedback:
+      "Not quite. The general sibling combinator ~ reaches later siblings; + selects the immediate next one.",
+    guideHref: "cases.html",
+    guideLabel: "Back to Case Library →",
+    nextCase: "003",
+    storageKey: "css-casebook-cf002",
   }),
   "003": makeCase({
-    id: "003", fileCode: "CF-003", chapter: "CH01 CSS Fundamentals", topic: "Box Model", title: "The Box That Grew",
-    objective: "Make the ticket fit its assigned width while keeping its padding and border.", incidentTitle: "The ticket is wider than its column.", incident: "The card is assigned a fixed width, but padding and borders make its rendered box overflow the available track.", evidence: [["Expected", "Ticket fits its 320px column"], ["Observed", "Ticket grows beyond the column"], ["Constraint", "Keep the visual padding"]], selector: ".ticket",
+    id: "003",
+    fileCode: "CF-003",
+    chapter: "CH01 CSS Fundamentals",
+    topic: "Box Model",
+    title: "The Box That Grew",
+    objective:
+      "Make the ticket fit its assigned width while keeping its padding and border.",
+    incidentTitle: "The ticket is wider than its column.",
+    incident:
+      "The card is assigned a fixed width, but padding and borders make its rendered box overflow the available track.",
+    evidence: [
+      ["Expected", "Ticket fits its 320px column"],
+      ["Observed", "Ticket grows beyond the column"],
+      ["Constraint", "Keep the visual padding"],
+    ],
+    selector: ".ticket",
     starterCSS: `.ticket {\n  width: 320px;\n  padding: 24px;\n  border: 4px solid #315d4c;\n  box-sizing: content-box;\n}`,
-    originalCSS: "width:320px;padding:24px;border:4px;box-sizing:content-box", targetCSS: "width:320px;padding:24px;border:4px solid #315d4c;box-sizing:border-box", originalCaption: "Original — content-box overflow", targetCaption: "Target — contained ticket", previewLabel: "ticket",
+    originalCSS: "width:320px;padding:24px;border:4px;box-sizing:content-box",
+    targetCSS:
+      "width:320px;padding:24px;border:4px solid #315d4c;box-sizing:border-box",
+    originalCaption: "Original — content-box overflow",
+    targetCaption: "Target — contained ticket",
+    previewLabel: "ticket",
     previewHTML: `<article class="ticket"><strong>Case file 003</strong><p>The box model should keep this ticket inside its assigned column.</p></article>`,
-    previewBaseCSS: sharedPreviewCSS + `.ticket { width: 320px; min-height: 150px; color: #fffefa; background: #173d2c; } .ticket strong { font: 700 12px monospace; } .ticket p { max-width: 230px; line-height: 1.5; }`,
-    hints: [["Observation", "The declared width excludes padding and border under content-box."], ["Concept", "border-box includes padding and border in the declared width."], ["Targeted clue", "Keep the 320px width, but change the box-sizing model."]], checkingTitle: "Measuring the ticket…", checkingText: " Comparing the rendered box with its assigned width.", successText: " The ticket now fits while retaining its padding and border.", validator: "contained-box",
-    rootCause: "content-box adds padding and borders outside the declared width, causing the ticket to render wider than 320px.", remember: "Use border-box when a declared width should include padding and borders.", recommendedCSS: `.ticket {\n  width: 320px;\n  padding: 24px;\n  border: 4px solid #315d4c;\n  box-sizing: border-box;\n}`,
-    question: "What does border-box include in the declared width?", choices: [["Only content", false], ["Content, padding and border", true]], correctFeedback: "Correct. border-box keeps padding and border inside the declared dimensions.", incorrectFeedback: "Not quite. content-box excludes padding and border from the declared width.", guideHref: "cases.html", guideLabel: "Back to Case Library →", nextCase: "004", storageKey: "css-casebook-cf003",
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.ticket { width: 320px; min-height: 150px; color: #fffefa; background: #173d2c; } .ticket strong { font: 700 12px monospace; } .ticket p { max-width: 230px; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The declared width excludes padding and border under content-box.",
+      ],
+      [
+        "Concept",
+        "border-box includes padding and border in the declared width.",
+      ],
+      [
+        "Targeted clue",
+        "Keep the 320px width, but change the box-sizing model.",
+      ],
+    ],
+    checkingTitle: "Measuring the ticket…",
+    checkingText: " Comparing the rendered box with its assigned width.",
+    successText: " The ticket now fits while retaining its padding and border.",
+    validator: "contained-box",
+    rootCause:
+      "content-box adds padding and borders outside the declared width, causing the ticket to render wider than 320px.",
+    remember:
+      "Use border-box when a declared width should include padding and borders.",
+    recommendedCSS: `.ticket {\n  width: 320px;\n  padding: 24px;\n  border: 4px solid #315d4c;\n  box-sizing: border-box;\n}`,
+    question: "What does border-box include in the declared width?",
+    choices: [
+      ["Only content", false],
+      ["Content, padding and border", true],
+    ],
+    correctFeedback:
+      "Correct. border-box keeps padding and border inside the declared dimensions.",
+    incorrectFeedback:
+      "Not quite. content-box excludes padding and border from the declared width.",
+    guideHref: "cases.html",
+    guideLabel: "Back to Case Library →",
+    nextCase: "004",
+    storageKey: "css-casebook-cf003",
   }),
   "004": makeCase({
-    id: "004", fileCode: "FX-001", chapter: "CH09 Flexbox", topic: "Flexbox", title: "The Cards That Refuse to Wrap",
-    objective: "Keep all three cards inside the case panel when the available width becomes narrow.", incidentTitle: "The cards spill out of the panel.", incident: "The row works on a wide screen but overflows when the case panel narrows. The cards need permission to move onto another line.", evidence: [["Expected", "Cards remain inside the panel"], ["Observed", "The last card overflows"], ["Constraint", "Keep Flexbox and card widths"]], selector: ".card-row",
+    id: "004",
+    fileCode: "FX-001",
+    chapter: "CH09 Flexbox",
+    topic: "Flexbox",
+    title: "The Cards That Refuse to Wrap",
+    objective:
+      "Keep all three cards inside the case panel when the available width becomes narrow.",
+    incidentTitle: "The cards spill out of the panel.",
+    incident:
+      "The row works on a wide screen but overflows when the case panel narrows. The cards need permission to move onto another line.",
+    evidence: [
+      ["Expected", "Cards remain inside the panel"],
+      ["Observed", "The last card overflows"],
+      ["Constraint", "Keep Flexbox and card widths"],
+    ],
+    selector: ".card-row",
     starterCSS: `.card-row {\n  display: flex;\n  flex-wrap: nowrap;\n  gap: 12px;\n}`,
-    originalCSS: "display:flex;flex-wrap:nowrap;gap:12px", targetCSS: "display:flex;flex-wrap:wrap;gap:12px", originalCaption: "Original — overflowing row", targetCaption: "Target — wrapped cards", previewLabel: "card row",
+    originalCSS: "display:flex;flex-wrap:nowrap;gap:12px",
+    targetCSS: "display:flex;flex-wrap:wrap;gap:12px",
+    originalCaption: "Original — overflowing row",
+    targetCaption: "Target — wrapped cards",
+    previewLabel: "card row",
     previewHTML: `<section class="card-row"><article class="card">Selectors</article><article class="card">Cascade</article><article class="card">Box model</article></section>`,
-    previewBaseCSS: sharedPreviewCSS + `.card-row { width: 350px; padding: 16px; border: 1px dashed #738078; background: #fffefa; } .card { flex: 0 0 150px; min-height: 86px; padding: 16px; background: #fdfbf4; border: 1px solid #5c6d62; font-weight: 700; }`,
-    hints: [["Observation", "The row is wider than the available panel."], ["Concept", "flex-wrap controls whether items may form additional lines."], ["Targeted clue", "Replace nowrap with the value that permits multiple lines."]], checkingTitle: "Testing the row…", checkingText: " Comparing the rendered cards with the panel bounds.", successText: " The cards now wrap inside the available panel.", validator: "wrapped-row",
-    rootCause: "flex-wrap: nowrap forces all flex items onto one line, so the fixed-width cards overflow the narrow panel.", remember: "Flexbox is single-line by default; use flex-wrap: wrap when items must form additional lines.", recommendedCSS: `.card-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n}`,
-    question: "What does flex-wrap: wrap allow?", choices: [["Items to form additional lines", true], ["Items to reverse their HTML order", false]], correctFeedback: "Correct. Wrapping lets flex items continue on another line.", incorrectFeedback: "Not quite. Direction values such as row-reverse change order; wrap controls additional lines.", guideHref: "field-guide.html#lesson-4", guideLabel: "Review wrapping →", nextCase: "005", storageKey: "css-casebook-fx001",
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.card-row { width: 350px; padding: 16px; border: 1px dashed #738078; background: #fffefa; } .card { flex: 0 0 150px; min-height: 86px; padding: 16px; background: #fdfbf4; border: 1px solid #5c6d62; font-weight: 700; }`,
+    hints: [
+      ["Observation", "The row is wider than the available panel."],
+      [
+        "Concept",
+        "flex-wrap controls whether items may form additional lines.",
+      ],
+      [
+        "Targeted clue",
+        "Replace nowrap with the value that permits multiple lines.",
+      ],
+    ],
+    checkingTitle: "Testing the row…",
+    checkingText: " Comparing the rendered cards with the panel bounds.",
+    successText: " The cards now wrap inside the available panel.",
+    validator: "wrapped-row",
+    rootCause:
+      "flex-wrap: nowrap forces all flex items onto one line, so the fixed-width cards overflow the narrow panel.",
+    remember:
+      "Flexbox is single-line by default; use flex-wrap: wrap when items must form additional lines.",
+    recommendedCSS: `.card-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n}`,
+    question: "What does flex-wrap: wrap allow?",
+    choices: [
+      ["Items to form additional lines", true],
+      ["Items to reverse their HTML order", false],
+    ],
+    correctFeedback:
+      "Correct. Wrapping lets flex items continue on another line.",
+    incorrectFeedback:
+      "Not quite. Direction values such as row-reverse change order; wrap controls additional lines.",
+    guideHref: "field-guide.html#lesson-4",
+    guideLabel: "Review wrapping →",
+    nextCase: "005",
+    storageKey: "css-casebook-fx001",
   }),
   "005": makeCase({
-    id: "005", fileCode: "FX-002", chapter: "CH09 Flexbox", topic: "Flexbox", title: "The Toolbar Won’t Share Space",
-    objective: "Make the toolbar controls share the available row without causing horizontal overflow.", incidentTitle: "The toolbar pushes past its panel.", incident: "Each control keeps its full preferred width, leaving no room for the toolbar container. The controls should share available space.", evidence: [["Expected", "Three controls fit in one row"], ["Observed", "The final control overflows"], ["Constraint", "Keep all controls visible"]], selector: ".toolbar",
+    id: "005",
+    fileCode: "FX-002",
+    chapter: "CH09 Flexbox",
+    topic: "Flexbox",
+    title: "The Toolbar Won’t Share Space",
+    objective:
+      "Make the toolbar controls share the available row without causing horizontal overflow.",
+    incidentTitle: "The toolbar pushes past its panel.",
+    incident:
+      "Each control keeps its full preferred width, leaving no room for the toolbar container. The controls should share available space.",
+    evidence: [
+      ["Expected", "Three controls fit in one row"],
+      ["Observed", "The final control overflows"],
+      ["Constraint", "Keep all controls visible"],
+    ],
+    selector: ".toolbar",
     starterCSS: `.toolbar {\n  display: flex;\n  gap: 8px;\n}\n\n.toolbar button {\n  flex: 0 0 150px;\n}`,
-    originalCSS: "display:flex;gap:8px;button flex:0 0 150px", targetCSS: "display:flex;gap:8px;button:flex:1 1 0", originalCaption: "Original — rigid toolbar items", targetCaption: "Target — shared toolbar space", previewLabel: "toolbar",
+    originalCSS: "display:flex;gap:8px;button flex:0 0 150px",
+    targetCSS: "display:flex;gap:8px;button:flex:1 1 0",
+    originalCaption: "Original — rigid toolbar items",
+    targetCaption: "Target — shared toolbar space",
+    previewLabel: "toolbar",
     previewHTML: `<nav class="toolbar"><button>Previous</button><button>Review</button><button>Next</button></nav>`,
-    previewBaseCSS: sharedPreviewCSS + `.toolbar { width: 360px; padding: 12px; border: 1px dashed #738078; background: #fffefa; } .toolbar button { min-width: 0; padding: 12px 8px; border: 1px solid #5c6d62; background: #fdfbf4; color: #173d2c; font-weight: 700; }`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.toolbar { width: 360px; padding: 12px; border: 1px dashed #738078; background: #fffefa; } .toolbar button { min-width: 0; padding: 12px 8px; border: 1px solid #5c6d62; background: #fdfbf4; color: #173d2c; font-weight: 700; }`,
     targetPreviewCSS: `.toolbar { display: flex; gap: 8px; }\n.toolbar button { flex: 1 1 0; }`,
-    hints: [["Observation", "Each button insists on 150px even though the row is narrower."], ["Concept", "flex-grow and flex-shrink control how items share free and insufficient space."], ["Targeted clue", "Give each button equal flexible space with flex: 1 1 0."]], checkingTitle: "Balancing the toolbar…", checkingText: " Comparing the rendered controls with the toolbar bounds.", successText: " The controls now share the toolbar without overflow.", validator: "shared-toolbar",
-    rootCause: "flex: 0 0 150px disables both growth and shrinking, so the preferred widths cannot adapt to the available row.", remember: "flex: 1 1 0 lets sibling items grow and shrink from an equal basis.", recommendedCSS: `.toolbar {\n  display: flex;\n  gap: 8px;\n}\n\n.toolbar button {\n  flex: 1 1 0;\n}`,
-    question: "Which flex shorthand gives an item room to grow and shrink?", choices: [["flex: 0 0 150px", false], ["flex: 1 1 0", true]], correctFeedback: "Correct. The first two values enable growth and shrinking.", incorrectFeedback: "Not quite. 0 0 fixes the item and prevents it from sharing space.", guideHref: "field-guide.html#lesson-5", guideLabel: "Review flex sizing →", nextCase: "006", storageKey: "css-casebook-fx002",
+    hints: [
+      [
+        "Observation",
+        "Each button insists on 150px even though the row is narrower.",
+      ],
+      [
+        "Concept",
+        "flex-grow and flex-shrink control how items share free and insufficient space.",
+      ],
+      [
+        "Targeted clue",
+        "Give each button equal flexible space with flex: 1 1 0.",
+      ],
+    ],
+    checkingTitle: "Balancing the toolbar…",
+    checkingText: " Comparing the rendered controls with the toolbar bounds.",
+    successText: " The controls now share the toolbar without overflow.",
+    validator: "shared-toolbar",
+    rootCause:
+      "flex: 0 0 150px disables both growth and shrinking, so the preferred widths cannot adapt to the available row.",
+    remember:
+      "flex: 1 1 0 lets sibling items grow and shrink from an equal basis.",
+    recommendedCSS: `.toolbar {\n  display: flex;\n  gap: 8px;\n}\n\n.toolbar button {\n  flex: 1 1 0;\n}`,
+    question: "Which flex shorthand gives an item room to grow and shrink?",
+    choices: [
+      ["flex: 0 0 150px", false],
+      ["flex: 1 1 0", true],
+    ],
+    correctFeedback:
+      "Correct. The first two values enable growth and shrinking.",
+    incorrectFeedback:
+      "Not quite. 0 0 fixes the item and prevents it from sharing space.",
+    guideHref: "field-guide.html#lesson-5",
+    guideLabel: "Review flex sizing →",
+    nextCase: "006",
+    storageKey: "css-casebook-fx002",
   }),
   "006": makeCase({
-    id: "006", fileCode: "FX-003", chapter: "CH09 Flexbox", topic: "Flexbox", title: "The Uneven Gaps",
-    objective: "Create consistent spacing between the investigation filters using the Flexbox gap property.", incidentTitle: "The filter row has drifting spacing.", incident: "The first two filters use different margins, so the row looks uneven. The spacing should come from one shared Flexbox rule.", evidence: [["Expected", "Equal 12px spacing"], ["Observed", "The middle gap is larger"], ["Constraint", "Keep the filters in one row"]], selector: ".filter-row",
+    id: "006",
+    fileCode: "FX-003",
+    chapter: "CH09 Flexbox",
+    topic: "Flexbox",
+    title: "The Uneven Gaps",
+    objective:
+      "Create consistent spacing between the investigation filters using the Flexbox gap property.",
+    incidentTitle: "The filter row has drifting spacing.",
+    incident:
+      "The first two filters use different margins, so the row looks uneven. The spacing should come from one shared Flexbox rule.",
+    evidence: [
+      ["Expected", "Equal 12px spacing"],
+      ["Observed", "The middle gap is larger"],
+      ["Constraint", "Keep the filters in one row"],
+    ],
+    selector: ".filter-row",
     starterCSS: `.filter-row {\n  display: flex;\n  gap: 0;\n}\n\n.filter + .filter {\n  margin-left: 24px;\n}`,
-    originalCSS: "display:flex;gap:0;filter margin-left:24px", targetCSS: "display:flex;gap:12px;filter margin-left:0", originalCaption: "Original — mixed spacing rules", targetCaption: "Target — consistent Flexbox gap", previewLabel: "filter row",
+    originalCSS: "display:flex;gap:0;filter margin-left:24px",
+    targetCSS: "display:flex;gap:12px;filter margin-left:0",
+    originalCaption: "Original — mixed spacing rules",
+    targetCaption: "Target — consistent Flexbox gap",
+    previewLabel: "filter row",
     previewHTML: `<div class="filter-row"><button class="filter">All cases</button><button class="filter">Playable</button><button class="filter">Planned</button></div>`,
-    previewBaseCSS: sharedPreviewCSS + `.filter-row { width: 420px; padding: 18px; border: 1px dashed #738078; background: #fffefa; } .filter { padding: 10px 12px; border: 1px solid #5c6d62; background: #fdfbf4; color: #173d2c; font-weight: 700; }`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.filter-row { width: 420px; padding: 18px; border: 1px dashed #738078; background: #fffefa; } .filter { padding: 10px 12px; border: 1px solid #5c6d62; background: #fdfbf4; color: #173d2c; font-weight: 700; }`,
     targetPreviewCSS: `.filter-row { display: flex; gap: 12px; }\n.filter + .filter { margin-left: 0; }`,
-    hints: [["Observation", "The spacing is being added by the second and third items separately."], ["Concept", "gap creates consistent space between flex items without item-specific margins."], ["Targeted clue", "Set gap to 12px and neutralize the sibling margin."]], checkingTitle: "Measuring the gaps…", checkingText: " Comparing the distance between each adjacent filter.", successText: " The filters now use one consistent spacing rule.", validator: "even-gaps",
-    rootCause: "A 24px sibling margin combined with gap: 0 created spacing that depended on which item was being inspected.", remember: "Prefer gap for consistent spacing between Flexbox items; use margins for relationships that are intentionally asymmetric.", recommendedCSS: `.filter-row {\n  display: flex;\n  gap: 12px;\n}\n\n.filter + .filter {\n  margin-left: 0;\n}`,
-    question: "What is the main benefit of gap in a flex row?", choices: [["Consistent spacing between items", true], ["Changing the HTML reading order", false]], correctFeedback: "Correct. gap applies consistent spacing between adjacent flex items.", incorrectFeedback: "Not quite. gap affects spacing, while order and direction affect arrangement.", guideHref: "field-guide.html#lesson-6", guideLabel: "Review distribution →", nextCase: "007", storageKey: "css-casebook-fx003",
+    hints: [
+      [
+        "Observation",
+        "The spacing is being added by the second and third items separately.",
+      ],
+      [
+        "Concept",
+        "gap creates consistent space between flex items without item-specific margins.",
+      ],
+      ["Targeted clue", "Set gap to 12px and neutralize the sibling margin."],
+    ],
+    checkingTitle: "Measuring the gaps…",
+    checkingText: " Comparing the distance between each adjacent filter.",
+    successText: " The filters now use one consistent spacing rule.",
+    validator: "even-gaps",
+    rootCause:
+      "A 24px sibling margin combined with gap: 0 created spacing that depended on which item was being inspected.",
+    remember:
+      "Prefer gap for consistent spacing between Flexbox items; use margins for relationships that are intentionally asymmetric.",
+    recommendedCSS: `.filter-row {\n  display: flex;\n  gap: 12px;\n}\n\n.filter + .filter {\n  margin-left: 0;\n}`,
+    question: "What is the main benefit of gap in a flex row?",
+    choices: [
+      ["Consistent spacing between items", true],
+      ["Changing the HTML reading order", false],
+    ],
+    correctFeedback:
+      "Correct. gap applies consistent spacing between adjacent flex items.",
+    incorrectFeedback:
+      "Not quite. gap affects spacing, while order and direction affect arrangement.",
+    guideHref: "field-guide.html#lesson-6",
+    guideLabel: "Review distribution →",
+    nextCase: "007",
+    storageKey: "css-casebook-fx003",
   }),
 };
 
 const additionalCases = [
-  ["007", "CH02 Lists, Links, Backgrounds & Borders", "Lists, Links, Backgrounds & Borders", "The Cropped Hero", "backgroundSize", "contain", "cover", "Make the hero fill its frame without leaving empty bands.", "Cover fills the frame; contain preserves the whole image."],
-  ["008", "CH02 Lists, Links, Backgrounds & Borders", "Lists, Links, Backgrounds & Borders", "The Missing Marker", "listStyleType", "none", "circle", "Restore the list marker so the items communicate that they belong to a list.", "A marker is part of the list's visual structure, not decoration to remove by default."],
-  ["009", "CH02 Lists, Links, Backgrounds & Borders", "Lists, Links, Backgrounds & Borders", "The Border That Disappeared", "borderStyle", "none", "solid", "Restore the visible border that separates the panel from its background.", "A border needs width, style and color to render as intended."],
-  ["010", "CH03 Design Fundamentals", "Design Fundamentals", "The Confusing Interface", "display", "block", "grid", "Give the interface a predictable two-dimensional structure so related information aligns.", "Good structure makes hierarchy easier to see and use."],
-  ["011", "CH03 Design Fundamentals", "Design Fundamentals", "The Unclear Checkout", "justifyContent", "flex-start", "space-between", "Separate the checkout summary and primary action across the available row.", "Use alignment to make the next action easy to find."],
-  ["012", "CH03 Design Fundamentals", "Design Fundamentals", "The Hierarchy That Collapsed", "fontSize", "14px", "24px", "Restore the heading scale so the primary message is noticed first.", "Hierarchy is the order in which users notice information."],
-  ["013", "CH04 Relative & Absolute Units", "Relative & Absolute Units", "The Unpredictable Size", "maxWidth", "100%", "900px", "Keep the content readable by limiting its maximum line length.", "A max-width is a guardrail, not a fixed device size."],
-  ["014", "CH04 Relative & Absolute Units", "Relative & Absolute Units", "The Overflowing Viewport", "overflow", "hidden", "auto", "Allow content to be reached when the viewport becomes narrower than the panel.", "Do not clip content when a useful scroll path can preserve it."],
-  ["015", "CH04 Relative & Absolute Units", "Relative & Absolute Units", "The Formula That Broke", "maxWidth", "100%", "720px", "Limit the formula-driven content before it becomes an unreadable wall of text.", "Combine fluid sizing with a sensible maximum."],
-  ["016", "CH05 Pseudo-classes & Pseudo-elements", "Pseudo-classes & Pseudo-elements", "The Unresponsive Button", "outlineStyle", "none", "solid", "Restore a visible focus indicator when the button receives keyboard focus.", "Focus is an interaction state that must remain visible."],
-  ["017", "CH05 Pseudo-classes & Pseudo-elements", "Pseudo-classes & Pseudo-elements", "The Miscounted Child", "fontWeight", "400", "700", "Emphasize the intended structural item without changing the HTML order.", "Check whether the design means nth-child or nth-of-type before styling."],
-  ["018", "CH05 Pseudo-classes & Pseudo-elements", "Pseudo-classes & Pseudo-elements", "The Content That Appeared Twice", "borderStyle", "double", "solid", "Use one clear generated-content boundary instead of a doubled visual treatment.", "Pseudo-elements add a visual part; keep the source content singular."],
-  ["019", "CH06 CSS Colors", "CSS Colors", "The Invisible Text", "color", "#fffefa", "#173d2c", "Restore enough foreground contrast for the text to remain readable.", "Judge the final foreground and background pair, not either color alone."],
-  ["020", "CH06 CSS Colors", "CSS Colors", "The Shadow That Escaped", "boxShadow", "none", "0 4px 12px 0 rgba(0,0,0,.2)", "Bring back the restrained shadow that separates the card from the page.", "Remember box-shadow as X, Y, blur, spread, color."],
-  ["021", "CH06 CSS Colors", "CSS Colors", "The Transparent Overlay", "backgroundColor", "rgba(255,255,255,1)", "rgba(255,255,255,.72)", "Restore the translucent overlay so the background remains part of the composition.", "Transparency changes the color users actually perceive."],
-  ["022", "CH07 Styling Forms", "Styling Forms", "The Broken Checkbox", "appearance", "auto", "none", "Create a predictable starting point for a custom checkbox while keeping the state work visible.", "appearance: none removes native styling; it does not create the replacement."],
-  ["023", "CH07 Styling Forms", "Styling Forms", "The Unclear Error State", "borderColor", "#738078", "#a44d2f", "Make the invalid control state visible without relying on color alone.", "Error styling should be obvious and should support the message text."],
-  ["024", "CH07 Styling Forms", "Styling Forms", "The Label That Lost Its Target", "display", "none", "block", "Keep the label present so the control remains understandable and usable.", "A visible, associated label is not a placeholder."],
-  ["025", "CH08 Layouts & Effects", "Layouts & Effects", "The Overflowing Card", "overflow", "visible", "hidden", "Contain the decorative edge treatment inside the card boundary.", "Clip only content that is intentionally decorative or safely replaceable."],
-  ["026", "CH08 Layouts & Effects", "Layouts & Effects", "The Unexpected Extra Width", "boxSizing", "content-box", "border-box", "Keep the declared card width inclusive of its padding and border.", "border-box includes content, padding and border in the declared size."],
-  ["027", "CH08 Layouts & Effects", "Layouts & Effects", "The Transforming Hit Area", "transform", "none", "translateY(-4px)", "Lift the card visually without changing the layout space reserved for it.", "Transforms move pixels; they do not rewrite normal flow."],
-  ["028", "CH10 CSS Typography", "CSS Typography", "The Misaligned Heading", "fontWeight", "400", "700", "Restore the heading weight so its role is clear in the type hierarchy.", "Weight is one part of hierarchy; line-height and contrast matter too."],
-  ["029", "CH10 CSS Typography", "CSS Typography", "The Missing Web Font", "fontFamily", "Arial", "Georgia", "Apply the intended display face while retaining a predictable fallback in the stack.", "A fallback is part of the design, not an afterthought."],
-  ["030", "CH10 CSS Typography", "CSS Typography", "The Line-height That Drifted", "lineHeight", "1", "1.6", "Restore enough line spacing for the paragraph to remain readable.", "Leading controls the distance between lines; it is not the same as tracking."],
-  ["031", "CH11 CSS Accessibility", "CSS Accessibility", "The Invisible Focus", "outlineStyle", "none", "solid", "Restore the visible focus ring required for keyboard navigation.", "If focus disappears, keyboard users lose their place."],
-  ["032", "CH11 CSS Accessibility", "CSS Accessibility", "The Hidden-but-Readable Button", "maxWidth", "0px", "240px", "Keep the accessible button text available within a usable visual area.", "Visual hiding and semantic hiding are different jobs."],
-  ["033", "CH11 CSS Accessibility", "CSS Accessibility", "The Contrast That Failed", "color", "#fffefa", "#173d2c", "Restore a darker text color that can be checked against the light surface.", "Do not communicate meaning through color alone."],
-  ["034", "CH12 CSS Positioning", "CSS Positioning", "The Stubborn Navbar", "position", "static", "sticky", "Keep the navigation available while the user moves through a long case file.", "Sticky remains in flow until it reaches its inset threshold."],
-  ["035", "CH12 CSS Positioning", "CSS Positioning", "The Badge in the Wrong Corner", "position", "static", "absolute", "Anchor the badge to the positioned card instead of the page flow.", "Absolute positioning needs a containing block you can name."],
-  ["036", "CH12 CSS Positioning", "CSS Positioning", "The Layer Behind the Modal", "zIndex", "0", "100", "Place the modal layer above the page content within its stacking context.", "A large z-index cannot escape an ancestor stacking context."],
-  ["037", "CH13 Attribute Selectors", "Attribute Selectors", "The Selector Mystery", "textDecorationLine", "none", "underline", "Make the attribute-matched link visibly distinct from ordinary text.", "Start from the attribute relationship, then add only the specificity you need."],
-  ["038", "CH13 Attribute Selectors", "Attribute Selectors", "The Wrong Download Link", "color", "#173d2c", "#a44d2f", "Signal the PDF download link with the intended file-type treatment.", "The $= operator matches the end of an attribute value."],
-  ["039", "CH13 Attribute Selectors", "Attribute Selectors", "The Language That Was Missed", "fontStyle", "normal", "italic", "Apply the language-specific typographic cue to the matched content.", "The |= operator matches a language token such as en or en-US."],
-  ["040", "CH14 Responsive Web Design", "Responsive Web Design", "The Broken Mobile Layout", "maxWidth", "none", "100%", "Keep the content surface within the viewport on narrow screens.", "Fluid foundations come before breakpoint rules."],
-  ["041", "CH14 Responsive Web Design", "Responsive Web Design", "The Desktop-only Button", "display", "none", "block", "Make the action available when the responsive layout calls for it.", "A responsive change should preserve access to essential actions."],
-  ["042", "CH14 Responsive Web Design", "Responsive Web Design", "The Breakpoint That Came Too Early", "overflow", "hidden", "auto", "Preserve access to the layout when its content exceeds the available width.", "A breakpoint should mark a content change, not a device label."],
-  ["043", "CH15 CSS Grid", "CSS Grid", "The Collapsed Gallery", "display", "block", "grid", "Restore the two-dimensional gallery layout.", "Grid is the right model when rows and columns matter together."],
-  ["044", "CH15 CSS Grid", "CSS Grid", "The Misplaced Sidebar", "gridTemplateColumns", "1fr", "200px 1fr", "Give the sidebar its track and let the main content use the remaining space.", "Define the track structure before placing items."],
-  ["045", "CH15 CSS Grid", "CSS Grid", "The Track That Would Not Stretch", "gridColumn", "auto", "1 / -1", "Make the banner span the full explicit grid width.", "1 / -1 spans from the first grid line to the last."],
-  ["046", "CH16 CSS Animations", "CSS Animations", "The Animation That Never Ends", "animationIterationCount", "infinite", "1", "Let the entrance animation finish instead of repeating forever.", "Iteration count controls repeats; essential information should not depend on motion."],
-  ["047", "CH16 CSS Animations", "CSS Animations", "The Button That Moves Too Much", "animationDuration", "100ms", "600ms", "Slow the movement enough that the action remains comfortable to follow.", "Use timing as communication, not as noise."],
-  ["048", "CH16 CSS Animations", "CSS Animations", "The Motion That Ignored Preferences", "animationName", "fadeIn", "none", "Respect a reduced-motion preference by disabling the nonessential animation.", "Reduced motion is a user preference, not a design failure."],
+  [
+    "007",
+    "CH02 Lists, Links, Backgrounds & Borders",
+    "Lists, Links, Backgrounds & Borders",
+    "The Cropped Hero",
+    "backgroundSize",
+    "contain",
+    "cover",
+    "Make the hero fill its frame without leaving empty bands.",
+    "Cover fills the frame; contain preserves the whole image.",
+  ],
+  [
+    "008",
+    "CH02 Lists, Links, Backgrounds & Borders",
+    "Lists, Links, Backgrounds & Borders",
+    "The Missing Marker",
+    "listStyleType",
+    "none",
+    "circle",
+    "Restore the list marker so the items communicate that they belong to a list.",
+    "A marker is part of the list's visual structure, not decoration to remove by default.",
+  ],
+  [
+    "009",
+    "CH02 Lists, Links, Backgrounds & Borders",
+    "Lists, Links, Backgrounds & Borders",
+    "The Border That Disappeared",
+    "borderStyle",
+    "none",
+    "solid",
+    "Restore the visible border that separates the panel from its background.",
+    "A border needs width, style and color to render as intended.",
+  ],
+  [
+    "010",
+    "CH03 Design Fundamentals",
+    "Design Fundamentals",
+    "The Confusing Interface",
+    "display",
+    "block",
+    "grid",
+    "Give the interface a predictable two-dimensional structure so related information aligns.",
+    "Good structure makes hierarchy easier to see and use.",
+  ],
+  [
+    "011",
+    "CH03 Design Fundamentals",
+    "Design Fundamentals",
+    "The Unclear Checkout",
+    "justifyContent",
+    "flex-start",
+    "space-between",
+    "Separate the checkout summary and primary action across the available row.",
+    "Use alignment to make the next action easy to find.",
+  ],
+  [
+    "012",
+    "CH03 Design Fundamentals",
+    "Design Fundamentals",
+    "The Hierarchy That Collapsed",
+    "fontSize",
+    "14px",
+    "24px",
+    "Restore the heading scale so the primary message is noticed first.",
+    "Hierarchy is the order in which users notice information.",
+  ],
+  [
+    "013",
+    "CH04 Relative & Absolute Units",
+    "Relative & Absolute Units",
+    "The Unpredictable Size",
+    "maxWidth",
+    "100%",
+    "900px",
+    "Keep the content readable by limiting its maximum line length.",
+    "A max-width is a guardrail, not a fixed device size.",
+  ],
+  [
+    "014",
+    "CH04 Relative & Absolute Units",
+    "Relative & Absolute Units",
+    "The Overflowing Viewport",
+    "overflow",
+    "hidden",
+    "auto",
+    "Allow content to be reached when the viewport becomes narrower than the panel.",
+    "Do not clip content when a useful scroll path can preserve it.",
+  ],
+  [
+    "015",
+    "CH04 Relative & Absolute Units",
+    "Relative & Absolute Units",
+    "The Formula That Broke",
+    "maxWidth",
+    "100%",
+    "720px",
+    "Limit the formula-driven content before it becomes an unreadable wall of text.",
+    "Combine fluid sizing with a sensible maximum.",
+  ],
+  [
+    "016",
+    "CH05 Pseudo-classes & Pseudo-elements",
+    "Pseudo-classes & Pseudo-elements",
+    "The Unresponsive Button",
+    "outlineStyle",
+    "none",
+    "solid",
+    "Restore a visible focus indicator when the button receives keyboard focus.",
+    "Focus is an interaction state that must remain visible.",
+  ],
+  [
+    "017",
+    "CH05 Pseudo-classes & Pseudo-elements",
+    "Pseudo-classes & Pseudo-elements",
+    "The Miscounted Child",
+    "fontWeight",
+    "400",
+    "700",
+    "Emphasize the intended structural item without changing the HTML order.",
+    "Check whether the design means nth-child or nth-of-type before styling.",
+  ],
+  [
+    "018",
+    "CH05 Pseudo-classes & Pseudo-elements",
+    "Pseudo-classes & Pseudo-elements",
+    "The Content That Appeared Twice",
+    "borderStyle",
+    "double",
+    "solid",
+    "Use one clear generated-content boundary instead of a doubled visual treatment.",
+    "Pseudo-elements add a visual part; keep the source content singular.",
+  ],
+  [
+    "019",
+    "CH06 CSS Colors",
+    "CSS Colors",
+    "The Invisible Text",
+    "color",
+    "#fffefa",
+    "#173d2c",
+    "Restore enough foreground contrast for the text to remain readable.",
+    "Judge the final foreground and background pair, not either color alone.",
+  ],
+  [
+    "020",
+    "CH06 CSS Colors",
+    "CSS Colors",
+    "The Shadow That Escaped",
+    "boxShadow",
+    "none",
+    "0 4px 12px 0 rgba(0,0,0,.2)",
+    "Bring back the restrained shadow that separates the card from the page.",
+    "Remember box-shadow as X, Y, blur, spread, color.",
+  ],
+  [
+    "021",
+    "CH06 CSS Colors",
+    "CSS Colors",
+    "The Transparent Overlay",
+    "backgroundColor",
+    "rgba(255,255,255,1)",
+    "rgba(255,255,255,.72)",
+    "Restore the translucent overlay so the background remains part of the composition.",
+    "Transparency changes the color users actually perceive.",
+  ],
+  [
+    "022",
+    "CH07 Styling Forms",
+    "Styling Forms",
+    "The Broken Checkbox",
+    "appearance",
+    "auto",
+    "none",
+    "Create a predictable starting point for a custom checkbox while keeping the state work visible.",
+    "appearance: none removes native styling; it does not create the replacement.",
+  ],
+  [
+    "023",
+    "CH07 Styling Forms",
+    "Styling Forms",
+    "The Unclear Error State",
+    "borderColor",
+    "#738078",
+    "#a44d2f",
+    "Make the invalid control state visible without relying on color alone.",
+    "Error styling should be obvious and should support the message text.",
+  ],
+  [
+    "024",
+    "CH07 Styling Forms",
+    "Styling Forms",
+    "The Label That Lost Its Target",
+    "display",
+    "none",
+    "block",
+    "Keep the label present so the control remains understandable and usable.",
+    "A visible, associated label is not a placeholder.",
+  ],
+  [
+    "025",
+    "CH08 Layouts & Effects",
+    "Layouts & Effects",
+    "The Overflowing Card",
+    "overflow",
+    "visible",
+    "hidden",
+    "Contain the decorative edge treatment inside the card boundary.",
+    "Clip only content that is intentionally decorative or safely replaceable.",
+  ],
+  [
+    "026",
+    "CH08 Layouts & Effects",
+    "Layouts & Effects",
+    "The Unexpected Extra Width",
+    "boxSizing",
+    "content-box",
+    "border-box",
+    "Keep the declared card width inclusive of its padding and border.",
+    "border-box includes content, padding and border in the declared size.",
+  ],
+  [
+    "027",
+    "CH08 Layouts & Effects",
+    "Layouts & Effects",
+    "The Transforming Hit Area",
+    "transform",
+    "none",
+    "translateY(-4px)",
+    "Lift the card visually without changing the layout space reserved for it.",
+    "Transforms move pixels; they do not rewrite normal flow.",
+  ],
+  [
+    "028",
+    "CH10 CSS Typography",
+    "CSS Typography",
+    "The Misaligned Heading",
+    "fontWeight",
+    "400",
+    "700",
+    "Restore the heading weight so its role is clear in the type hierarchy.",
+    "Weight is one part of hierarchy; line-height and contrast matter too.",
+  ],
+  [
+    "029",
+    "CH10 CSS Typography",
+    "CSS Typography",
+    "The Missing Web Font",
+    "fontFamily",
+    "Arial",
+    "Georgia",
+    "Apply the intended display face while retaining a predictable fallback in the stack.",
+    "A fallback is part of the design, not an afterthought.",
+  ],
+  [
+    "030",
+    "CH10 CSS Typography",
+    "CSS Typography",
+    "The Line-height That Drifted",
+    "lineHeight",
+    "1",
+    "1.6",
+    "Restore enough line spacing for the paragraph to remain readable.",
+    "Leading controls the distance between lines; it is not the same as tracking.",
+  ],
+  [
+    "031",
+    "CH11 CSS Accessibility",
+    "CSS Accessibility",
+    "The Invisible Focus",
+    "outlineStyle",
+    "none",
+    "solid",
+    "Restore the visible focus ring required for keyboard navigation.",
+    "If focus disappears, keyboard users lose their place.",
+  ],
+  [
+    "032",
+    "CH11 CSS Accessibility",
+    "CSS Accessibility",
+    "The Hidden-but-Readable Button",
+    "maxWidth",
+    "0px",
+    "240px",
+    "Keep the accessible button text available within a usable visual area.",
+    "Visual hiding and semantic hiding are different jobs.",
+  ],
+  [
+    "033",
+    "CH11 CSS Accessibility",
+    "CSS Accessibility",
+    "The Contrast That Failed",
+    "color",
+    "#fffefa",
+    "#173d2c",
+    "Restore a darker text color that can be checked against the light surface.",
+    "Do not communicate meaning through color alone.",
+  ],
+  [
+    "034",
+    "CH12 CSS Positioning",
+    "CSS Positioning",
+    "The Stubborn Navbar",
+    "position",
+    "static",
+    "sticky",
+    "Keep the navigation available while the user moves through a long case file.",
+    "Sticky remains in flow until it reaches its inset threshold.",
+  ],
+  [
+    "035",
+    "CH12 CSS Positioning",
+    "CSS Positioning",
+    "The Badge in the Wrong Corner",
+    "position",
+    "static",
+    "absolute",
+    "Anchor the badge to the positioned card instead of the page flow.",
+    "Absolute positioning needs a containing block you can name.",
+  ],
+  [
+    "036",
+    "CH12 CSS Positioning",
+    "CSS Positioning",
+    "The Layer Behind the Modal",
+    "zIndex",
+    "0",
+    "100",
+    "Place the modal layer above the page content within its stacking context.",
+    "A large z-index cannot escape an ancestor stacking context.",
+  ],
+  [
+    "037",
+    "CH13 Attribute Selectors",
+    "Attribute Selectors",
+    "The Selector Mystery",
+    "textDecorationLine",
+    "none",
+    "underline",
+    "Make the attribute-matched link visibly distinct from ordinary text.",
+    "Start from the attribute relationship, then add only the specificity you need.",
+  ],
+  [
+    "038",
+    "CH13 Attribute Selectors",
+    "Attribute Selectors",
+    "The Wrong Download Link",
+    "color",
+    "#173d2c",
+    "#a44d2f",
+    "Signal the PDF download link with the intended file-type treatment.",
+    "The $= operator matches the end of an attribute value.",
+  ],
+  [
+    "039",
+    "CH13 Attribute Selectors",
+    "Attribute Selectors",
+    "The Language That Was Missed",
+    "fontStyle",
+    "normal",
+    "italic",
+    "Apply the language-specific typographic cue to the matched content.",
+    "The |= operator matches a language token such as en or en-US.",
+  ],
+  [
+    "040",
+    "CH14 Responsive Web Design",
+    "Responsive Web Design",
+    "The Broken Mobile Layout",
+    "maxWidth",
+    "none",
+    "100%",
+    "Keep the content surface within the viewport on narrow screens.",
+    "Fluid foundations come before breakpoint rules.",
+  ],
+  [
+    "041",
+    "CH14 Responsive Web Design",
+    "Responsive Web Design",
+    "The Desktop-only Button",
+    "display",
+    "none",
+    "block",
+    "Make the action available when the responsive layout calls for it.",
+    "A responsive change should preserve access to essential actions.",
+  ],
+  [
+    "042",
+    "CH14 Responsive Web Design",
+    "Responsive Web Design",
+    "The Breakpoint That Came Too Early",
+    "overflow",
+    "hidden",
+    "auto",
+    "Preserve access to the layout when its content exceeds the available width.",
+    "A breakpoint should mark a content change, not a device label.",
+  ],
+  [
+    "043",
+    "CH15 CSS Grid",
+    "CSS Grid",
+    "The Collapsed Gallery",
+    "display",
+    "block",
+    "grid",
+    "Restore the two-dimensional gallery layout.",
+    "Grid is the right model when rows and columns matter together.",
+  ],
+  [
+    "044",
+    "CH15 CSS Grid",
+    "CSS Grid",
+    "The Misplaced Sidebar",
+    "gridTemplateColumns",
+    "1fr",
+    "200px 1fr",
+    "Give the sidebar its track and let the main content use the remaining space.",
+    "Define the track structure before placing items.",
+  ],
+  [
+    "045",
+    "CH15 CSS Grid",
+    "CSS Grid",
+    "The Track That Would Not Stretch",
+    "gridColumn",
+    "auto",
+    "1 / -1",
+    "Make the banner span the full explicit grid width.",
+    "1 / -1 spans from the first grid line to the last.",
+  ],
+  [
+    "046",
+    "CH16 CSS Animations",
+    "CSS Animations",
+    "The Animation That Never Ends",
+    "animationIterationCount",
+    "infinite",
+    "1",
+    "Let the entrance animation finish instead of repeating forever.",
+    "Iteration count controls repeats; essential information should not depend on motion.",
+  ],
+  [
+    "047",
+    "CH16 CSS Animations",
+    "CSS Animations",
+    "The Button That Moves Too Much",
+    "animationDuration",
+    "100ms",
+    "600ms",
+    "Slow the movement enough that the action remains comfortable to follow.",
+    "Use timing as communication, not as noise.",
+  ],
+  [
+    "048",
+    "CH16 CSS Animations",
+    "CSS Animations",
+    "The Motion That Ignored Preferences",
+    "animationName",
+    "fadeIn",
+    "none",
+    "Respect a reduced-motion preference by disabling the nonessential animation.",
+    "Reduced motion is a user preference, not a design failure.",
+  ],
 ];
 
-const genericPreviewBase = sharedPreviewCSS + `.case-surface { width: min(100%, 520px); min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 28px; border: 1px dashed #738078; background: #fffefa; color: #18221c; } .case-surface strong { color: #a44d2f; font: 700 11px monospace; text-transform: uppercase; letter-spacing: .08em; } .case-surface h3 { margin: 0; font: 600 26px/1.1 Georgia, serif; } .case-surface p { margin: 0; color: #657067; line-height: 1.5; } .case-chapter-03 { border-left: 5px solid #315d4c; } .case-chapter-04 { background: #f3f0e6; border-radius: 18px; } .case-chapter-05 { border-style: solid; border-color: #a44d2f; } .case-chapter-06 { background: linear-gradient(135deg, #173d2c, #9fc5ad); color: #fffefa; } .case-chapter-07 { border-radius: 10px; box-shadow: 4px 4px 0 rgba(49,93,76,.16); } .case-chapter-08 { overflow: hidden; transform: translateZ(0); } .case-chapter-10 { letter-spacing: .015em; } .case-chapter-11 { outline: 2px solid rgba(49,93,76,.18); outline-offset: 5px; } .case-chapter-12 { position: relative; } .case-chapter-13 { border-bottom: 3px double #315d4c; } .case-chapter-14 { width: min(100%, 420px); } .case-chapter-15 { display: grid; grid-template-columns: 1fr 1fr; } .case-chapter-16 { transition: transform 200ms ease; }`;
+const genericPreviewBase =
+  sharedPreviewCSS +
+  `.case-surface { width: min(100%, 520px); min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 28px; border: 1px dashed #738078; background: #fffefa; color: #18221c; } .case-surface strong { color: #a44d2f; font: 700 11px monospace; text-transform: uppercase; letter-spacing: .08em; } .case-surface h3 { margin: 0; font: 600 26px/1.1 Georgia, serif; } .case-surface p { margin: 0; color: #657067; line-height: 1.5; } .case-chapter-03 { border-left: 5px solid #315d4c; } .case-chapter-04 { background: #f3f0e6; border-radius: 18px; } .case-chapter-05 { border-style: solid; border-color: #a44d2f; } .case-chapter-06 { background: linear-gradient(135deg, #173d2c, #9fc5ad); color: #fffefa; } .case-chapter-07 { border-radius: 10px; box-shadow: 4px 4px 0 rgba(49,93,76,.16); } .case-chapter-08 { overflow: hidden; transform: translateZ(0); } .case-chapter-10 { letter-spacing: .015em; } .case-chapter-11 { outline: 2px solid rgba(49,93,76,.18); outline-offset: 5px; } .case-chapter-12 { position: relative; } .case-chapter-13 { border-bottom: 3px double #315d4c; } .case-chapter-14 { width: min(100%, 420px); } .case-chapter-15 { display: grid; grid-template-columns: 1fr 1fr; } .case-chapter-16 { transition: transform 200ms ease; }`;
 
 const caseNarratives = {
-  "010": ["The dashboard regions lost their grouping.", "A summary, activity feed and action panel now collapse into one visual stream, making the interface harder to scan.", "Grouped regions", "One unstructured column"],
-  "011": ["The checkout action became hard to find.", "The order total and Continue button are both present, but the row packs them together instead of separating the decision points.", "Action is easy to find", "Action is buried beside the total"],
-  "012": ["The page headline became ordinary text.", "A shared typography rule reduced the only primary heading to the same scale as its supporting copy.", "Primary message leads", "Heading and body look equal"],
-  "013": ["The reading measure became unpredictable.", "The content surface grows with the viewport and produces lines that are too long to read comfortably.", "Readable maximum line length", "Content expands without a guardrail"],
-  "014": ["The narrow viewport clipped the evidence.", "The panel is wider than the available viewport and the current overflow rule hides the part users still need to reach.", "All content remains reachable", "Right edge disappears"],
-  "015": ["The responsive formula has no safe maximum.", "The fluid expression works at small widths but becomes an oversized reading surface on a large screen.", "Fluid but bounded content", "Formula grows indefinitely"],
-  "016": ["Keyboard focus disappeared from the action.", "The button still works, but the focus indicator was removed, leaving keyboard users without a reliable location cue.", "Visible focus ring", "Focused control looks unchanged"],
-  "017": ["The wrong item received emphasis.", "A mixed list contains headings and evidence rows, but a child-position selector counts every sibling instead of the intended element type.", "The intended evidence row is emphasized", "An unrelated sibling is bold"],
-  "018": ["The decorative marker is visually doubled.", "A generated note already has a boundary, but a second border treatment makes the content look duplicated rather than intentional.", "One clear visual boundary", "Double treatment around the note"],
-  "019": ["The status text disappeared into its surface.", "The label remains in the markup, but its foreground is too close to the panel background to carry meaning reliably.", "Readable status text", "Foreground blends into background"],
-  "020": ["The card lost its depth cue.", "The content is still present, but the missing shadow removes the separation between the active card and the page beneath it.", "Quiet separation from the page", "Card edge visually escapes"],
-  "021": ["The overlay became opaque.", "The illustration beneath the panel should remain part of the composition, but an opaque fill hides the visual relationship entirely.", "Background remains subtly visible", "Overlay blocks the layer beneath"],
-  "022": ["The custom checkbox has no stable starting point.", "The control is being rebuilt for the design system, but the native appearance is still deciding the visual shape in this browser.", "Predictable custom-control base", "Browser chrome varies"],
-  "023": ["The error state looks like a neutral state.", "The invalid field has the same border treatment as the rest of the form, so the user must hunt for the problem.", "Error state is visually distinct", "Invalid control looks neutral"],
-  "024": ["The form label vanished with the control styling.", "The input remains in the DOM, but the visible label was hidden and the user loses the explanation of what the field asks for.", "Control has a visible label", "Field appears without context"],
-  "025": ["The card decoration escaped its boundary.", "A decorative child extends past the card edge and overlaps neighboring content instead of being contained by its visual surface.", "Decoration stays inside card", "Decoration leaks outside"],
-  "026": ["Padding made the card wider than its track.", "The declared width looks correct in the stylesheet, but content-box adds padding and border outside that measurement.", "Rendered width respects declaration", "Card exceeds its track"],
-  "027": ["The hover lift changed the hit area unexpectedly.", "The visual card should move slightly while its layout relationship remains stable for neighboring content.", "Visual lift without reflow", "Card position changes the layout model"],
-  "028": ["The heading lost its typographic weight.", "The page title uses the correct family and size, but a weight reset makes it compete with secondary labels.", "Heading leads through weight", "Heading is visually equal to labels"],
-  "029": ["The intended display face never appears.", "The component falls back to the body face even though the design calls for a distinct editorial voice.", "Display face with fallback", "Everything uses the body face"],
-  "030": ["Paragraph lines are colliding.", "The copy uses a compact line-height that makes descenders and adjacent lines visually merge in the reading surface.", "Comfortable line spacing", "Lines feel compressed"],
-  "031": ["Keyboard focus is invisible.", "The interactive element receives focus, but a reset rule removes the outline without providing a replacement.", "Focus remains obvious", "Focus state cannot be located"],
-  "032": ["The accessible action has no usable visual box.", "The button text is technically present but its visual width collapsed, making the action difficult to discover and activate.", "Action retains a usable width", "Button collapses to nothing"],
-  "033": ["The status message fails contrast review.", "The color communicates a state in the design file but does not provide enough contrast against the light surface.", "Text meets contrast target", "Color is too pale"],
-  "034": ["The navigation scrolls away too soon.", "The long case file has a persistent navigation requirement, but the bar remains in ordinary document flow.", "Navigation stays available", "Navigation disappears above the viewport"],
-  "035": ["The badge follows the document instead of the card.", "The badge should sit in the card corner, but static flow places it after the card content and changes the card height.", "Badge anchors to card corner", "Badge occupies normal flow"],
-  "036": ["The modal sits behind the page layer.", "The modal is positioned correctly, but a lower stacking order leaves page content visually above its backdrop.", "Modal is above page content", "Page layer covers modal"],
-  "037": ["The matching link has no visual cue.", "The selector finds the intended attribute-bearing link, but the style that distinguishes it was removed.", "Matched link is recognizable", "Matched link looks ordinary"],
-  "038": ["The PDF link looks like every other link.", "The download target ends with .pdf, but the file-type cue is missing from the link treatment.", "Download link is distinct", "File type is invisible"],
-  "039": ["The language-specific note was missed.", "The content declares a language variant, but the language selector does not produce the intended typographic cue.", "Language variant is signposted", "Language variant looks unmarked"],
-  "040": ["The mobile surface overflows its viewport.", "The layout is fluid in theory, but the content surface has no maximum-width rule to keep it inside the narrow screen.", "Surface fits viewport", "Horizontal overflow appears"],
-  "041": ["The essential action is desktop-only.", "The responsive state hides the button even though mobile users still need the same primary task.", "Primary action remains available", "Button disappears at the wrong state"],
-  "042": ["The breakpoint hides content before the layout changes.", "The viewport becomes tight, but the rule clips the surface before a usable responsive treatment can take over.", "Content remains reachable", "Breakpoint state clips the surface"],
-  "043": ["The gallery lost its two-dimensional layout.", "The cards remain in the markup, but block flow removes the rows-and-columns relationship the gallery depends on.", "Cards form a gallery", "Cards become a long stack"],
-  "044": ["The sidebar has no dedicated track.", "The layout needs a narrow navigation column and a flexible content column, but both regions compete in one track.", "Sidebar and main have separate tracks", "Sidebar steals the content track"],
-  "045": ["The banner occupies only one grid cell.", "The banner should introduce the full gallery, but its default placement leaves it constrained to the first track.", "Banner spans the gallery", "Banner stops at one column"],
-  "046": ["The entrance animation never settles.", "The card repeats its entrance forever, which distracts from the content and makes the interface feel unstable.", "Animation completes once", "Animation loops continuously"],
-  "047": ["The action animates too abruptly.", "The button moves in a fraction of a second, making the motion feel like a jump rather than a readable state change.", "Motion has a comfortable duration", "Motion is too sudden"],
-  "048": ["Reduced-motion preference is ignored.", "The animation still runs for a user who asked the interface to minimize nonessential movement.", "Nonessential motion is disabled", "Animation keeps running"],
+  "010": [
+    "The dashboard regions lost their grouping.",
+    "A summary, activity feed and action panel now collapse into one visual stream, making the interface harder to scan.",
+    "Grouped regions",
+    "One unstructured column",
+  ],
+  "011": [
+    "The checkout action became hard to find.",
+    "The order total and Continue button are both present, but the row packs them together instead of separating the decision points.",
+    "Action is easy to find",
+    "Action is buried beside the total",
+  ],
+  "012": [
+    "The page headline became ordinary text.",
+    "A shared typography rule reduced the only primary heading to the same scale as its supporting copy.",
+    "Primary message leads",
+    "Heading and body look equal",
+  ],
+  "013": [
+    "The reading measure became unpredictable.",
+    "The content surface grows with the viewport and produces lines that are too long to read comfortably.",
+    "Readable maximum line length",
+    "Content expands without a guardrail",
+  ],
+  "014": [
+    "The narrow viewport clipped the evidence.",
+    "The panel is wider than the available viewport and the current overflow rule hides the part users still need to reach.",
+    "All content remains reachable",
+    "Right edge disappears",
+  ],
+  "015": [
+    "The responsive formula has no safe maximum.",
+    "The fluid expression works at small widths but becomes an oversized reading surface on a large screen.",
+    "Fluid but bounded content",
+    "Formula grows indefinitely",
+  ],
+  "016": [
+    "Keyboard focus disappeared from the action.",
+    "The button still works, but the focus indicator was removed, leaving keyboard users without a reliable location cue.",
+    "Visible focus ring",
+    "Focused control looks unchanged",
+  ],
+  "017": [
+    "The wrong item received emphasis.",
+    "A mixed list contains headings and evidence rows, but a child-position selector counts every sibling instead of the intended element type.",
+    "The intended evidence row is emphasized",
+    "An unrelated sibling is bold",
+  ],
+  "018": [
+    "The decorative marker is visually doubled.",
+    "A generated note already has a boundary, but a second border treatment makes the content look duplicated rather than intentional.",
+    "One clear visual boundary",
+    "Double treatment around the note",
+  ],
+  "019": [
+    "The status text disappeared into its surface.",
+    "The label remains in the markup, but its foreground is too close to the panel background to carry meaning reliably.",
+    "Readable status text",
+    "Foreground blends into background",
+  ],
+  "020": [
+    "The card lost its depth cue.",
+    "The content is still present, but the missing shadow removes the separation between the active card and the page beneath it.",
+    "Quiet separation from the page",
+    "Card edge visually escapes",
+  ],
+  "021": [
+    "The overlay became opaque.",
+    "The illustration beneath the panel should remain part of the composition, but an opaque fill hides the visual relationship entirely.",
+    "Background remains subtly visible",
+    "Overlay blocks the layer beneath",
+  ],
+  "022": [
+    "The custom checkbox has no stable starting point.",
+    "The control is being rebuilt for the design system, but the native appearance is still deciding the visual shape in this browser.",
+    "Predictable custom-control base",
+    "Browser chrome varies",
+  ],
+  "023": [
+    "The error state looks like a neutral state.",
+    "The invalid field has the same border treatment as the rest of the form, so the user must hunt for the problem.",
+    "Error state is visually distinct",
+    "Invalid control looks neutral",
+  ],
+  "024": [
+    "The form label vanished with the control styling.",
+    "The input remains in the DOM, but the visible label was hidden and the user loses the explanation of what the field asks for.",
+    "Control has a visible label",
+    "Field appears without context",
+  ],
+  "025": [
+    "The card decoration escaped its boundary.",
+    "A decorative child extends past the card edge and overlaps neighboring content instead of being contained by its visual surface.",
+    "Decoration stays inside card",
+    "Decoration leaks outside",
+  ],
+  "026": [
+    "Padding made the card wider than its track.",
+    "The declared width looks correct in the stylesheet, but content-box adds padding and border outside that measurement.",
+    "Rendered width respects declaration",
+    "Card exceeds its track",
+  ],
+  "027": [
+    "The hover lift changed the hit area unexpectedly.",
+    "The visual card should move slightly while its layout relationship remains stable for neighboring content.",
+    "Visual lift without reflow",
+    "Card position changes the layout model",
+  ],
+  "028": [
+    "The heading lost its typographic weight.",
+    "The page title uses the correct family and size, but a weight reset makes it compete with secondary labels.",
+    "Heading leads through weight",
+    "Heading is visually equal to labels",
+  ],
+  "029": [
+    "The intended display face never appears.",
+    "The component falls back to the body face even though the design calls for a distinct editorial voice.",
+    "Display face with fallback",
+    "Everything uses the body face",
+  ],
+  "030": [
+    "Paragraph lines are colliding.",
+    "The copy uses a compact line-height that makes descenders and adjacent lines visually merge in the reading surface.",
+    "Comfortable line spacing",
+    "Lines feel compressed",
+  ],
+  "031": [
+    "Keyboard focus is invisible.",
+    "The interactive element receives focus, but a reset rule removes the outline without providing a replacement.",
+    "Focus remains obvious",
+    "Focus state cannot be located",
+  ],
+  "032": [
+    "The accessible action has no usable visual box.",
+    "The button text is technically present but its visual width collapsed, making the action difficult to discover and activate.",
+    "Action retains a usable width",
+    "Button collapses to nothing",
+  ],
+  "033": [
+    "The status message fails contrast review.",
+    "The color communicates a state in the design file but does not provide enough contrast against the light surface.",
+    "Text meets contrast target",
+    "Color is too pale",
+  ],
+  "034": [
+    "The navigation scrolls away too soon.",
+    "The long case file has a persistent navigation requirement, but the bar remains in ordinary document flow.",
+    "Navigation stays available",
+    "Navigation disappears above the viewport",
+  ],
+  "035": [
+    "The badge follows the document instead of the card.",
+    "The badge should sit in the card corner, but static flow places it after the card content and changes the card height.",
+    "Badge anchors to card corner",
+    "Badge occupies normal flow",
+  ],
+  "036": [
+    "The modal sits behind the page layer.",
+    "The modal is positioned correctly, but a lower stacking order leaves page content visually above its backdrop.",
+    "Modal is above page content",
+    "Page layer covers modal",
+  ],
+  "037": [
+    "The matching link has no visual cue.",
+    "The selector finds the intended attribute-bearing link, but the style that distinguishes it was removed.",
+    "Matched link is recognizable",
+    "Matched link looks ordinary",
+  ],
+  "038": [
+    "The PDF link looks like every other link.",
+    "The download target ends with .pdf, but the file-type cue is missing from the link treatment.",
+    "Download link is distinct",
+    "File type is invisible",
+  ],
+  "039": [
+    "The language-specific note was missed.",
+    "The content declares a language variant, but the language selector does not produce the intended typographic cue.",
+    "Language variant is signposted",
+    "Language variant looks unmarked",
+  ],
+  "040": [
+    "The mobile surface overflows its viewport.",
+    "The layout is fluid in theory, but the content surface has no maximum-width rule to keep it inside the narrow screen.",
+    "Surface fits viewport",
+    "Horizontal overflow appears",
+  ],
+  "041": [
+    "The essential action is desktop-only.",
+    "The responsive state hides the button even though mobile users still need the same primary task.",
+    "Primary action remains available",
+    "Button disappears at the wrong state",
+  ],
+  "042": [
+    "The breakpoint hides content before the layout changes.",
+    "The viewport becomes tight, but the rule clips the surface before a usable responsive treatment can take over.",
+    "Content remains reachable",
+    "Breakpoint state clips the surface",
+  ],
+  "043": [
+    "The gallery lost its two-dimensional layout.",
+    "The cards remain in the markup, but block flow removes the rows-and-columns relationship the gallery depends on.",
+    "Cards form a gallery",
+    "Cards become a long stack",
+  ],
+  "044": [
+    "The sidebar has no dedicated track.",
+    "The layout needs a narrow navigation column and a flexible content column, but both regions compete in one track.",
+    "Sidebar and main have separate tracks",
+    "Sidebar steals the content track",
+  ],
+  "045": [
+    "The banner occupies only one grid cell.",
+    "The banner should introduce the full gallery, but its default placement leaves it constrained to the first track.",
+    "Banner spans the gallery",
+    "Banner stops at one column",
+  ],
+  "046": [
+    "The entrance animation never settles.",
+    "The card repeats its entrance forever, which distracts from the content and makes the interface feel unstable.",
+    "Animation completes once",
+    "Animation loops continuously",
+  ],
+  "047": [
+    "The action animates too abruptly.",
+    "The button moves in a fraction of a second, making the motion feel like a jump rather than a readable state change.",
+    "Motion has a comfortable duration",
+    "Motion is too sudden",
+  ],
+  "048": [
+    "Reduced-motion preference is ignored.",
+    "The animation still runs for a user who asked the interface to minimize nonessential movement.",
+    "Nonessential motion is disabled",
+    "Animation keeps running",
+  ],
 };
 
 function scenarioMarkup(id, title, chapter) {
   const code = chapter.slice(2, 4);
   const variant = Number(id) % 3;
-  const labels = code === "03" ? ["DESIGN REVIEW", "PRIMARY ACTION", "CONTENT HIERARCHY"] : code === "04" ? ["UNIT CHECK", "VIEWPORT", "SAFE FORMULA"] : code === "05" ? ["STATE", "STRUCTURE", "GENERATED PART"] : code === "06" ? ["COLOR NOTE", "DEPTH", "LAYER"] : code === "07" ? ["FORM FIELD", "VALIDATION", "LABEL"] : code === "08" ? ["LAYOUT", "EFFECT", "BOX MODEL"] : code === "10" ? ["TYPE NOTE", "DISPLAY FACE", "READING COPY"] : code === "11" ? ["ACCESS", "FOCUS", "PREFERENCE"] : code === "12" ? ["POSITION", "ANCHOR", "STACK"] : code === "13" ? ["ATTRIBUTE", "DOWNLOAD", "LANGUAGE"] : code === "14" ? ["NARROW VIEW", "ACTION", "BREAKPOINT"] : code === "15" ? ["GRID", "TRACKS", "PLACEMENT"] : ["MOTION", "TIMING", "PREFERENCE"];
+  const labels =
+    code === "03"
+      ? ["DESIGN REVIEW", "PRIMARY ACTION", "CONTENT HIERARCHY"]
+      : code === "04"
+        ? ["UNIT CHECK", "VIEWPORT", "SAFE FORMULA"]
+        : code === "05"
+          ? ["STATE", "STRUCTURE", "GENERATED PART"]
+          : code === "06"
+            ? ["COLOR NOTE", "DEPTH", "LAYER"]
+            : code === "07"
+              ? ["FORM FIELD", "VALIDATION", "LABEL"]
+              : code === "08"
+                ? ["LAYOUT", "EFFECT", "BOX MODEL"]
+                : code === "10"
+                  ? ["TYPE NOTE", "DISPLAY FACE", "READING COPY"]
+                  : code === "11"
+                    ? ["ACCESS", "FOCUS", "PREFERENCE"]
+                    : code === "12"
+                      ? ["POSITION", "ANCHOR", "STACK"]
+                      : code === "13"
+                        ? ["ATTRIBUTE", "DOWNLOAD", "LANGUAGE"]
+                        : code === "14"
+                          ? ["NARROW VIEW", "ACTION", "BREAKPOINT"]
+                          : code === "15"
+                            ? ["GRID", "TRACKS", "PLACEMENT"]
+                            : ["MOTION", "TIMING", "PREFERENCE"];
   return `<article class="case-surface case-chapter-${code} case-variant-${variant}"><strong>${labels[variant]}</strong><h3>${title}</h3><p>${variant === 0 ? "Read the evidence before changing the rule." : variant === 1 ? "One declaration is distorting the interface." : "The target should restore the intended behavior."}</p></article>`;
 }
 
-additionalCases.forEach(([id, chapter, topic, title, property, starter, target, objective, remember], index) => {
-  const nextCase = String(Number(id) + 1).padStart(3, "0");
-  const isLast = id === "048";
-  const selector = ".case-surface";
-  const cssProperty = property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
-  const layoutPrefix = property === "gridTemplateColumns" || property === "gridColumn" ? "display: grid; " : "";
-  const keyframes = property === "animationName" && starter === "fadeIn" ? "@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n" : "";
-  const previewTarget = `${keyframes}${selector} { ${layoutPrefix}${cssProperty}: ${target}; }`;
-  const narrative = caseNarratives[id];
-  const caseCode = chapter.slice(2, 4) === "09" ? "FX" : `C${chapter.slice(2, 4)}`;
-  window.CASEBOOK_CASES[id] = makeCase({
-    id, fileCode: `${caseCode}-${String(index + 4).padStart(3, "0")}`, chapter, topic, title,
-    objective, incidentTitle: `${title} needs investigation.`, incident: `The ${title.toLowerCase()} report points to one CSS declaration that no longer matches the intended interface behavior. Trace the rendered result, then restore the trusted design rule.`, evidence: [["Expected", "The documented design behavior"], ["Observed", "A visible CSS failure"], ["Constraint", "Keep the trusted HTML"]], selector,
-    starterCSS: `${selector} {\n  ${cssProperty}: ${starter};\n}`, originalCSS: `${cssProperty}:${starter}`, targetCSS: `${layoutPrefix}${cssProperty}:${target}`, targetPreviewCSS: previewTarget, originalCaption: `Original — ${title.toLowerCase()}`, targetCaption: `Target — resolved ${title.toLowerCase()}`, previewLabel: "case surface",
-    previewHTML: scenarioMarkup(id, title, chapter), previewBaseCSS: genericPreviewBase,
-    incidentTitle: narrative?.[0] || `${title} needs investigation.`, incident: narrative?.[1] || `The ${title.toLowerCase()} report points to one CSS declaration that no longer matches the intended interface behavior. Trace the rendered result, then restore the trusted design rule.`, evidence: narrative ? [["Expected", narrative[2]], ["Observed", narrative[3]], ["Constraint", "Keep the trusted HTML"]] : [["Expected", "The documented design behavior"], ["Observed", "A visible CSS failure"], ["Constraint", "Keep the trusted HTML"]],
-    hints: [["Observation", `Inspect the computed ${cssProperty} value on the case surface.`], ["Concept", `The ${cssProperty} declaration controls the behavior described in the incident.`], ["Targeted clue", `Try the documented target value: ${cssProperty}: ${target}.`]], checkingTitle: `Inspecting ${cssProperty}…`, checkingText: " Comparing the rendered result with the trusted target.", successText: " The rendered case surface now matches the target behavior.", validator: "computed-style", expectedProperty: property, expectedValue: target,
-    rootCause: `The starter rule set ${cssProperty} to ${starter}, which caused the rendered result to diverge from the intended behavior.`, remember, recommendedCSS: `${selector} {\n  ${layoutPrefix}${cssProperty}: ${target};\n}`,
-    question: `Which value resolves this case?`, choices: [[target, true], [starter, false]], correctFeedback: `Correct. ${cssProperty}: ${target} restores the documented behavior.`, incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${target}.`, guideHref: `field-guide.html#chapter-${chapter.slice(2, 4)}`, guideLabel: `Review ${topic} →`, nextCase: isLast ? null : nextCase, storageKey: `css-casebook-c${id}`,
-  });
-});
+additionalCases.forEach(
+  (
+    [id, chapter, topic, title, property, starter, target, objective, remember],
+    index,
+  ) => {
+    const nextCase = String(Number(id) + 1).padStart(3, "0");
+    const isLast = id === "048";
+    const selector = ".case-surface";
+    const cssProperty = property.replace(
+      /[A-Z]/g,
+      (char) => `-${char.toLowerCase()}`,
+    );
+    const layoutPrefix =
+      property === "gridTemplateColumns" || property === "gridColumn"
+        ? "display: grid; "
+        : "";
+    const keyframes =
+      property === "animationName" && starter === "fadeIn"
+        ? "@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n"
+        : "";
+    const previewTarget = `${keyframes}${selector} { ${layoutPrefix}${cssProperty}: ${target}; }`;
+    const narrative = caseNarratives[id];
+    const caseCode =
+      chapter.slice(2, 4) === "09" ? "FX" : `C${chapter.slice(2, 4)}`;
+    window.CASEBOOK_CASES[id] = makeCase({
+      id,
+      fileCode: `${caseCode}-${String(index + 4).padStart(3, "0")}`,
+      chapter,
+      topic,
+      title,
+      objective,
+      incidentTitle: `${title} needs investigation.`,
+      incident: `The ${title.toLowerCase()} report points to one CSS declaration that no longer matches the intended interface behavior. Trace the rendered result, then restore the trusted design rule.`,
+      evidence: [
+        ["Expected", "The documented design behavior"],
+        ["Observed", "A visible CSS failure"],
+        ["Constraint", "Keep the trusted HTML"],
+      ],
+      selector,
+      starterCSS: `${selector} {\n  ${cssProperty}: ${starter};\n}`,
+      originalCSS: `${cssProperty}:${starter}`,
+      targetCSS: `${layoutPrefix}${cssProperty}:${target}`,
+      targetPreviewCSS: previewTarget,
+      originalCaption: `Original — ${title.toLowerCase()}`,
+      targetCaption: `Target — resolved ${title.toLowerCase()}`,
+      previewLabel: "case surface",
+      previewHTML: scenarioMarkup(id, title, chapter),
+      previewBaseCSS: genericPreviewBase,
+      incidentTitle: narrative?.[0] || `${title} needs investigation.`,
+      incident:
+        narrative?.[1] ||
+        `The ${title.toLowerCase()} report points to one CSS declaration that no longer matches the intended interface behavior. Trace the rendered result, then restore the trusted design rule.`,
+      evidence: narrative
+        ? [
+            ["Expected", narrative[2]],
+            ["Observed", narrative[3]],
+            ["Constraint", "Keep the trusted HTML"],
+          ]
+        : [
+            ["Expected", "The documented design behavior"],
+            ["Observed", "A visible CSS failure"],
+            ["Constraint", "Keep the trusted HTML"],
+          ],
+      hints: [
+        [
+          "Observation",
+          `Inspect the computed ${cssProperty} value on the case surface.`,
+        ],
+        [
+          "Concept",
+          `The ${cssProperty} declaration controls the behavior described in the incident.`,
+        ],
+        [
+          "Targeted clue",
+          `Try the documented target value: ${cssProperty}: ${target}.`,
+        ],
+      ],
+      checkingTitle: `Inspecting ${cssProperty}…`,
+      checkingText: " Comparing the rendered result with the trusted target.",
+      successText:
+        " The rendered case surface now matches the target behavior.",
+      validator: "computed-style",
+      expectedProperty: property,
+      expectedValue: target,
+      rootCause: `The starter rule set ${cssProperty} to ${starter}, which caused the rendered result to diverge from the intended behavior.`,
+      remember,
+      recommendedCSS: `${selector} {\n  ${layoutPrefix}${cssProperty}: ${target};\n}`,
+      question: `Which value resolves this case?`,
+      choices: [
+        [target, true],
+        [starter, false],
+      ],
+      correctFeedback: `Correct. ${cssProperty}: ${target} restores the documented behavior.`,
+      incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${target}.`,
+      guideHref: `field-guide.html#chapter-${chapter.slice(2, 4)}`,
+      guideLabel: `Review ${topic} →`,
+      nextCase: isLast ? null : nextCase,
+      storageKey: `css-casebook-c${id}`,
+    });
+  },
+);
 
 // Chapter 03 uses purpose-built previews so design fundamentals are tested as
 // interface decisions, not as generic property swaps.
 const chapterThreeCases = {
   "010": {
-    title: "The Confusing Interface", topic: "Design Fundamentals", property: "display", starter: "block", target: "grid",
-    objective: "Restore a clear two-dimensional structure so the dashboard regions are easy to scan.",
-    incidentTitle: "The dashboard regions lost their grouping.", incident: "The summary, activity feed and action panel are all present, but block flow turns the dashboard into one long stream. The design brief calls for visible relationships between regions.", evidence: [["Expected", "Grouped dashboard regions"], ["Observed", "One unstructured column"], ["Constraint", "Keep the existing content order"]],
-    selector: ".dashboard-layout", label: "dashboard layout", html: `<section class="dashboard-layout"><article><span>AT A GLANCE</span><strong>12 open investigations</strong><small>Three need a second pass.</small></article><article><span>RECENT ACTIVITY</span><p>Case #010 was reopened</p><p>Case #008 was resolved</p></article><aside><span>NEXT ACTION</span><strong>Review the evidence</strong><button type="button">Open case →</button></aside></section>`,
+    title: "The Confusing Interface",
+    topic: "Design Fundamentals",
+    property: "display",
+    starter: "block",
+    target: "grid",
+    objective:
+      "Restore a clear two-dimensional structure so the dashboard regions are easy to scan.",
+    incidentTitle: "The dashboard regions lost their grouping.",
+    incident:
+      "The summary, activity feed and action panel are all present, but block flow turns the dashboard into one long stream. The design brief calls for visible relationships between regions.",
+    evidence: [
+      ["Expected", "Grouped dashboard regions"],
+      ["Observed", "One unstructured column"],
+      ["Constraint", "Keep the existing content order"],
+    ],
+    selector: ".dashboard-layout",
+    label: "dashboard layout",
+    html: `<section class="dashboard-layout"><article><span>AT A GLANCE</span><strong>12 open investigations</strong><small>Three need a second pass.</small></article><article><span>RECENT ACTIVITY</span><p>Case #010 was reopened</p><p>Case #008 was resolved</p></article><aside><span>NEXT ACTION</span><strong>Review the evidence</strong><button type="button">Open case →</button></aside></section>`,
     base: `.dashboard-layout { width: min(100%, 560px); padding: 14px; background: #f3f0e6; border: 1px solid #c6cbc2; } .dashboard-layout article, .dashboard-layout aside { display: flex; flex-direction: column; gap: 8px; min-height: 110px; padding: 18px; border: 1px solid #d5d8d1; background: #fffefa; color: #18221c; } .dashboard-layout span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .dashboard-layout strong { font: 600 24px/1.15 Georgia, serif; } .dashboard-layout small, .dashboard-layout p { margin: 0; color: #657067; line-height: 1.45; } .dashboard-layout button { align-self: flex-start; margin-top: auto; padding: 8px 12px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font: 700 12px inherit; }`,
-    targetCSS: `.dashboard-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }`, remember: "Use Grid when the design depends on rows and columns working together.", guide: "Review design fundamentals →", next: "011", question: "Which display value creates the dashboard structure?", choices: [["display: block", false], ["display: grid", true]]
+    targetCSS: `.dashboard-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }`,
+    remember:
+      "Use Grid when the design depends on rows and columns working together.",
+    guide: "Review design fundamentals →",
+    next: "011",
+    question: "Which display value creates the dashboard structure?",
+    choices: [
+      ["display: block", false],
+      ["display: grid", true],
+    ],
   },
   "011": {
-    title: "The Unclear Checkout", topic: "Design Fundamentals", property: "justifyContent", starter: "flex-start", target: "space-between",
-    objective: "Separate the order summary and primary action so the next step is easy to find.",
-    incidentTitle: "The checkout action became hard to find.", incident: "The order total and Continue button are both present, but the row packs them together at the start of the available space. The intended composition gives the decision and action room to breathe.", evidence: [["Expected", "Summary and action separated"], ["Observed", "Controls cluster together"], ["Constraint", "Keep one horizontal row"]],
-    selector: ".checkout-bar", label: "checkout bar", html: `<div class="checkout-bar"><div><span>ORDER SUMMARY</span><strong>CSS Masterclass · $48</strong></div><button type="button">Continue →</button></div>`,
+    title: "The Unclear Checkout",
+    topic: "Design Fundamentals",
+    property: "justifyContent",
+    starter: "flex-start",
+    target: "space-between",
+    objective:
+      "Separate the order summary and primary action so the next step is easy to find.",
+    incidentTitle: "The checkout action became hard to find.",
+    incident:
+      "The order total and Continue button are both present, but the row packs them together at the start of the available space. The intended composition gives the decision and action room to breathe.",
+    evidence: [
+      ["Expected", "Summary and action separated"],
+      ["Observed", "Controls cluster together"],
+      ["Constraint", "Keep one horizontal row"],
+    ],
+    selector: ".checkout-bar",
+    label: "checkout bar",
+    html: `<div class="checkout-bar"><div><span>ORDER SUMMARY</span><strong>CSS Masterclass · $48</strong></div><button type="button">Continue →</button></div>`,
     base: `.checkout-bar { width: min(100%, 560px); display: flex; align-items: center; gap: 18px; padding: 20px 22px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .checkout-bar > div { display: flex; flex-direction: column; gap: 7px; } .checkout-bar span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .checkout-bar strong { font: 600 20px/1.15 Georgia, serif; } .checkout-bar button { flex: 0 0 auto; padding: 11px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font: 700 12px inherit; }`,
-    targetCSS: `.checkout-bar { display: flex; justify-content: space-between; }`, remember: "Good composition uses available space to clarify relationships and priority.", guide: "Review design fundamentals →", next: "012", question: "Which value separates the first and last item?", choices: [["justify-content: flex-start", false], ["justify-content: space-between", true]]
+    targetCSS: `.checkout-bar { display: flex; justify-content: space-between; }`,
+    remember:
+      "Good composition uses available space to clarify relationships and priority.",
+    guide: "Review design fundamentals →",
+    next: "012",
+    question: "Which value separates the first and last item?",
+    choices: [
+      ["justify-content: flex-start", false],
+      ["justify-content: space-between", true],
+    ],
   },
   "012": {
-    title: "The Hierarchy That Collapsed", topic: "Design Fundamentals", property: "fontSize", starter: "14px", target: "24px",
-    objective: "Restore the heading scale so the primary message is noticed before its supporting copy.",
-    incidentTitle: "The page headline became ordinary text.", incident: "A shared typography rule reduced the page heading to the same scale as its supporting copy. The message is still correct, but the visual hierarchy no longer tells the reader where to begin.", evidence: [["Expected", "Primary message leads"], ["Observed", "Heading and body look equal"], ["Constraint", "Keep the editorial copy"]],
-    selector: ".hierarchy-card h2", label: "content hierarchy", html: `<article class="hierarchy-card"><span>DESIGN PRINCIPLE</span><h2>Make the first glance useful.</h2><p>Hierarchy turns a collection of content into a path through the interface.</p><a href="#">Read the evidence →</a></article>`,
+    title: "The Hierarchy That Collapsed",
+    topic: "Design Fundamentals",
+    property: "fontSize",
+    starter: "14px",
+    target: "24px",
+    objective:
+      "Restore the heading scale so the primary message is noticed before its supporting copy.",
+    incidentTitle: "The page headline became ordinary text.",
+    incident:
+      "A shared typography rule reduced the page heading to the same scale as its supporting copy. The message is still correct, but the visual hierarchy no longer tells the reader where to begin.",
+    evidence: [
+      ["Expected", "Primary message leads"],
+      ["Observed", "Heading and body look equal"],
+      ["Constraint", "Keep the editorial copy"],
+    ],
+    selector: ".hierarchy-card h2",
+    label: "content hierarchy",
+    html: `<article class="hierarchy-card"><span>DESIGN PRINCIPLE</span><h2>Make the first glance useful.</h2><p>Hierarchy turns a collection of content into a path through the interface.</p><a href="#">Read the evidence →</a></article>`,
     base: `.hierarchy-card { width: min(100%, 500px); padding: 28px; border-left: 5px solid #1f5b43; background: #fffefa; color: #18221c; } .hierarchy-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .hierarchy-card h2 { margin: 14px 0 8px; font: 600 14px/1.15 Georgia, serif; } .hierarchy-card p { max-width: 390px; margin: 0 0 18px; color: #657067; line-height: 1.55; } .hierarchy-card a { color: #1f5b43; font-weight: 700; text-decoration: underline; }`,
-    targetCSS: `.hierarchy-card h2 { font-size: 24px; }`, remember: "Hierarchy is the order in which users notice information, not decoration added after the content.", guide: "Review design fundamentals →", next: "013", question: "Which size restores the primary heading?", choices: [["font-size: 14px", false], ["font-size: 24px", true]]
-  }
+    targetCSS: `.hierarchy-card h2 { font-size: 24px; }`,
+    remember:
+      "Hierarchy is the order in which users notice information, not decoration added after the content.",
+    guide: "Review design fundamentals →",
+    next: "013",
+    question: "Which size restores the primary heading?",
+    choices: [
+      ["font-size: 14px", false],
+      ["font-size: 24px", true],
+    ],
+  },
 };
 
 Object.entries(chapterThreeCases).forEach(([id, item]) => {
-  const cssProperty = item.property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+  const cssProperty = item.property.replace(
+    /[A-Z]/g,
+    (char) => `-${char.toLowerCase()}`,
+  );
   window.CASEBOOK_CASES[id] = makeCase({
-    id, fileCode: `C03-${id.slice(-1).padStart(3, "0")}`, chapter: "CH03 Design Fundamentals", topic: item.topic, title: item.title,
-    objective: item.objective, incidentTitle: item.incidentTitle, incident: item.incident, evidence: item.evidence, selector: item.selector,
-    starterCSS: `${item.selector} {\n  ${cssProperty}: ${item.starter};\n}`, originalCSS: `${cssProperty}:${item.starter}`, targetCSS: `${cssProperty}:${item.target}`, targetPreviewCSS: item.targetCSS,
-    originalCaption: `Original — ${item.title.toLowerCase()}`, targetCaption: `Target — resolved ${item.title.toLowerCase()}`, previewLabel: item.label, previewHTML: item.html, previewBaseCSS: sharedPreviewCSS + item.base,
-    hints: [["Observation", "Read the expected and observed behavior before editing."], ["Concept", `${cssProperty} controls the interface decision described in the incident.`], ["Targeted clue", `Try the documented target value: ${cssProperty}: ${item.target}.`]], checkingTitle: `Inspecting ${item.label}…`, checkingText: " Comparing the rendered result with the approved design pattern.", successText: " The rendered interface now matches the intended design decision.", validator: "computed-style", expectedProperty: item.property, expectedValue: item.target,
-    rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended design decision.`, remember: item.remember, recommendedCSS: `${item.selector} {\n  ${cssProperty}: ${item.target};\n}`, question: item.question, choices: item.choices, correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented design behavior.`, incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`, guideHref: "field-guide.html#chapter-03", guideLabel: item.guide, nextCase: item.next, storageKey: `css-casebook-c${id}`
+    id,
+    fileCode: `C03-${id.slice(-1).padStart(3, "0")}`,
+    chapter: "CH03 Design Fundamentals",
+    topic: item.topic,
+    title: item.title,
+    objective: item.objective,
+    incidentTitle: item.incidentTitle,
+    incident: item.incident,
+    evidence: item.evidence,
+    selector: item.selector,
+    starterCSS: `${item.selector} {\n  ${cssProperty}: ${item.starter};\n}`,
+    originalCSS: `${cssProperty}:${item.starter}`,
+    targetCSS: `${cssProperty}:${item.target}`,
+    targetPreviewCSS: item.targetCSS,
+    originalCaption: `Original — ${item.title.toLowerCase()}`,
+    targetCaption: `Target — resolved ${item.title.toLowerCase()}`,
+    previewLabel: item.label,
+    previewHTML: item.html,
+    previewBaseCSS: sharedPreviewCSS + item.base,
+    hints: [
+      [
+        "Observation",
+        "Read the expected and observed behavior before editing.",
+      ],
+      [
+        "Concept",
+        `${cssProperty} controls the interface decision described in the incident.`,
+      ],
+      [
+        "Targeted clue",
+        `Try the documented target value: ${cssProperty}: ${item.target}.`,
+      ],
+    ],
+    checkingTitle: `Inspecting ${item.label}…`,
+    checkingText:
+      " Comparing the rendered result with the approved design pattern.",
+    successText:
+      " The rendered interface now matches the intended design decision.",
+    validator: "computed-style",
+    expectedProperty: item.property,
+    expectedValue: item.target,
+    rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended design decision.`,
+    remember: item.remember,
+    recommendedCSS: `${item.selector} {\n  ${cssProperty}: ${item.target};\n}`,
+    question: item.question,
+    choices: item.choices,
+    correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented design behavior.`,
+    incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`,
+    guideHref: "field-guide.html#chapter-03",
+    guideLabel: item.guide,
+    nextCase: item.next,
+    storageKey: `css-casebook-c${id}`,
   });
 });
 
@@ -243,198 +1384,3155 @@ Object.entries(chapterThreeCases).forEach(([id, item]) => {
 // reachable overflow, and a fluid formula with a sensible ceiling.
 const chapterFourCases = {
   "013": {
-    title: "The Unpredictable Size", property: "maxWidth", starter: "100%", target: "900px", label: "reading measure", topic: "Relative & Absolute Units", next: "014",
-    objective: "Keep the content readable by limiting its maximum line length.", incidentTitle: "The reading measure became unpredictable.", incident: "The content surface grows with the viewport and produces lines that are too long to read comfortably. The layout should stay fluid while protecting the reading measure.", evidence: [["Expected", "Readable maximum line length"], ["Observed", "Content expands without a guardrail"], ["Constraint", "Keep the surface fluid below the limit"]], selector: ".reading-surface", html: `<article class="reading-surface"><span>UNIT CHECK 013</span><h2>Readable width is a design decision.</h2><p>Relative units help a surface respond, but a maximum width keeps the reader from travelling across an endless line of text.</p></article>`, base: `.reading-surface { width: 100%; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .reading-surface span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .reading-surface h2 { margin: 14px 0 8px; font: 600 28px/1.15 Georgia, serif; } .reading-surface p { margin: 0; color: #657067; line-height: 1.6; }`, targetCSS: `.reading-surface { max-width: 900px; }`, remember: "A max-width is a guardrail, not a fixed device size.", question: "Which declaration limits the reading surface?", choices: [["max-width: 100%", false], ["max-width: 900px", true]]
+    title: "The Unpredictable Size",
+    property: "maxWidth",
+    starter: "100%",
+    target: "900px",
+    label: "reading measure",
+    topic: "Relative & Absolute Units",
+    next: "014",
+    objective: "Keep the content readable by limiting its maximum line length.",
+    incidentTitle: "The reading measure became unpredictable.",
+    incident:
+      "The content surface grows with the viewport and produces lines that are too long to read comfortably. The layout should stay fluid while protecting the reading measure.",
+    evidence: [
+      ["Expected", "Readable maximum line length"],
+      ["Observed", "Content expands without a guardrail"],
+      ["Constraint", "Keep the surface fluid below the limit"],
+    ],
+    selector: ".reading-surface",
+    html: `<article class="reading-surface"><span>UNIT CHECK 013</span><h2>Readable width is a design decision.</h2><p>Relative units help a surface respond, but a maximum width keeps the reader from travelling across an endless line of text.</p></article>`,
+    base: `.reading-surface { width: 100%; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .reading-surface span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .reading-surface h2 { margin: 14px 0 8px; font: 600 28px/1.15 Georgia, serif; } .reading-surface p { margin: 0; color: #657067; line-height: 1.6; }`,
+    targetCSS: `.reading-surface { max-width: 900px; }`,
+    remember: "A max-width is a guardrail, not a fixed device size.",
+    question: "Which declaration limits the reading surface?",
+    choices: [
+      ["max-width: 100%", false],
+      ["max-width: 900px", true],
+    ],
   },
   "014": {
-    title: "The Overflowing Viewport", property: "overflow", starter: "hidden", target: "auto", label: "evidence panel", topic: "Relative & Absolute Units", next: "015",
-    objective: "Allow content to be reached when the viewport becomes narrower than the panel.", incidentTitle: "The narrow viewport clipped the evidence.", incident: "The evidence panel is wider than the available viewport and the current overflow rule hides the part users still need to reach. Preserve a useful scroll path instead of clipping the report.", evidence: [["Expected", "All content remains reachable"], ["Observed", "Right edge disappears"], ["Constraint", "Keep the existing panel width"]], selector: ".evidence-scroll", html: `<section class="evidence-scroll"><span>VIEWPORT REPORT</span><strong>Long-form evidence panel</strong><div class="evidence-line"><b>Observed:</b> The panel has more detail than the narrow frame can show.</div><div class="evidence-line"><b>Decision:</b> Preserve access to the complete record.</div></section>`, base: `.evidence-scroll { width: 420px; max-width: 100%; min-height: 190px; padding: 24px; border: 1px solid #c6cbc2; background: #173d2c; color: #fffefa; } .evidence-scroll span { display: block; color: #9fc5ad; font: 700 10px monospace; letter-spacing: .1em; } .evidence-scroll strong { display: block; margin: 12px 0 18px; font: 600 25px/1.1 Georgia, serif; } .evidence-scroll .evidence-line { width: 520px; padding: 11px 0; border-top: 1px solid rgba(255,255,255,.3); color: #e4eee7; white-space: nowrap; } .evidence-scroll b { color: #fffefa; }`, targetCSS: `.evidence-scroll { overflow: auto; }`, remember: "Do not clip content when a useful scroll path can preserve it.", question: "Which overflow value preserves access to oversized content?", choices: [["overflow: hidden", false], ["overflow: auto", true]]
+    title: "The Overflowing Viewport",
+    property: "overflow",
+    starter: "hidden",
+    target: "auto",
+    label: "evidence panel",
+    topic: "Relative & Absolute Units",
+    next: "015",
+    objective:
+      "Allow content to be reached when the viewport becomes narrower than the panel.",
+    incidentTitle: "The narrow viewport clipped the evidence.",
+    incident:
+      "The evidence panel is wider than the available viewport and the current overflow rule hides the part users still need to reach. Preserve a useful scroll path instead of clipping the report.",
+    evidence: [
+      ["Expected", "All content remains reachable"],
+      ["Observed", "Right edge disappears"],
+      ["Constraint", "Keep the existing panel width"],
+    ],
+    selector: ".evidence-scroll",
+    html: `<section class="evidence-scroll"><span>VIEWPORT REPORT</span><strong>Long-form evidence panel</strong><div class="evidence-line"><b>Observed:</b> The panel has more detail than the narrow frame can show.</div><div class="evidence-line"><b>Decision:</b> Preserve access to the complete record.</div></section>`,
+    base: `.evidence-scroll { width: 420px; max-width: 100%; min-height: 190px; padding: 24px; border: 1px solid #c6cbc2; background: #173d2c; color: #fffefa; } .evidence-scroll span { display: block; color: #9fc5ad; font: 700 10px monospace; letter-spacing: .1em; } .evidence-scroll strong { display: block; margin: 12px 0 18px; font: 600 25px/1.1 Georgia, serif; } .evidence-scroll .evidence-line { width: 520px; padding: 11px 0; border-top: 1px solid rgba(255,255,255,.3); color: #e4eee7; white-space: nowrap; } .evidence-scroll b { color: #fffefa; }`,
+    targetCSS: `.evidence-scroll { overflow: auto; }`,
+    remember: "Do not clip content when a useful scroll path can preserve it.",
+    question: "Which overflow value preserves access to oversized content?",
+    choices: [
+      ["overflow: hidden", false],
+      ["overflow: auto", true],
+    ],
   },
   "015": {
-    title: "The Formula That Broke", property: "maxWidth", starter: "100%", target: "720px", label: "fluid formula", topic: "Relative & Absolute Units", next: "016",
-    objective: "Limit formula-driven content before it becomes an unreadable wall of text.", incidentTitle: "The responsive formula has no safe maximum.", incident: "The fluid expression works at small widths but becomes an oversized reading surface on a large screen. Keep the formula responsive while adding a maximum that protects the content.", evidence: [["Expected", "Fluid but bounded content"], ["Observed", "Formula grows indefinitely"], ["Constraint", "Keep the fluid width rule"]], selector: ".formula-panel", html: `<article class="formula-panel"><span>SAFE FORMULA</span><h2>Fluid does not mean limitless.</h2><p>Use a responsive width for the available space, then cap the result when the content becomes harder to scan.</p><code>width: calc(100% - 40px);</code></article>`, base: `.formula-panel { width: calc(100% - 40px); padding: 26px; border: 1px solid #c6cbc2; background: #f3f0e6; color: #18221c; } .formula-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .formula-panel h2 { margin: 14px 0 8px; font: 600 28px/1.15 Georgia, serif; } .formula-panel p { margin: 0 0 18px; color: #657067; line-height: 1.55; } .formula-panel code { color: #1f5b43; font: 700 12px monospace; }`, targetCSS: `.formula-panel { max-width: 720px; }`, remember: "Combine fluid sizing with a sensible maximum.", question: "Which guardrail bounds the fluid formula?", choices: [["max-width: 100%", false], ["max-width: 720px", true]]
-  }
+    title: "The Formula That Broke",
+    property: "maxWidth",
+    starter: "100%",
+    target: "720px",
+    label: "fluid formula",
+    topic: "Relative & Absolute Units",
+    next: "016",
+    objective:
+      "Limit formula-driven content before it becomes an unreadable wall of text.",
+    incidentTitle: "The responsive formula has no safe maximum.",
+    incident:
+      "The fluid expression works at small widths but becomes an oversized reading surface on a large screen. Keep the formula responsive while adding a maximum that protects the content.",
+    evidence: [
+      ["Expected", "Fluid but bounded content"],
+      ["Observed", "Formula grows indefinitely"],
+      ["Constraint", "Keep the fluid width rule"],
+    ],
+    selector: ".formula-panel",
+    html: `<article class="formula-panel"><span>SAFE FORMULA</span><h2>Fluid does not mean limitless.</h2><p>Use a responsive width for the available space, then cap the result when the content becomes harder to scan.</p><code>width: calc(100% - 40px);</code></article>`,
+    base: `.formula-panel { width: calc(100% - 40px); padding: 26px; border: 1px solid #c6cbc2; background: #f3f0e6; color: #18221c; } .formula-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .formula-panel h2 { margin: 14px 0 8px; font: 600 28px/1.15 Georgia, serif; } .formula-panel p { margin: 0 0 18px; color: #657067; line-height: 1.55; } .formula-panel code { color: #1f5b43; font: 700 12px monospace; }`,
+    targetCSS: `.formula-panel { max-width: 720px; }`,
+    remember: "Combine fluid sizing with a sensible maximum.",
+    question: "Which guardrail bounds the fluid formula?",
+    choices: [
+      ["max-width: 100%", false],
+      ["max-width: 720px", true],
+    ],
+  },
 };
 
 Object.entries(chapterFourCases).forEach(([id, item]) => {
-  const cssProperty = item.property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+  const cssProperty = item.property.replace(
+    /[A-Z]/g,
+    (char) => `-${char.toLowerCase()}`,
+  );
   window.CASEBOOK_CASES[id] = makeCase({
-    id, fileCode: `C04-${id.slice(-1).padStart(3, "0")}`, chapter: "CH04 Relative & Absolute Units", topic: item.topic, title: item.title,
-    objective: item.objective, incidentTitle: item.incidentTitle, incident: item.incident, evidence: item.evidence, selector: item.selector,
-    starterCSS: `${item.selector} {\n  ${cssProperty}: ${item.starter};\n}`, originalCSS: `${cssProperty}:${item.starter}`, targetCSS: `${cssProperty}:${item.target}`, targetPreviewCSS: item.targetCSS,
-    originalCaption: `Original — ${item.title.toLowerCase()}`, targetCaption: `Target — resolved ${item.title.toLowerCase()}`, previewLabel: item.label, previewHTML: item.html, previewBaseCSS: sharedPreviewCSS + item.base,
-    hints: [["Observation", "Read the expected and observed behavior before editing."], ["Concept", `${cssProperty} controls the unit or viewport behavior described in the incident.`], ["Targeted clue", `Try the documented target value: ${cssProperty}: ${item.target}.`]], checkingTitle: `Inspecting ${item.label}…`, checkingText: " Comparing the rendered result with the approved unit behavior.", successText: " The rendered surface now respects the intended sizing constraint.", validator: "computed-style", expectedProperty: item.property, expectedValue: item.target,
-    rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended unit behavior.`, remember: item.remember, recommendedCSS: `${item.selector} {\n  ${cssProperty}: ${item.target};\n}`, question: item.question, choices: item.choices, correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented unit behavior.`, incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`, guideHref: "field-guide.html#chapter-04", guideLabel: "Review relative and absolute units →", nextCase: item.next, storageKey: `css-casebook-c${id}`
+    id,
+    fileCode: `C04-${id.slice(-1).padStart(3, "0")}`,
+    chapter: "CH04 Relative & Absolute Units",
+    topic: item.topic,
+    title: item.title,
+    objective: item.objective,
+    incidentTitle: item.incidentTitle,
+    incident: item.incident,
+    evidence: item.evidence,
+    selector: item.selector,
+    starterCSS: `${item.selector} {\n  ${cssProperty}: ${item.starter};\n}`,
+    originalCSS: `${cssProperty}:${item.starter}`,
+    targetCSS: `${cssProperty}:${item.target}`,
+    targetPreviewCSS: item.targetCSS,
+    originalCaption: `Original — ${item.title.toLowerCase()}`,
+    targetCaption: `Target — resolved ${item.title.toLowerCase()}`,
+    previewLabel: item.label,
+    previewHTML: item.html,
+    previewBaseCSS: sharedPreviewCSS + item.base,
+    hints: [
+      [
+        "Observation",
+        "Read the expected and observed behavior before editing.",
+      ],
+      [
+        "Concept",
+        `${cssProperty} controls the unit or viewport behavior described in the incident.`,
+      ],
+      [
+        "Targeted clue",
+        `Try the documented target value: ${cssProperty}: ${item.target}.`,
+      ],
+    ],
+    checkingTitle: `Inspecting ${item.label}…`,
+    checkingText:
+      " Comparing the rendered result with the approved unit behavior.",
+    successText:
+      " The rendered surface now respects the intended sizing constraint.",
+    validator: "computed-style",
+    expectedProperty: item.property,
+    expectedValue: item.target,
+    rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended unit behavior.`,
+    remember: item.remember,
+    recommendedCSS: `${item.selector} {\n  ${cssProperty}: ${item.target};\n}`,
+    question: item.question,
+    choices: item.choices,
+    correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented unit behavior.`,
+    incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`,
+    guideHref: "field-guide.html#chapter-04",
+    guideLabel: "Review relative and absolute units →",
+    nextCase: item.next,
+    storageKey: `css-casebook-c${id}`,
   });
 });
 
 function installAuthoredChapterCases(chapterCode, chapterName, entries) {
   entries.forEach((item) => {
-    const cssProperty = item.property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+    const cssProperty = item.property.replace(
+      /[A-Z]/g,
+      (char) => `-${char.toLowerCase()}`,
+    );
     const narrative = caseNarratives[item.id];
     const selector = `.authored-case-${item.id}`;
     const label = item.label;
     const html = `<article class="authored-surface authored-case-${item.id}"><span>${label}</span><h3>${item.title}</h3><p>${item.prompt}</p><div class="authored-detail"><b>Expected</b><em>${narrative?.[2] || item.expected}</em></div></article>`;
-    const base = sharedPreviewCSS + `.authored-surface { width: min(100%, 540px); min-height: 210px; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .authored-surface > span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .authored-surface h3 { margin: 0; font: 600 27px/1.1 Georgia, serif; } .authored-surface p { max-width: 430px; margin: 0; color: #657067; line-height: 1.5; } .authored-detail { display: flex; gap: 10px; align-items: baseline; padding-top: 12px; border-top: 1px solid #d5d8d1; font-size: 12px; } .authored-detail b { color: #1f5b43; font: 700 10px monospace; letter-spacing: .08em; text-transform: uppercase; } .authored-detail em { color: #657067; font-style: normal; }`;
+    const base =
+      sharedPreviewCSS +
+      `.authored-surface { width: min(100%, 540px); min-height: 210px; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .authored-surface > span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .authored-surface h3 { margin: 0; font: 600 27px/1.1 Georgia, serif; } .authored-surface p { max-width: 430px; margin: 0; color: #657067; line-height: 1.5; } .authored-detail { display: flex; gap: 10px; align-items: baseline; padding-top: 12px; border-top: 1px solid #d5d8d1; font-size: 12px; } .authored-detail b { color: #1f5b43; font: 700 10px monospace; letter-spacing: .08em; text-transform: uppercase; } .authored-detail em { color: #657067; font-style: normal; }`;
     window.CASEBOOK_CASES[item.id] = makeCase({
-      id: item.id, fileCode: `C${chapterCode}-${item.id.slice(-1).padStart(3, "0")}`, chapter: `CH${chapterCode} ${chapterName}`, topic: chapterName, title: item.title,
-      objective: item.objective, incidentTitle: narrative?.[0] || `${item.title} needs investigation.`, incident: narrative?.[1] || item.incident, evidence: [["Expected", narrative?.[2] || item.expected], ["Observed", narrative?.[3] || item.observed], ["Constraint", "Keep the trusted HTML"]], selector,
-      starterCSS: `${selector} {\n  ${cssProperty}: ${item.starter};\n}`, originalCSS: `${cssProperty}:${item.starter}`, targetCSS: `${cssProperty}:${item.target}`, targetPreviewCSS: `${selector} { ${cssProperty}: ${item.target}; }`, originalCaption: `Original — ${item.title.toLowerCase()}`, targetCaption: `Target — resolved ${item.title.toLowerCase()}`, previewLabel: label, previewHTML: html, previewBaseCSS: base,
-      hints: [["Observation", "Read the expected and observed behavior before editing."], ["Concept", `${cssProperty} controls the chapter concept described in the incident.`], ["Targeted clue", `Try the documented target value: ${cssProperty}: ${item.target}.`]], checkingTitle: `Inspecting ${label.toLowerCase()}…`, checkingText: " Comparing the rendered result with the approved chapter pattern.", successText: " The rendered case surface now matches the target behavior.", validator: "computed-style", expectedProperty: item.property, expectedValue: item.target,
-      rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended behavior.`, remember: item.remember, recommendedCSS: `${selector} {\n  ${cssProperty}: ${item.target};\n}`, question: item.question, choices: [[item.starter, false], [item.target, true]], correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented behavior.`, incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`, guideHref: `field-guide.html#chapter-${chapterCode}`, guideLabel: `Review ${chapterName} →`, nextCase: item.next, storageKey: `css-casebook-c${item.id}`
+      id: item.id,
+      fileCode: `C${chapterCode}-${item.id.slice(-1).padStart(3, "0")}`,
+      chapter: `CH${chapterCode} ${chapterName}`,
+      topic: chapterName,
+      title: item.title,
+      objective: item.objective,
+      incidentTitle: narrative?.[0] || `${item.title} needs investigation.`,
+      incident: narrative?.[1] || item.incident,
+      evidence: [
+        ["Expected", narrative?.[2] || item.expected],
+        ["Observed", narrative?.[3] || item.observed],
+        ["Constraint", "Keep the trusted HTML"],
+      ],
+      selector,
+      starterCSS: `${selector} {\n  ${cssProperty}: ${item.starter};\n}`,
+      originalCSS: `${cssProperty}:${item.starter}`,
+      targetCSS: `${cssProperty}:${item.target}`,
+      targetPreviewCSS: `${selector} { ${cssProperty}: ${item.target}; }`,
+      originalCaption: `Original — ${item.title.toLowerCase()}`,
+      targetCaption: `Target — resolved ${item.title.toLowerCase()}`,
+      previewLabel: label,
+      previewHTML: html,
+      previewBaseCSS: base,
+      hints: [
+        [
+          "Observation",
+          "Read the expected and observed behavior before editing.",
+        ],
+        [
+          "Concept",
+          `${cssProperty} controls the chapter concept described in the incident.`,
+        ],
+        [
+          "Targeted clue",
+          `Try the documented target value: ${cssProperty}: ${item.target}.`,
+        ],
+      ],
+      checkingTitle: `Inspecting ${label.toLowerCase()}…`,
+      checkingText:
+        " Comparing the rendered result with the approved chapter pattern.",
+      successText:
+        " The rendered case surface now matches the target behavior.",
+      validator: "computed-style",
+      expectedProperty: item.property,
+      expectedValue: item.target,
+      rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended behavior.`,
+      remember: item.remember,
+      recommendedCSS: `${selector} {\n  ${cssProperty}: ${item.target};\n}`,
+      question: item.question,
+      choices: [
+        [item.starter, false],
+        [item.target, true],
+      ],
+      correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented behavior.`,
+      incorrectFeedback: `Not quite. The target value is ${cssProperty}: ${item.target}.`,
+      guideHref: `field-guide.html#chapter-${chapterCode}`,
+      guideLabel: `Review ${chapterName} →`,
+      nextCase: item.next,
+      storageKey: `css-casebook-c${item.id}`,
     });
   });
 }
 
 installAuthoredChapterCases("05", "Pseudo-classes & Pseudo-elements", [
-  { id: "016", title: "The Unresponsive Button", property: "outlineStyle", starter: "none", target: "solid", label: "FOCUS STATE", prompt: "A keyboard focus ring should be obvious.", objective: "Restore a visible focus indicator when the button receives keyboard focus.", expected: "Visible focus ring", observed: "Focused control looks unchanged", remember: "Focus is an interaction state that must remain visible.", question: "Which outline style keeps focus visible?", next: "017" },
-  { id: "017", title: "The Miscounted Child", property: "fontWeight", starter: "400", target: "700", label: "STRUCTURE", prompt: "The intended evidence row should carry the emphasis.", objective: "Emphasize the intended structural item without changing the HTML order.", expected: "The intended evidence row is emphasized", observed: "An unrelated sibling is bold", remember: "Check whether the design means nth-child or nth-of-type.", question: "Which value emphasizes the matched structural item?", next: "018" },
-  { id: "018", title: "The Content That Appeared Twice", property: "borderStyle", starter: "double", target: "solid", label: "GENERATED PART", prompt: "One generated visual boundary is enough.", objective: "Use one clear generated-content boundary instead of a doubled visual treatment.", expected: "One clear visual boundary", observed: "Double treatment around the note", remember: "Pseudo-elements add a visual part; keep the source content singular.", question: "Which border style removes the doubled treatment?", next: "019" }
+  {
+    id: "016",
+    title: "The Unresponsive Button",
+    property: "outlineStyle",
+    starter: "none",
+    target: "solid",
+    label: "FOCUS STATE",
+    prompt: "A keyboard focus ring should be obvious.",
+    objective:
+      "Restore a visible focus indicator when the button receives keyboard focus.",
+    expected: "Visible focus ring",
+    observed: "Focused control looks unchanged",
+    remember: "Focus is an interaction state that must remain visible.",
+    question: "Which outline style keeps focus visible?",
+    next: "017",
+  },
+  {
+    id: "017",
+    title: "The Miscounted Child",
+    property: "fontWeight",
+    starter: "400",
+    target: "700",
+    label: "STRUCTURE",
+    prompt: "The intended evidence row should carry the emphasis.",
+    objective:
+      "Emphasize the intended structural item without changing the HTML order.",
+    expected: "The intended evidence row is emphasized",
+    observed: "An unrelated sibling is bold",
+    remember: "Check whether the design means nth-child or nth-of-type.",
+    question: "Which value emphasizes the matched structural item?",
+    next: "018",
+  },
+  {
+    id: "018",
+    title: "The Content That Appeared Twice",
+    property: "borderStyle",
+    starter: "double",
+    target: "solid",
+    label: "GENERATED PART",
+    prompt: "One generated visual boundary is enough.",
+    objective:
+      "Use one clear generated-content boundary instead of a doubled visual treatment.",
+    expected: "One clear visual boundary",
+    observed: "Double treatment around the note",
+    remember:
+      "Pseudo-elements add a visual part; keep the source content singular.",
+    question: "Which border style removes the doubled treatment?",
+    next: "019",
+  },
 ]);
 
 installAuthoredChapterCases("06", "CSS Colors", [
-  { id: "019", title: "The Invisible Text", property: "color", starter: "#fffefa", target: "#173d2c", label: "COLOR NOTE", prompt: "The status label must remain readable on its light surface.", objective: "Restore enough foreground contrast for the text to remain readable.", expected: "Readable status text", observed: "Foreground blends into background", remember: "Judge the final foreground and background pair, not either color alone.", question: "Which foreground color restores readable contrast?", next: "020" },
-  { id: "020", title: "The Shadow That Escaped", property: "boxShadow", starter: "none", target: "0 4px 12px 0 rgba(0,0,0,.2)", label: "DEPTH", prompt: "The active card needs a quiet separation from the page.", objective: "Bring back the restrained shadow that separates the card from the page.", expected: "Quiet separation from the page", observed: "Card edge visually escapes", remember: "Remember box-shadow as X, Y, blur, spread, color.", question: "Which value restores the card shadow?", next: "021" },
-  { id: "021", title: "The Transparent Overlay", property: "backgroundColor", starter: "rgba(255,255,255,1)", target: "rgba(255,255,255,.72)", label: "LAYER", prompt: "The illustration beneath the panel should remain subtly visible.", objective: "Restore the translucent overlay so the background remains part of the composition.", expected: "Background remains subtly visible", observed: "Overlay blocks the layer beneath", remember: "Transparency changes the color users actually perceive.", question: "Which value lets the layer beneath remain visible?", next: "022" }
+  {
+    id: "019",
+    title: "The Invisible Text",
+    property: "color",
+    starter: "#fffefa",
+    target: "#173d2c",
+    label: "COLOR NOTE",
+    prompt: "The status label must remain readable on its light surface.",
+    objective:
+      "Restore enough foreground contrast for the text to remain readable.",
+    expected: "Readable status text",
+    observed: "Foreground blends into background",
+    remember:
+      "Judge the final foreground and background pair, not either color alone.",
+    question: "Which foreground color restores readable contrast?",
+    next: "020",
+  },
+  {
+    id: "020",
+    title: "The Shadow That Escaped",
+    property: "boxShadow",
+    starter: "none",
+    target: "0 4px 12px 0 rgba(0,0,0,.2)",
+    label: "DEPTH",
+    prompt: "The active card needs a quiet separation from the page.",
+    objective:
+      "Bring back the restrained shadow that separates the card from the page.",
+    expected: "Quiet separation from the page",
+    observed: "Card edge visually escapes",
+    remember: "Remember box-shadow as X, Y, blur, spread, color.",
+    question: "Which value restores the card shadow?",
+    next: "021",
+  },
+  {
+    id: "021",
+    title: "The Transparent Overlay",
+    property: "backgroundColor",
+    starter: "rgba(255,255,255,1)",
+    target: "rgba(255,255,255,.72)",
+    label: "LAYER",
+    prompt: "The illustration beneath the panel should remain subtly visible.",
+    objective:
+      "Restore the translucent overlay so the background remains part of the composition.",
+    expected: "Background remains subtly visible",
+    observed: "Overlay blocks the layer beneath",
+    remember: "Transparency changes the color users actually perceive.",
+    question: "Which value lets the layer beneath remain visible?",
+    next: "022",
+  },
 ]);
 
 installAuthoredChapterCases("07", "Styling Forms", [
-  { id: "022", title: "The Broken Checkbox", property: "appearance", starter: "auto", target: "none", label: "FORM FIELD", prompt: "The design system needs a predictable checkbox starting point.", objective: "Create a predictable starting point for a custom checkbox while keeping the state work visible.", expected: "Predictable custom-control base", observed: "Browser chrome varies", remember: "appearance: none removes native styling; it does not create the replacement.", question: "Which value creates the custom-control starting point?", next: "023" },
-  { id: "023", title: "The Unclear Error State", property: "borderColor", starter: "#738078", target: "#a44d2f", label: "VALIDATION", prompt: "The invalid field should look different from a neutral field.", objective: "Make the invalid control state visible without relying on color alone.", expected: "Error state is visually distinct", observed: "Invalid control looks neutral", remember: "Error styling should be obvious and should support the message text.", question: "Which border color signals the invalid state?", next: "024" },
-  { id: "024", title: "The Label That Lost Its Target", property: "display", starter: "none", target: "block", label: "LABEL", prompt: "The control needs a visible explanation of what it asks for.", objective: "Keep the label present so the control remains understandable and usable.", expected: "Control has a visible label", observed: "Field appears without context", remember: "A visible, associated label is not a placeholder.", question: "Which display value keeps the label visible?", next: "025" }
+  {
+    id: "022",
+    title: "The Broken Checkbox",
+    property: "appearance",
+    starter: "auto",
+    target: "none",
+    label: "FORM FIELD",
+    prompt: "The design system needs a predictable checkbox starting point.",
+    objective:
+      "Create a predictable starting point for a custom checkbox while keeping the state work visible.",
+    expected: "Predictable custom-control base",
+    observed: "Browser chrome varies",
+    remember:
+      "appearance: none removes native styling; it does not create the replacement.",
+    question: "Which value creates the custom-control starting point?",
+    next: "023",
+  },
+  {
+    id: "023",
+    title: "The Unclear Error State",
+    property: "borderColor",
+    starter: "#738078",
+    target: "#a44d2f",
+    label: "VALIDATION",
+    prompt: "The invalid field should look different from a neutral field.",
+    objective:
+      "Make the invalid control state visible without relying on color alone.",
+    expected: "Error state is visually distinct",
+    observed: "Invalid control looks neutral",
+    remember:
+      "Error styling should be obvious and should support the message text.",
+    question: "Which border color signals the invalid state?",
+    next: "024",
+  },
+  {
+    id: "024",
+    title: "The Label That Lost Its Target",
+    property: "display",
+    starter: "none",
+    target: "block",
+    label: "LABEL",
+    prompt: "The control needs a visible explanation of what it asks for.",
+    objective:
+      "Keep the label present so the control remains understandable and usable.",
+    expected: "Control has a visible label",
+    observed: "Field appears without context",
+    remember: "A visible, associated label is not a placeholder.",
+    question: "Which display value keeps the label visible?",
+    next: "025",
+  },
 ]);
 
 installAuthoredChapterCases("08", "Layouts & Effects", [
-  { id: "025", title: "The Overflowing Card", property: "overflow", starter: "visible", target: "hidden", label: "LAYOUT", prompt: "The decorative edge treatment should stay inside its card.", objective: "Contain the decorative edge treatment inside the card boundary.", expected: "Decoration stays inside card", observed: "Decoration leaks outside", remember: "Clip only content that is intentionally decorative or safely replaceable.", question: "Which overflow value contains the decoration?", next: "026" },
-  { id: "026", title: "The Unexpected Extra Width", property: "boxSizing", starter: "content-box", target: "border-box", label: "BOX MODEL", prompt: "The declared card width should include its padding and border.", objective: "Keep the declared card width inclusive of its padding and border.", expected: "Rendered width respects declaration", observed: "Card exceeds its track", remember: "border-box includes content, padding and border in the declared size.", question: "Which box-sizing value includes padding and border?", next: "027" },
-  { id: "027", title: "The Transforming Hit Area", property: "transform", starter: "none", target: "translateY(-4px)", label: "EFFECT", prompt: "Lift the card visually without disturbing its neighbors.", objective: "Lift the card visually without changing the layout space reserved for it.", expected: "Visual lift without reflow", observed: "Card position changes the layout model", remember: "Transforms move pixels; they do not rewrite normal flow.", question: "Which transform creates the visual lift?", next: "028" }
+  {
+    id: "025",
+    title: "The Overflowing Card",
+    property: "overflow",
+    starter: "visible",
+    target: "hidden",
+    label: "LAYOUT",
+    prompt: "The decorative edge treatment should stay inside its card.",
+    objective:
+      "Contain the decorative edge treatment inside the card boundary.",
+    expected: "Decoration stays inside card",
+    observed: "Decoration leaks outside",
+    remember:
+      "Clip only content that is intentionally decorative or safely replaceable.",
+    question: "Which overflow value contains the decoration?",
+    next: "026",
+  },
+  {
+    id: "026",
+    title: "The Unexpected Extra Width",
+    property: "boxSizing",
+    starter: "content-box",
+    target: "border-box",
+    label: "BOX MODEL",
+    prompt: "The declared card width should include its padding and border.",
+    objective:
+      "Keep the declared card width inclusive of its padding and border.",
+    expected: "Rendered width respects declaration",
+    observed: "Card exceeds its track",
+    remember:
+      "border-box includes content, padding and border in the declared size.",
+    question: "Which box-sizing value includes padding and border?",
+    next: "027",
+  },
+  {
+    id: "027",
+    title: "The Transforming Hit Area",
+    property: "transform",
+    starter: "none",
+    target: "translateY(-4px)",
+    label: "EFFECT",
+    prompt: "Lift the card visually without disturbing its neighbors.",
+    objective:
+      "Lift the card visually without changing the layout space reserved for it.",
+    expected: "Visual lift without reflow",
+    observed: "Card position changes the layout model",
+    remember: "Transforms move pixels; they do not rewrite normal flow.",
+    question: "Which transform creates the visual lift?",
+    next: "028",
+  },
 ]);
 
 installAuthoredChapterCases("10", "CSS Typography", [
-  { id: "028", title: "The Misaligned Heading", property: "fontWeight", starter: "400", target: "700", label: "TYPE NOTE", prompt: "The page title should lead through weight as well as size.", objective: "Restore the heading weight so its role is clear in the type hierarchy.", expected: "Heading leads through weight", observed: "Heading is visually equal to labels", remember: "Weight is one part of hierarchy; line-height and contrast matter too.", question: "Which weight restores the heading hierarchy?", next: "029" },
-  { id: "029", title: "The Missing Web Font", property: "fontFamily", starter: "Arial", target: "Georgia", label: "DISPLAY FACE", prompt: "The editorial display face should appear with a predictable fallback.", objective: "Apply the intended display face while retaining a predictable fallback in the stack.", expected: "Display face with fallback", observed: "Everything uses the body face", remember: "A fallback is part of the design, not an afterthought.", question: "Which family applies the intended display face?", next: "030" },
-  { id: "030", title: "The Line-height That Drifted", property: "lineHeight", starter: "1", target: "1.6", label: "READING COPY", prompt: "Paragraph lines should have enough room for comfortable reading.", objective: "Restore enough line spacing for the paragraph to remain readable.", expected: "Comfortable line spacing", observed: "Lines feel compressed", remember: "Leading controls the distance between lines; it is not the same as tracking.", question: "Which line-height restores readable spacing?", next: "031" }
+  {
+    id: "028",
+    title: "The Misaligned Heading",
+    property: "fontWeight",
+    starter: "400",
+    target: "700",
+    label: "TYPE NOTE",
+    prompt: "The page title should lead through weight as well as size.",
+    objective:
+      "Restore the heading weight so its role is clear in the type hierarchy.",
+    expected: "Heading leads through weight",
+    observed: "Heading is visually equal to labels",
+    remember:
+      "Weight is one part of hierarchy; line-height and contrast matter too.",
+    question: "Which weight restores the heading hierarchy?",
+    next: "029",
+  },
+  {
+    id: "029",
+    title: "The Missing Web Font",
+    property: "fontFamily",
+    starter: "Arial",
+    target: "Georgia",
+    label: "DISPLAY FACE",
+    prompt:
+      "The editorial display face should appear with a predictable fallback.",
+    objective:
+      "Apply the intended display face while retaining a predictable fallback in the stack.",
+    expected: "Display face with fallback",
+    observed: "Everything uses the body face",
+    remember: "A fallback is part of the design, not an afterthought.",
+    question: "Which family applies the intended display face?",
+    next: "030",
+  },
+  {
+    id: "030",
+    title: "The Line-height That Drifted",
+    property: "lineHeight",
+    starter: "1",
+    target: "1.6",
+    label: "READING COPY",
+    prompt: "Paragraph lines should have enough room for comfortable reading.",
+    objective:
+      "Restore enough line spacing for the paragraph to remain readable.",
+    expected: "Comfortable line spacing",
+    observed: "Lines feel compressed",
+    remember:
+      "Leading controls the distance between lines; it is not the same as tracking.",
+    question: "Which line-height restores readable spacing?",
+    next: "031",
+  },
 ]);
 
 installAuthoredChapterCases("11", "CSS Accessibility", [
-  { id: "031", title: "The Invisible Focus", property: "outlineStyle", starter: "none", target: "solid", label: "FOCUS", prompt: "Keyboard users need a reliable location cue.", objective: "Restore the visible focus ring required for keyboard navigation.", expected: "Focus remains obvious", observed: "Focus state cannot be located", remember: "If focus disappears, keyboard users lose their place.", question: "Which outline style restores keyboard focus?", next: "032" },
-  { id: "032", title: "The Hidden-but-Readable Button", property: "maxWidth", starter: "0px", target: "240px", label: "ACCESS", prompt: "The accessible action needs a usable visual box.", objective: "Keep the accessible button text available within a usable visual area.", expected: "Action retains a usable width", observed: "Button collapses to nothing", remember: "Visual hiding and semantic hiding are different jobs.", question: "Which maximum width keeps the action usable?", next: "033" },
-  { id: "033", title: "The Contrast That Failed", property: "color", starter: "#fffefa", target: "#173d2c", label: "CONTRAST", prompt: "The status message must pass contrast review on its light surface.", objective: "Restore a darker text color that can be checked against the light surface.", expected: "Text meets contrast target", observed: "Color is too pale", remember: "Do not communicate meaning through color alone.", question: "Which text color restores stronger contrast?", next: "034" }
+  {
+    id: "031",
+    title: "The Invisible Focus",
+    property: "outlineStyle",
+    starter: "none",
+    target: "solid",
+    label: "FOCUS",
+    prompt: "Keyboard users need a reliable location cue.",
+    objective:
+      "Restore the visible focus ring required for keyboard navigation.",
+    expected: "Focus remains obvious",
+    observed: "Focus state cannot be located",
+    remember: "If focus disappears, keyboard users lose their place.",
+    question: "Which outline style restores keyboard focus?",
+    next: "032",
+  },
+  {
+    id: "032",
+    title: "The Hidden-but-Readable Button",
+    property: "maxWidth",
+    starter: "0px",
+    target: "240px",
+    label: "ACCESS",
+    prompt: "The accessible action needs a usable visual box.",
+    objective:
+      "Keep the accessible button text available within a usable visual area.",
+    expected: "Action retains a usable width",
+    observed: "Button collapses to nothing",
+    remember: "Visual hiding and semantic hiding are different jobs.",
+    question: "Which maximum width keeps the action usable?",
+    next: "033",
+  },
+  {
+    id: "033",
+    title: "The Contrast That Failed",
+    property: "color",
+    starter: "#fffefa",
+    target: "#173d2c",
+    label: "CONTRAST",
+    prompt:
+      "The status message must pass contrast review on its light surface.",
+    objective:
+      "Restore a darker text color that can be checked against the light surface.",
+    expected: "Text meets contrast target",
+    observed: "Color is too pale",
+    remember: "Do not communicate meaning through color alone.",
+    question: "Which text color restores stronger contrast?",
+    next: "034",
+  },
 ]);
 
 installAuthoredChapterCases("12", "CSS Positioning", [
-  { id: "034", title: "The Stubborn Navbar", property: "position", starter: "static", target: "sticky", label: "POSITION", prompt: "The case navigation should remain available during a long read.", objective: "Keep the navigation available while the user moves through a long case file.", expected: "Navigation stays available", observed: "Navigation disappears above the viewport", remember: "Sticky remains in flow until it reaches its inset threshold.", question: "Which position value keeps the navbar available?", next: "035" },
-  { id: "035", title: "The Badge in the Wrong Corner", property: "position", starter: "static", target: "absolute", label: "ANCHOR", prompt: "The badge should sit in the positioned card corner.", objective: "Anchor the badge to the positioned card instead of the page flow.", expected: "Badge anchors to card corner", observed: "Badge occupies normal flow", remember: "Absolute positioning needs a containing block you can name.", question: "Which position value removes the badge from normal flow?", next: "036" },
-  { id: "036", title: "The Layer Behind the Modal", property: "zIndex", starter: "0", target: "100", label: "STACK", prompt: "The modal layer should sit above the page content.", objective: "Place the modal layer above the page content within its stacking context.", expected: "Modal is above page content", observed: "Page layer covers modal", remember: "A large z-index cannot escape an ancestor stacking context.", question: "Which value raises the modal layer?", next: "037" }
+  {
+    id: "034",
+    title: "The Stubborn Navbar",
+    property: "position",
+    starter: "static",
+    target: "sticky",
+    label: "POSITION",
+    prompt: "The case navigation should remain available during a long read.",
+    objective:
+      "Keep the navigation available while the user moves through a long case file.",
+    expected: "Navigation stays available",
+    observed: "Navigation disappears above the viewport",
+    remember: "Sticky remains in flow until it reaches its inset threshold.",
+    question: "Which position value keeps the navbar available?",
+    next: "035",
+  },
+  {
+    id: "035",
+    title: "The Badge in the Wrong Corner",
+    property: "position",
+    starter: "static",
+    target: "absolute",
+    label: "ANCHOR",
+    prompt: "The badge should sit in the positioned card corner.",
+    objective:
+      "Anchor the badge to the positioned card instead of the page flow.",
+    expected: "Badge anchors to card corner",
+    observed: "Badge occupies normal flow",
+    remember: "Absolute positioning needs a containing block you can name.",
+    question: "Which position value removes the badge from normal flow?",
+    next: "036",
+  },
+  {
+    id: "036",
+    title: "The Layer Behind the Modal",
+    property: "zIndex",
+    starter: "0",
+    target: "100",
+    label: "STACK",
+    prompt: "The modal layer should sit above the page content.",
+    objective:
+      "Place the modal layer above the page content within its stacking context.",
+    expected: "Modal is above page content",
+    observed: "Page layer covers modal",
+    remember: "A large z-index cannot escape an ancestor stacking context.",
+    question: "Which value raises the modal layer?",
+    next: "037",
+  },
 ]);
 
 installAuthoredChapterCases("13", "CSS Attribute Selectors", [
-  { id: "037", title: "The Selector Mystery", property: "textDecorationLine", starter: "none", target: "underline", label: "ATTRIBUTE", prompt: "The matched resource link needs a visible cue.", objective: "Make the attribute-matched link visibly distinct from ordinary text.", expected: "Matched link is recognizable", observed: "Matched link looks ordinary", remember: "Start from the attribute relationship, then add only the specificity you need.", question: "Which value distinguishes the matched link?", next: "038" },
-  { id: "038", title: "The Wrong Download Link", property: "color", starter: "#173d2c", target: "#a44d2f", label: "DOWNLOAD", prompt: "The PDF download should signal its file type.", objective: "Signal the PDF download link with the intended file-type treatment.", expected: "Download link is distinct", observed: "File type is invisible", remember: "The $= operator matches the end of an attribute value.", question: "Which color applies the download treatment?", next: "039" },
-  { id: "039", title: "The Language That Was Missed", property: "fontStyle", starter: "normal", target: "italic", label: "LANGUAGE", prompt: "The language-specific note should be visibly signposted.", objective: "Apply the language-specific typographic cue to the matched content.", expected: "Language variant is signposted", observed: "Language variant looks unmarked", remember: "The |= operator matches a language token such as en or en-US.", question: "Which style marks the language-specific note?", next: "040" }
+  {
+    id: "037",
+    title: "The Selector Mystery",
+    property: "textDecorationLine",
+    starter: "none",
+    target: "underline",
+    label: "ATTRIBUTE",
+    prompt: "The matched resource link needs a visible cue.",
+    objective:
+      "Make the attribute-matched link visibly distinct from ordinary text.",
+    expected: "Matched link is recognizable",
+    observed: "Matched link looks ordinary",
+    remember:
+      "Start from the attribute relationship, then add only the specificity you need.",
+    question: "Which value distinguishes the matched link?",
+    next: "038",
+  },
+  {
+    id: "038",
+    title: "The Wrong Download Link",
+    property: "color",
+    starter: "#173d2c",
+    target: "#a44d2f",
+    label: "DOWNLOAD",
+    prompt: "The PDF download should signal its file type.",
+    objective:
+      "Signal the PDF download link with the intended file-type treatment.",
+    expected: "Download link is distinct",
+    observed: "File type is invisible",
+    remember: "The $= operator matches the end of an attribute value.",
+    question: "Which color applies the download treatment?",
+    next: "039",
+  },
+  {
+    id: "039",
+    title: "The Language That Was Missed",
+    property: "fontStyle",
+    starter: "normal",
+    target: "italic",
+    label: "LANGUAGE",
+    prompt: "The language-specific note should be visibly signposted.",
+    objective:
+      "Apply the language-specific typographic cue to the matched content.",
+    expected: "Language variant is signposted",
+    observed: "Language variant looks unmarked",
+    remember: "The |= operator matches a language token such as en or en-US.",
+    question: "Which style marks the language-specific note?",
+    next: "040",
+  },
 ]);
 
 installAuthoredChapterCases("14", "Responsive Web Design", [
-  { id: "040", title: "The Broken Mobile Layout", property: "maxWidth", starter: "none", target: "100%", label: "NARROW VIEW", prompt: "The content surface should stay inside a narrow viewport.", objective: "Keep the content surface within the viewport on narrow screens.", expected: "Surface fits viewport", observed: "Horizontal overflow appears", remember: "Fluid foundations come before breakpoint rules.", question: "Which maximum width keeps the surface fluid?", next: "041" },
-  { id: "041", title: "The Desktop-only Button", property: "display", starter: "none", target: "block", label: "ACTION", prompt: "The primary action must remain available on mobile.", objective: "Make the action available when the responsive layout calls for it.", expected: "Primary action remains available", observed: "Button disappears at the wrong state", remember: "A responsive change should preserve access to essential actions.", question: "Which display value keeps the action available?", next: "042" },
-  { id: "042", title: "The Breakpoint That Came Too Early", property: "overflow", starter: "hidden", target: "auto", label: "BREAKPOINT", prompt: "Tight space should preserve access while the layout adapts.", objective: "Preserve access to the layout when its content exceeds the available width.", expected: "Content remains reachable", observed: "Breakpoint state clips the surface", remember: "A breakpoint should mark a content change, not a device label.", question: "Which overflow value preserves the responsive surface?", next: "043" }
+  {
+    id: "040",
+    title: "The Broken Mobile Layout",
+    property: "maxWidth",
+    starter: "none",
+    target: "100%",
+    label: "NARROW VIEW",
+    prompt: "The content surface should stay inside a narrow viewport.",
+    objective:
+      "Keep the content surface within the viewport on narrow screens.",
+    expected: "Surface fits viewport",
+    observed: "Horizontal overflow appears",
+    remember: "Fluid foundations come before breakpoint rules.",
+    question: "Which maximum width keeps the surface fluid?",
+    next: "041",
+  },
+  {
+    id: "041",
+    title: "The Desktop-only Button",
+    property: "display",
+    starter: "none",
+    target: "block",
+    label: "ACTION",
+    prompt: "The primary action must remain available on mobile.",
+    objective:
+      "Make the action available when the responsive layout calls for it.",
+    expected: "Primary action remains available",
+    observed: "Button disappears at the wrong state",
+    remember:
+      "A responsive change should preserve access to essential actions.",
+    question: "Which display value keeps the action available?",
+    next: "042",
+  },
+  {
+    id: "042",
+    title: "The Breakpoint That Came Too Early",
+    property: "overflow",
+    starter: "hidden",
+    target: "auto",
+    label: "BREAKPOINT",
+    prompt: "Tight space should preserve access while the layout adapts.",
+    objective:
+      "Preserve access to the layout when its content exceeds the available width.",
+    expected: "Content remains reachable",
+    observed: "Breakpoint state clips the surface",
+    remember: "A breakpoint should mark a content change, not a device label.",
+    question: "Which overflow value preserves the responsive surface?",
+    next: "043",
+  },
 ]);
 
 installAuthoredChapterCases("15", "CSS Grid", [
-  { id: "043", title: "The Collapsed Gallery", property: "display", starter: "block", target: "grid", label: "GRID", prompt: "The cards should form a two-dimensional gallery.", objective: "Restore the two-dimensional gallery layout.", expected: "Cards form a gallery", observed: "Cards become a long stack", remember: "Grid is the right model when rows and columns matter together.", question: "Which display value restores the gallery?", next: "044" },
-  { id: "044", title: "The Misplaced Sidebar", property: "gridTemplateColumns", starter: "1fr", target: "200px 1fr", label: "TRACKS", prompt: "The sidebar needs its own track beside flexible content.", objective: "Give the sidebar its track and let the main content use the remaining space.", expected: "Sidebar and main have separate tracks", observed: "Sidebar steals the content track", remember: "Define the track structure before placing items.", question: "Which track definition creates sidebar plus main?", next: "045" },
-  { id: "045", title: "The Track That Would Not Stretch", property: "gridColumn", starter: "auto", target: "1 / -1", label: "PLACEMENT", prompt: "The banner should span the full explicit grid width.", objective: "Make the banner span the full explicit grid width.", expected: "Banner spans the gallery", observed: "Banner stops at one column", remember: "1 / -1 spans from the first grid line to the last.", question: "Which grid-column value spans the full gallery?", next: "046" }
+  {
+    id: "043",
+    title: "The Collapsed Gallery",
+    property: "display",
+    starter: "block",
+    target: "grid",
+    label: "GRID",
+    prompt: "The cards should form a two-dimensional gallery.",
+    objective: "Restore the two-dimensional gallery layout.",
+    expected: "Cards form a gallery",
+    observed: "Cards become a long stack",
+    remember: "Grid is the right model when rows and columns matter together.",
+    question: "Which display value restores the gallery?",
+    next: "044",
+  },
+  {
+    id: "044",
+    title: "The Misplaced Sidebar",
+    property: "gridTemplateColumns",
+    starter: "1fr",
+    target: "200px 1fr",
+    label: "TRACKS",
+    prompt: "The sidebar needs its own track beside flexible content.",
+    objective:
+      "Give the sidebar its track and let the main content use the remaining space.",
+    expected: "Sidebar and main have separate tracks",
+    observed: "Sidebar steals the content track",
+    remember: "Define the track structure before placing items.",
+    question: "Which track definition creates sidebar plus main?",
+    next: "045",
+  },
+  {
+    id: "045",
+    title: "The Track That Would Not Stretch",
+    property: "gridColumn",
+    starter: "auto",
+    target: "1 / -1",
+    label: "PLACEMENT",
+    prompt: "The banner should span the full explicit grid width.",
+    objective: "Make the banner span the full explicit grid width.",
+    expected: "Banner spans the gallery",
+    observed: "Banner stops at one column",
+    remember: "1 / -1 spans from the first grid line to the last.",
+    question: "Which grid-column value spans the full gallery?",
+    next: "046",
+  },
 ]);
 
 installAuthoredChapterCases("16", "CSS Animations", [
-  { id: "046", title: "The Animation That Never Ends", property: "animationIterationCount", starter: "infinite", target: "1", label: "MOTION", prompt: "The entrance animation should settle instead of repeating forever.", objective: "Let the entrance animation finish instead of repeating forever.", expected: "Animation completes once", observed: "Animation loops continuously", remember: "Iteration count controls repeats; essential information should not depend on motion.", question: "Which count lets the animation finish?", next: "047" },
-  { id: "047", title: "The Button That Moves Too Much", property: "animationDuration", starter: "100ms", target: "600ms", label: "TIMING", prompt: "The button movement should be comfortable to follow.", objective: "Slow the movement enough that the action remains comfortable to follow.", expected: "Motion has a comfortable duration", observed: "Motion is too sudden", remember: "Use timing as communication, not as noise.", question: "Which duration makes the motion readable?", next: "048" },
-  { id: "048", title: "The Motion That Ignored Preferences", property: "animationName", starter: "fadeIn", target: "none", label: "PREFERENCE", prompt: "Reduced-motion users should not receive nonessential animation.", objective: "Respect a reduced-motion preference by disabling the nonessential animation.", expected: "Nonessential motion is disabled", observed: "Animation keeps running", remember: "Reduced motion is a user preference, not a design failure.", question: "Which animation name disables the motion?", next: null }
+  {
+    id: "046",
+    title: "The Animation That Never Ends",
+    property: "animationIterationCount",
+    starter: "infinite",
+    target: "1",
+    label: "MOTION",
+    prompt:
+      "The entrance animation should settle instead of repeating forever.",
+    objective:
+      "Let the entrance animation finish instead of repeating forever.",
+    expected: "Animation completes once",
+    observed: "Animation loops continuously",
+    remember:
+      "Iteration count controls repeats; essential information should not depend on motion.",
+    question: "Which count lets the animation finish?",
+    next: "047",
+  },
+  {
+    id: "047",
+    title: "The Button That Moves Too Much",
+    property: "animationDuration",
+    starter: "100ms",
+    target: "600ms",
+    label: "TIMING",
+    prompt: "The button movement should be comfortable to follow.",
+    objective:
+      "Slow the movement enough that the action remains comfortable to follow.",
+    expected: "Motion has a comfortable duration",
+    observed: "Motion is too sudden",
+    remember: "Use timing as communication, not as noise.",
+    question: "Which duration makes the motion readable?",
+    next: "048",
+  },
+  {
+    id: "048",
+    title: "The Motion That Ignored Preferences",
+    property: "animationName",
+    starter: "fadeIn",
+    target: "none",
+    label: "PREFERENCE",
+    prompt: "Reduced-motion users should not receive nonessential animation.",
+    objective:
+      "Respect a reduced-motion preference by disabling the nonessential animation.",
+    expected: "Nonessential motion is disabled",
+    observed: "Animation keeps running",
+    remember: "Reduced motion is a user preference, not a design failure.",
+    question: "Which animation name disables the motion?",
+    next: null,
+  },
 ]);
 
 Object.assign(window.CASEBOOK_CASES, {
   "022": makeCase({
-    id: "022", fileCode: "FM-001", chapter: "CH07 Styling Forms", topic: "Custom controls", title: "The Broken Checkbox", objective: "Create a predictable custom-checkbox starting point while preserving the state work.", incidentTitle: "The custom checkbox has no stable starting point.", incident: "The design system is rebuilding the checkbox, but native browser appearance still controls the shape. The team needs a predictable base before adding checked and focus states.", evidence: [["Expected", "Predictable custom-control base"], ["Observed", "Browser chrome varies"], ["Constraint", "Keep the checkbox input"]], selector: ".review-check", starterCSS: `.review-check {\n  appearance: auto;\n}`, originalCSS: "appearance:auto", targetCSS: "appearance:none", targetPreviewCSS: `.review-check { appearance: none; }`, originalCaption: "Original — native chrome", targetCaption: "Target — custom-control base", previewLabel: "form field", previewHTML: `<label class="check-field"><input class="review-check" type="checkbox" checked><span>Keep me on the review list</span></label>`, previewBaseCSS: sharedPreviewCSS + `.check-field { display: flex; align-items: center; gap: 12px; width: min(100%, 430px); padding: 22px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .review-check { width: 22px; height: 22px; accent-color: #1f5b43; } .check-field span { font-weight: 600; }`, hints: [["Observation", "The checkbox state is present, but the browser owns the shape."], ["Concept", "appearance: none removes native styling; it does not create the replacement state."], ["Targeted clue", "Set the control to none before styling its checked state."]], checkingTitle: "Inspecting the checkbox base…", checkingText: " Comparing the control foundation with the design-system requirement.", successText: " The checkbox now has a predictable custom-control starting point.", validator: "computed-style", expectedProperty: "appearance", expectedValue: "none", rootCause: "Native appearance remained active, so the control could not start from a stable design-system shape.", remember: "If you remove the native state, you own every replacement state.", recommendedCSS: `.review-check {\n  appearance: none;\n}`, question: "Which value creates the custom-control starting point?", choices: [["appearance: auto", false], ["appearance: none", true]], correctFeedback: "Correct. none gives the custom checkbox a predictable starting point.", incorrectFeedback: "Not quite. auto leaves the browser's native appearance in charge.", guideHref: "field-guide.html#chapter-07", guideLabel: "Review custom controls →", nextCase: "023", storageKey: "css-casebook-c022" }),
+    id: "022",
+    fileCode: "FM-001",
+    chapter: "CH07 Styling Forms",
+    topic: "Custom controls",
+    title: "The Broken Checkbox",
+    objective:
+      "Create a predictable custom-checkbox starting point while preserving the state work.",
+    incidentTitle: "The custom checkbox has no stable starting point.",
+    incident:
+      "The design system is rebuilding the checkbox, but native browser appearance still controls the shape. The team needs a predictable base before adding checked and focus states.",
+    evidence: [
+      ["Expected", "Predictable custom-control base"],
+      ["Observed", "Browser chrome varies"],
+      ["Constraint", "Keep the checkbox input"],
+    ],
+    selector: ".review-check",
+    starterCSS: `.review-check {\n  appearance: auto;\n}`,
+    originalCSS: "appearance:auto",
+    targetCSS: "appearance:none",
+    targetPreviewCSS: `.review-check { appearance: none; }`,
+    originalCaption: "Original — native chrome",
+    targetCaption: "Target — custom-control base",
+    previewLabel: "form field",
+    previewHTML: `<label class="check-field"><input class="review-check" type="checkbox" checked><span>Keep me on the review list</span></label>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.check-field { display: flex; align-items: center; gap: 12px; width: min(100%, 430px); padding: 22px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .review-check { width: 22px; height: 22px; accent-color: #1f5b43; } .check-field span { font-weight: 600; }`,
+    hints: [
+      [
+        "Observation",
+        "The checkbox state is present, but the browser owns the shape.",
+      ],
+      [
+        "Concept",
+        "appearance: none removes native styling; it does not create the replacement state.",
+      ],
+      [
+        "Targeted clue",
+        "Set the control to none before styling its checked state.",
+      ],
+    ],
+    checkingTitle: "Inspecting the checkbox base…",
+    checkingText:
+      " Comparing the control foundation with the design-system requirement.",
+    successText:
+      " The checkbox now has a predictable custom-control starting point.",
+    validator: "computed-style",
+    expectedProperty: "appearance",
+    expectedValue: "none",
+    rootCause:
+      "Native appearance remained active, so the control could not start from a stable design-system shape.",
+    remember:
+      "If you remove the native state, you own every replacement state.",
+    recommendedCSS: `.review-check {\n  appearance: none;\n}`,
+    question: "Which value creates the custom-control starting point?",
+    choices: [
+      ["appearance: auto", false],
+      ["appearance: none", true],
+    ],
+    correctFeedback:
+      "Correct. none gives the custom checkbox a predictable starting point.",
+    incorrectFeedback:
+      "Not quite. auto leaves the browser's native appearance in charge.",
+    guideHref: "field-guide.html#chapter-07",
+    guideLabel: "Review custom controls →",
+    nextCase: "023",
+    storageKey: "css-casebook-c022",
+  }),
   "023": makeCase({
-    id: "023", fileCode: "FM-002", chapter: "CH07 Styling Forms", topic: "Validation", title: "The Unclear Error State", objective: "Make an invalid control visibly distinct while the message carries the explanation.", incidentTitle: "The error state looks like a neutral state.", incident: "The invalid field has the same border treatment as the rest of the form, so the user must hunt for the problem. The error message remains in the markup and should be reinforced by the control edge.", evidence: [["Expected", "Error state is visually distinct"], ["Observed", "Invalid control looks neutral"], ["Constraint", "Do not rely on color alone"]], selector: ".email-field", starterCSS: `.email-field:invalid {\n  border-color: #738078;\n}`, originalCSS: "border-color:#738078", targetCSS: "border-color:#a44d2f", targetPreviewCSS: `.email-field:invalid { border-color: #a44d2f; }`, originalCaption: "Original — neutral error", targetCaption: "Target — visible error", previewLabel: "validation", previewHTML: `<div class="validation-field"><label for="email-field">Email address</label><input id="email-field" class="email-field" type="email" value="wrong"><p>Enter an address in the requested format.</p></div>`, previewBaseCSS: sharedPreviewCSS + `.validation-field { width: min(100%, 430px); padding: 24px; border: 1px solid #c6cbc2; background: #fffefa; } .validation-field label { display: block; margin-bottom: 8px; font-weight: 700; } .email-field { width: 100%; padding: 11px; border: 2px solid #738078; background: #fffefa; } .validation-field p { margin: 10px 0 0; color: #a44d2f; font-size: 12px; }`, hints: [["Observation", "The error message exists, but the control edge looks neutral."], ["Concept", ":invalid can reinforce a message; it should not be the only signal."], ["Targeted clue", "Use the approved rust color for the invalid border."]], checkingTitle: "Checking the invalid field…", checkingText: " Comparing the field edge with the validation pattern.", successText: " The invalid control is now visually distinct and still supported by text.", validator: "computed-style", expectedProperty: "borderColor", expectedValue: "rgb(164, 77, 47)", rootCause: "The invalid state reused the neutral border color, making the problem difficult to locate.", remember: "Error styling should be obvious and should support the message text.", recommendedCSS: `.email-field:invalid {\n  border-color: #a44d2f;\n}`, question: "Which border color signals the invalid state?", choices: [["border-color: #738078", false], ["border-color: #a44d2f", true]], correctFeedback: "Correct. The rust border reinforces the written validation message.", incorrectFeedback: "Not quite. The neutral border makes the invalid field look ordinary.", guideHref: "field-guide.html#chapter-07", guideLabel: "Review validation states →", nextCase: "024", storageKey: "css-casebook-c023" }),
+    id: "023",
+    fileCode: "FM-002",
+    chapter: "CH07 Styling Forms",
+    topic: "Validation",
+    title: "The Unclear Error State",
+    objective:
+      "Make an invalid control visibly distinct while the message carries the explanation.",
+    incidentTitle: "The error state looks like a neutral state.",
+    incident:
+      "The invalid field has the same border treatment as the rest of the form, so the user must hunt for the problem. The error message remains in the markup and should be reinforced by the control edge.",
+    evidence: [
+      ["Expected", "Error state is visually distinct"],
+      ["Observed", "Invalid control looks neutral"],
+      ["Constraint", "Do not rely on color alone"],
+    ],
+    selector: ".email-field",
+    starterCSS: `.email-field:invalid {\n  border-color: #738078;\n}`,
+    originalCSS: "border-color:#738078",
+    targetCSS: "border-color:#a44d2f",
+    targetPreviewCSS: `.email-field:invalid { border-color: #a44d2f; }`,
+    originalCaption: "Original — neutral error",
+    targetCaption: "Target — visible error",
+    previewLabel: "validation",
+    previewHTML: `<div class="validation-field"><label for="email-field">Email address</label><input id="email-field" class="email-field" type="email" value="wrong"><p>Enter an address in the requested format.</p></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.validation-field { width: min(100%, 430px); padding: 24px; border: 1px solid #c6cbc2; background: #fffefa; } .validation-field label { display: block; margin-bottom: 8px; font-weight: 700; } .email-field { width: 100%; padding: 11px; border: 2px solid #738078; background: #fffefa; } .validation-field p { margin: 10px 0 0; color: #a44d2f; font-size: 12px; }`,
+    hints: [
+      [
+        "Observation",
+        "The error message exists, but the control edge looks neutral.",
+      ],
+      [
+        "Concept",
+        ":invalid can reinforce a message; it should not be the only signal.",
+      ],
+      ["Targeted clue", "Use the approved rust color for the invalid border."],
+    ],
+    checkingTitle: "Checking the invalid field…",
+    checkingText: " Comparing the field edge with the validation pattern.",
+    successText:
+      " The invalid control is now visually distinct and still supported by text.",
+    validator: "computed-style",
+    expectedProperty: "borderColor",
+    expectedValue: "rgb(164, 77, 47)",
+    rootCause:
+      "The invalid state reused the neutral border color, making the problem difficult to locate.",
+    remember:
+      "Error styling should be obvious and should support the message text.",
+    recommendedCSS: `.email-field:invalid {\n  border-color: #a44d2f;\n}`,
+    question: "Which border color signals the invalid state?",
+    choices: [
+      ["border-color: #738078", false],
+      ["border-color: #a44d2f", true],
+    ],
+    correctFeedback:
+      "Correct. The rust border reinforces the written validation message.",
+    incorrectFeedback:
+      "Not quite. The neutral border makes the invalid field look ordinary.",
+    guideHref: "field-guide.html#chapter-07",
+    guideLabel: "Review validation states →",
+    nextCase: "024",
+    storageKey: "css-casebook-c023",
+  }),
   "024": makeCase({
-    id: "024", fileCode: "FM-003", chapter: "CH07 Styling Forms", topic: "Labels", title: "The Label That Lost Its Target", objective: "Keep the visible label present so the control remains understandable and usable.", incidentTitle: "The form label vanished with the control styling.", incident: "The input remains in the DOM, but its visible label was hidden. A placeholder is not a durable replacement for a properly associated label.", evidence: [["Expected", "Control has a visible label"], ["Observed", "Field appears without context"], ["Constraint", "Keep the label association"]], selector: ".start-date-label", starterCSS: `.start-date-label {\n  display: none;\n}`, originalCSS: "display:none", targetCSS: "display:block", targetPreviewCSS: `.start-date-label { display: block; }`, originalCaption: "Original — label hidden", targetCaption: "Target — label restored", previewLabel: "label", previewHTML: `<div class="label-field"><label class="start-date-label" for="start-date">Start date</label><input id="start-date" type="datetime-local"><small>Choose when the investigation begins.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.label-field { width: min(100%, 430px); padding: 24px; border: 1px solid #c6cbc2; background: #fffefa; } .start-date-label { display: none; margin-bottom: 8px; color: #18221c; font-weight: 700; } .label-field input { display: block; width: 100%; padding: 11px; border: 1px solid #738078; } .label-field small { display: block; margin-top: 10px; color: #657067; }`, hints: [["Observation", "The input is still present, but the user loses the question it represents."], ["Concept", "A visible associated label explains a control and expands its usable click target."], ["Targeted clue", "Restore block display on the label only."]], checkingTitle: "Inspecting the field label…", checkingText: " Comparing the form context with the accessible control pattern.", successText: " The input now has a visible explanation and associated target.", validator: "computed-style", expectedProperty: "display", expectedValue: "block", rootCause: "display: none removed the visible label even though the form control remained.", remember: "A visible, associated label is not a placeholder.", recommendedCSS: `.start-date-label {\n  display: block;\n}`, question: "Which display value keeps the label visible?", choices: [["display: none", false], ["display: block", true]], correctFeedback: "Correct. The visible label restores context for the datetime control.", incorrectFeedback: "Not quite. none removes the explanation users need before entering a value.", guideHref: "field-guide.html#chapter-07", guideLabel: "Review labels →", nextCase: "025", storageKey: "css-casebook-c024" })
+    id: "024",
+    fileCode: "FM-003",
+    chapter: "CH07 Styling Forms",
+    topic: "Labels",
+    title: "The Label That Lost Its Target",
+    objective:
+      "Keep the visible label present so the control remains understandable and usable.",
+    incidentTitle: "The form label vanished with the control styling.",
+    incident:
+      "The input remains in the DOM, but its visible label was hidden. A placeholder is not a durable replacement for a properly associated label.",
+    evidence: [
+      ["Expected", "Control has a visible label"],
+      ["Observed", "Field appears without context"],
+      ["Constraint", "Keep the label association"],
+    ],
+    selector: ".start-date-label",
+    starterCSS: `.start-date-label {\n  display: none;\n}`,
+    originalCSS: "display:none",
+    targetCSS: "display:block",
+    targetPreviewCSS: `.start-date-label { display: block; }`,
+    originalCaption: "Original — label hidden",
+    targetCaption: "Target — label restored",
+    previewLabel: "label",
+    previewHTML: `<div class="label-field"><label class="start-date-label" for="start-date">Start date</label><input id="start-date" type="datetime-local"><small>Choose when the investigation begins.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.label-field { width: min(100%, 430px); padding: 24px; border: 1px solid #c6cbc2; background: #fffefa; } .start-date-label { display: none; margin-bottom: 8px; color: #18221c; font-weight: 700; } .label-field input { display: block; width: 100%; padding: 11px; border: 1px solid #738078; } .label-field small { display: block; margin-top: 10px; color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The input is still present, but the user loses the question it represents.",
+      ],
+      [
+        "Concept",
+        "A visible associated label explains a control and expands its usable click target.",
+      ],
+      ["Targeted clue", "Restore block display on the label only."],
+    ],
+    checkingTitle: "Inspecting the field label…",
+    checkingText:
+      " Comparing the form context with the accessible control pattern.",
+    successText:
+      " The input now has a visible explanation and associated target.",
+    validator: "computed-style",
+    expectedProperty: "display",
+    expectedValue: "block",
+    rootCause:
+      "display: none removed the visible label even though the form control remained.",
+    remember: "A visible, associated label is not a placeholder.",
+    recommendedCSS: `.start-date-label {\n  display: block;\n}`,
+    question: "Which display value keeps the label visible?",
+    choices: [
+      ["display: none", false],
+      ["display: block", true],
+    ],
+    correctFeedback:
+      "Correct. The visible label restores context for the datetime control.",
+    incorrectFeedback:
+      "Not quite. none removes the explanation users need before entering a value.",
+    guideHref: "field-guide.html#chapter-07",
+    guideLabel: "Review labels →",
+    nextCase: "025",
+    storageKey: "css-casebook-c024",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
   "016": makeCase({
-    id: "016", fileCode: "PS-001", chapter: "CH05 Pseudo-classes & Pseudo-elements", topic: "Focus states", title: "The Unresponsive Button", objective: "Restore a visible keyboard focus indicator without changing the button's native behavior.", incidentTitle: "Keyboard focus disappeared from the action.", incident: "The Save changes button still activates, but a reset rule removes its outline. A keyboard user can move focus into the form and no longer see where the next action is.", evidence: [["Expected", "A clear focus ring"], ["Observed", "Focused button looks unchanged"], ["Constraint", "Keep the native button"]], selector: ".save-button", starterCSS: `.save-button:focus {\n  outline-style: none;\n}`, originalCSS: "outline-style:none", targetCSS: "outline-style:solid", targetPreviewCSS: `.save-button:focus { outline: 3px solid #1f5b43; outline-offset: 4px; }`, originalCaption: "Original — focus removed", targetCaption: "Target — focus restored", previewLabel: "focus state", previewHTML: `<div class="focus-panel"><span>FORM ACTION</span><button class="save-button" type="button">Save changes</button><small>Tab to the button, then inspect the focus ring.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.focus-panel { width: min(100%, 440px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .focus-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .save-button { margin: 18px 0 12px; padding: 12px 18px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font: 700 13px inherit; } .focus-panel small { display: block; color: #657067; }`, hints: [["Observation", "The button works, but its keyboard state is invisible."], ["Concept", ":focus is a state; outline-style controls whether the focus boundary is rendered."], ["Targeted clue", "Restore solid outline styling and keep the native button." ]], checkingTitle: "Checking the focus state…", checkingText: " Comparing the keyboard affordance with the accessibility requirement.", successText: " The button now exposes a clear focus location.", validator: "computed-style", expectedProperty: "outlineStyle", expectedValue: "solid", rootCause: "outline-style: none removed the only visible focus indicator from the action.", remember: "Focus is an interaction state that must remain visible.", recommendedCSS: `.save-button:focus {\n  outline: 3px solid #1f5b43;\n  outline-offset: 4px;\n}`, question: "Which outline style keeps keyboard focus visible?", choices: [["outline-style: none", false], ["outline-style: solid", true]], correctFeedback: "Correct. A solid outline gives keyboard users a dependable location cue.", incorrectFeedback: "Not quite. none removes the focus boundary instead of restoring it.", guideHref: "field-guide.html#chapter-05", guideLabel: "Review focus states →", nextCase: "017", storageKey: "css-casebook-c016" }),
+    id: "016",
+    fileCode: "PS-001",
+    chapter: "CH05 Pseudo-classes & Pseudo-elements",
+    topic: "Focus states",
+    title: "The Unresponsive Button",
+    objective:
+      "Restore a visible keyboard focus indicator without changing the button's native behavior.",
+    incidentTitle: "Keyboard focus disappeared from the action.",
+    incident:
+      "The Save changes button still activates, but a reset rule removes its outline. A keyboard user can move focus into the form and no longer see where the next action is.",
+    evidence: [
+      ["Expected", "A clear focus ring"],
+      ["Observed", "Focused button looks unchanged"],
+      ["Constraint", "Keep the native button"],
+    ],
+    selector: ".save-button",
+    starterCSS: `.save-button:focus {\n  outline-style: none;\n}`,
+    originalCSS: "outline-style:none",
+    targetCSS: "outline-style:solid",
+    targetPreviewCSS: `.save-button:focus { outline: 3px solid #1f5b43; outline-offset: 4px; }`,
+    originalCaption: "Original — focus removed",
+    targetCaption: "Target — focus restored",
+    previewLabel: "focus state",
+    previewHTML: `<div class="focus-panel"><span>FORM ACTION</span><button class="save-button" type="button">Save changes</button><small>Tab to the button, then inspect the focus ring.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.focus-panel { width: min(100%, 440px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .focus-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .save-button { margin: 18px 0 12px; padding: 12px 18px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font: 700 13px inherit; } .focus-panel small { display: block; color: #657067; }`,
+    hints: [
+      ["Observation", "The button works, but its keyboard state is invisible."],
+      [
+        "Concept",
+        ":focus is a state; outline-style controls whether the focus boundary is rendered.",
+      ],
+      [
+        "Targeted clue",
+        "Restore solid outline styling and keep the native button.",
+      ],
+    ],
+    checkingTitle: "Checking the focus state…",
+    checkingText:
+      " Comparing the keyboard affordance with the accessibility requirement.",
+    successText: " The button now exposes a clear focus location.",
+    validator: "computed-style",
+    expectedProperty: "outlineStyle",
+    expectedValue: "solid",
+    rootCause:
+      "outline-style: none removed the only visible focus indicator from the action.",
+    remember: "Focus is an interaction state that must remain visible.",
+    recommendedCSS: `.save-button:focus {\n  outline: 3px solid #1f5b43;\n  outline-offset: 4px;\n}`,
+    question: "Which outline style keeps keyboard focus visible?",
+    choices: [
+      ["outline-style: none", false],
+      ["outline-style: solid", true],
+    ],
+    correctFeedback:
+      "Correct. A solid outline gives keyboard users a dependable location cue.",
+    incorrectFeedback:
+      "Not quite. none removes the focus boundary instead of restoring it.",
+    guideHref: "field-guide.html#chapter-05",
+    guideLabel: "Review focus states →",
+    nextCase: "017",
+    storageKey: "css-casebook-c016",
+  }),
   "017": makeCase({
-    id: "017", fileCode: "PS-002", chapter: "CH05 Pseudo-classes & Pseudo-elements", topic: "Structural selectors", title: "The Miscounted Child", objective: "Emphasize the intended evidence row without changing the source order.", incidentTitle: "The wrong item received emphasis.", incident: "The review list mixes a heading with evidence rows. A positional selector counts every sibling, so the bold treatment lands on the wrong line and makes the evidence hierarchy misleading.", evidence: [["Expected", "The second evidence row is bold"], ["Observed", "An unrelated sibling is bold"], ["Constraint", "Keep the existing HTML order"]], selector: ".evidence-list li:nth-of-type(2)", starterCSS: `.evidence-list li:nth-of-type(2) {\n  font-weight: 400;\n}`, originalCSS: "font-weight:400", targetCSS: "font-weight:700", targetPreviewCSS: `.evidence-list li:nth-of-type(2) { font-weight: 700; }`, originalCaption: "Original — emphasis lost", targetCaption: "Target — evidence emphasized", previewLabel: "structural selector", previewHTML: `<ul class="evidence-list"><li class="list-heading">Evidence log</li><li>Viewport remains reachable</li><li>Focus ring is preserved</li><li>Native control remains intact</li></ul>`, previewBaseCSS: sharedPreviewCSS + `.evidence-list { width: min(100%, 470px); margin: 0; padding: 24px 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .evidence-list li { padding: 10px 0; border-bottom: 1px solid #d5d8d1; line-height: 1.45; } .evidence-list .list-heading { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; text-transform: uppercase; }`, hints: [["Observation", "The content order is correct; only the emphasis is landing on the wrong row."], ["Concept", ":nth-child() counts every sibling, while :nth-of-type() counts the matching element type."], ["Targeted clue", "Make the intended evidence row use the strong weight value." ]], checkingTitle: "Checking the structural emphasis…", checkingText: " Comparing the matched evidence row with the review pattern.", successText: " The intended evidence row now carries the emphasis.", validator: "computed-style", expectedProperty: "fontWeight", expectedValue: "700", rootCause: "The matched evidence row was left at normal weight after the structural selector was misapplied.", remember: "Ask whether you mean the nth child or the nth element of this type.", recommendedCSS: `.evidence-list li:nth-of-type(2) {\n  font-weight: 700;\n}`, question: "Which weight emphasizes the matched evidence row?", choices: [["font-weight: 400", false], ["font-weight: 700", true]], correctFeedback: "Correct. The strong weight restores the intended evidence hierarchy.", incorrectFeedback: "Not quite. 400 keeps the matched row at normal weight.", guideHref: "field-guide.html#chapter-05", guideLabel: "Review structural selectors →", nextCase: "018", storageKey: "css-casebook-c017" }),
+    id: "017",
+    fileCode: "PS-002",
+    chapter: "CH05 Pseudo-classes & Pseudo-elements",
+    topic: "Structural selectors",
+    title: "The Miscounted Child",
+    objective:
+      "Emphasize the intended evidence row without changing the source order.",
+    incidentTitle: "The wrong item received emphasis.",
+    incident:
+      "The review list mixes a heading with evidence rows. A positional selector counts every sibling, so the bold treatment lands on the wrong line and makes the evidence hierarchy misleading.",
+    evidence: [
+      ["Expected", "The second evidence row is bold"],
+      ["Observed", "An unrelated sibling is bold"],
+      ["Constraint", "Keep the existing HTML order"],
+    ],
+    selector: ".evidence-list li:nth-of-type(2)",
+    starterCSS: `.evidence-list li:nth-of-type(2) {\n  font-weight: 400;\n}`,
+    originalCSS: "font-weight:400",
+    targetCSS: "font-weight:700",
+    targetPreviewCSS: `.evidence-list li:nth-of-type(2) { font-weight: 700; }`,
+    originalCaption: "Original — emphasis lost",
+    targetCaption: "Target — evidence emphasized",
+    previewLabel: "structural selector",
+    previewHTML: `<ul class="evidence-list"><li class="list-heading">Evidence log</li><li>Viewport remains reachable</li><li>Focus ring is preserved</li><li>Native control remains intact</li></ul>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.evidence-list { width: min(100%, 470px); margin: 0; padding: 24px 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .evidence-list li { padding: 10px 0; border-bottom: 1px solid #d5d8d1; line-height: 1.45; } .evidence-list .list-heading { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; text-transform: uppercase; }`,
+    hints: [
+      [
+        "Observation",
+        "The content order is correct; only the emphasis is landing on the wrong row.",
+      ],
+      [
+        "Concept",
+        ":nth-child() counts every sibling, while :nth-of-type() counts the matching element type.",
+      ],
+      [
+        "Targeted clue",
+        "Make the intended evidence row use the strong weight value.",
+      ],
+    ],
+    checkingTitle: "Checking the structural emphasis…",
+    checkingText:
+      " Comparing the matched evidence row with the review pattern.",
+    successText: " The intended evidence row now carries the emphasis.",
+    validator: "computed-style",
+    expectedProperty: "fontWeight",
+    expectedValue: "700",
+    rootCause:
+      "The matched evidence row was left at normal weight after the structural selector was misapplied.",
+    remember:
+      "Ask whether you mean the nth child or the nth element of this type.",
+    recommendedCSS: `.evidence-list li:nth-of-type(2) {\n  font-weight: 700;\n}`,
+    question: "Which weight emphasizes the matched evidence row?",
+    choices: [
+      ["font-weight: 400", false],
+      ["font-weight: 700", true],
+    ],
+    correctFeedback:
+      "Correct. The strong weight restores the intended evidence hierarchy.",
+    incorrectFeedback: "Not quite. 400 keeps the matched row at normal weight.",
+    guideHref: "field-guide.html#chapter-05",
+    guideLabel: "Review structural selectors →",
+    nextCase: "018",
+    storageKey: "css-casebook-c017",
+  }),
   "018": makeCase({
-    id: "018", fileCode: "PS-003", chapter: "CH05 Pseudo-classes & Pseudo-elements", topic: "Pseudo-elements", title: "The Content That Appeared Twice", objective: "Use one clear generated-content boundary around the note.", incidentTitle: "The decorative marker is visually doubled.", incident: "A generated note already has a boundary, but the component also applies a double border. The result looks like duplicated content rather than one intentional annotation.", evidence: [["Expected", "One clear visual boundary"], ["Observed", "Double treatment around the note"], ["Constraint", "Keep the generated note"]], selector: ".generated-note", starterCSS: `.generated-note {\n  border-style: double;\n}`, originalCSS: "border-style:double", targetCSS: "border-style:solid", targetPreviewCSS: `.generated-note { border-style: solid; }`, originalCaption: "Original — doubled boundary", targetCaption: "Target — single boundary", previewLabel: "generated part", previewHTML: `<aside class="generated-note"><span>NOTE</span><p>Generated content should support the message, not compete with it.</p></aside>`, previewBaseCSS: sharedPreviewCSS + `.generated-note { width: min(100%, 470px); padding: 22px 24px; border-width: 1px; border-style: double; border-color: #1f5b43; background: #f3f0e6; color: #18221c; } .generated-note span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .generated-note p { margin: 12px 0 0; line-height: 1.55; }`, hints: [["Observation", "The note exists once in the markup; the duplicated feeling comes from its border treatment."], ["Concept", "Pseudo-elements create visual parts, while border-style controls the boundary around the host element."], ["Targeted clue", "Use one solid border instead of a double treatment." ]], checkingTitle: "Inspecting the generated note…", checkingText: " Comparing the note boundary with the approved component pattern.", successText: " The generated note now has one clear visual boundary.", validator: "computed-style", expectedProperty: "borderStyle", expectedValue: "solid", rootCause: "border-style: double created a second visual line around a note that already had a generated marker.", remember: "Pseudo-elements add a visual part; keep the source content singular.", recommendedCSS: `.generated-note {\n  border: 1px solid #1f5b43;\n}`, question: "Which border style removes the doubled treatment?", choices: [["border-style: double", false], ["border-style: solid", true]], correctFeedback: "Correct. A solid border keeps the generated note visually singular.", incorrectFeedback: "Not quite. double adds the extra visual treatment this case is removing.", guideHref: "field-guide.html#chapter-05", guideLabel: "Review pseudo-elements →", nextCase: "019", storageKey: "css-casebook-c018" })
+    id: "018",
+    fileCode: "PS-003",
+    chapter: "CH05 Pseudo-classes & Pseudo-elements",
+    topic: "Pseudo-elements",
+    title: "The Content That Appeared Twice",
+    objective: "Use one clear generated-content boundary around the note.",
+    incidentTitle: "The decorative marker is visually doubled.",
+    incident:
+      "A generated note already has a boundary, but the component also applies a double border. The result looks like duplicated content rather than one intentional annotation.",
+    evidence: [
+      ["Expected", "One clear visual boundary"],
+      ["Observed", "Double treatment around the note"],
+      ["Constraint", "Keep the generated note"],
+    ],
+    selector: ".generated-note",
+    starterCSS: `.generated-note {\n  border-style: double;\n}`,
+    originalCSS: "border-style:double",
+    targetCSS: "border-style:solid",
+    targetPreviewCSS: `.generated-note { border-style: solid; }`,
+    originalCaption: "Original — doubled boundary",
+    targetCaption: "Target — single boundary",
+    previewLabel: "generated part",
+    previewHTML: `<aside class="generated-note"><span>NOTE</span><p>Generated content should support the message, not compete with it.</p></aside>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.generated-note { width: min(100%, 470px); padding: 22px 24px; border-width: 1px; border-style: double; border-color: #1f5b43; background: #f3f0e6; color: #18221c; } .generated-note span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .generated-note p { margin: 12px 0 0; line-height: 1.55; }`,
+    hints: [
+      [
+        "Observation",
+        "The note exists once in the markup; the duplicated feeling comes from its border treatment.",
+      ],
+      [
+        "Concept",
+        "Pseudo-elements create visual parts, while border-style controls the boundary around the host element.",
+      ],
+      ["Targeted clue", "Use one solid border instead of a double treatment."],
+    ],
+    checkingTitle: "Inspecting the generated note…",
+    checkingText:
+      " Comparing the note boundary with the approved component pattern.",
+    successText: " The generated note now has one clear visual boundary.",
+    validator: "computed-style",
+    expectedProperty: "borderStyle",
+    expectedValue: "solid",
+    rootCause:
+      "border-style: double created a second visual line around a note that already had a generated marker.",
+    remember:
+      "Pseudo-elements add a visual part; keep the source content singular.",
+    recommendedCSS: `.generated-note {\n  border: 1px solid #1f5b43;\n}`,
+    question: "Which border style removes the doubled treatment?",
+    choices: [
+      ["border-style: double", false],
+      ["border-style: solid", true],
+    ],
+    correctFeedback:
+      "Correct. A solid border keeps the generated note visually singular.",
+    incorrectFeedback:
+      "Not quite. double adds the extra visual treatment this case is removing.",
+    guideHref: "field-guide.html#chapter-05",
+    guideLabel: "Review pseudo-elements →",
+    nextCase: "019",
+    storageKey: "css-casebook-c018",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
   "019": makeCase({
-    id: "019", fileCode: "CO-001", chapter: "CH06 CSS Colors", topic: "Contrast", title: "The Invisible Text", objective: "Restore readable foreground contrast for the status message.", incidentTitle: "The status text disappeared into its surface.", incident: "The status label remains in the markup, but its pale foreground is too close to the panel background to carry meaning reliably.", evidence: [["Expected", "Readable status text"], ["Observed", "Foreground blends into background"], ["Constraint", "Keep the status wording"]], selector: ".status-copy", starterCSS: `.status-copy {\n  color: #fffefa;\n}`, originalCSS: "color:#fffefa", targetCSS: "color:#173d2c", targetPreviewCSS: `.status-copy { color: #173d2c; }`, originalCaption: "Original — low contrast", targetCaption: "Target — readable contrast", previewLabel: "contrast note", previewHTML: `<div class="color-panel"><span>STATUS</span><p class="status-copy">Ready for review</p><small>Color should support the message, not hide it.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.color-panel { width: min(100%, 430px); padding: 28px; background: #fffefa; border: 1px solid #c6cbc2; } .color-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .status-copy { margin: 18px 0 6px; color: #fffefa; font: 600 26px Georgia, serif; } .color-panel small { color: #657067; }`, hints: [["Observation", "The wording is still present; the foreground is the problem."], ["Concept", "Contrast belongs to the final foreground/background pair."], ["Targeted clue", "Use the darker approved green foreground."]], checkingTitle: "Checking the color contrast…", checkingText: " Comparing the final foreground and surface colors.", successText: " The status message is now readable against its surface.", validator: "computed-style", expectedProperty: "color", expectedValue: "rgb(23, 61, 44)", rootCause: "The pale foreground was too close to the light panel background.", remember: "Judge the final foreground and background pair, not either color alone.", recommendedCSS: `.status-copy {\n  color: #173d2c;\n}`, question: "Which foreground color restores readable contrast?", choices: [["color: #fffefa", false], ["color: #173d2c", true]], correctFeedback: "Correct. The darker foreground restores the status message's contrast.", incorrectFeedback: "Not quite. The pale foreground remains too close to the panel surface.", guideHref: "field-guide.html#chapter-06", guideLabel: "Review color contrast →", nextCase: "020", storageKey: "css-casebook-c019" }),
+    id: "019",
+    fileCode: "CO-001",
+    chapter: "CH06 CSS Colors",
+    topic: "Contrast",
+    title: "The Invisible Text",
+    objective: "Restore readable foreground contrast for the status message.",
+    incidentTitle: "The status text disappeared into its surface.",
+    incident:
+      "The status label remains in the markup, but its pale foreground is too close to the panel background to carry meaning reliably.",
+    evidence: [
+      ["Expected", "Readable status text"],
+      ["Observed", "Foreground blends into background"],
+      ["Constraint", "Keep the status wording"],
+    ],
+    selector: ".status-copy",
+    starterCSS: `.status-copy {\n  color: #fffefa;\n}`,
+    originalCSS: "color:#fffefa",
+    targetCSS: "color:#173d2c",
+    targetPreviewCSS: `.status-copy { color: #173d2c; }`,
+    originalCaption: "Original — low contrast",
+    targetCaption: "Target — readable contrast",
+    previewLabel: "contrast note",
+    previewHTML: `<div class="color-panel"><span>STATUS</span><p class="status-copy">Ready for review</p><small>Color should support the message, not hide it.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.color-panel { width: min(100%, 430px); padding: 28px; background: #fffefa; border: 1px solid #c6cbc2; } .color-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .status-copy { margin: 18px 0 6px; color: #fffefa; font: 600 26px Georgia, serif; } .color-panel small { color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The wording is still present; the foreground is the problem.",
+      ],
+      ["Concept", "Contrast belongs to the final foreground/background pair."],
+      ["Targeted clue", "Use the darker approved green foreground."],
+    ],
+    checkingTitle: "Checking the color contrast…",
+    checkingText: " Comparing the final foreground and surface colors.",
+    successText: " The status message is now readable against its surface.",
+    validator: "computed-style",
+    expectedProperty: "color",
+    expectedValue: "rgb(23, 61, 44)",
+    rootCause:
+      "The pale foreground was too close to the light panel background.",
+    remember:
+      "Judge the final foreground and background pair, not either color alone.",
+    recommendedCSS: `.status-copy {\n  color: #173d2c;\n}`,
+    question: "Which foreground color restores readable contrast?",
+    choices: [
+      ["color: #fffefa", false],
+      ["color: #173d2c", true],
+    ],
+    correctFeedback:
+      "Correct. The darker foreground restores the status message's contrast.",
+    incorrectFeedback:
+      "Not quite. The pale foreground remains too close to the panel surface.",
+    guideHref: "field-guide.html#chapter-06",
+    guideLabel: "Review color contrast →",
+    nextCase: "020",
+    storageKey: "css-casebook-c019",
+  }),
   "020": makeCase({
-    id: "020", fileCode: "CO-002", chapter: "CH06 CSS Colors", topic: "Shadows", title: "The Shadow That Escaped", objective: "Restore a restrained shadow that separates the active card from the page.", incidentTitle: "The card lost its depth cue.", incident: "The content is still present, but removing its shadow makes the active card visually merge with the page beneath it.", evidence: [["Expected", "Quiet separation from the page"], ["Observed", "Card edge visually escapes"], ["Constraint", "Keep the card surface"]], selector: ".depth-card", starterCSS: `.depth-card {\n  box-shadow: none;\n}`, originalCSS: "box-shadow:none", targetCSS: "box-shadow:0 4px 12px 0 rgba(0,0,0,.2)", targetPreviewCSS: `.depth-card { box-shadow: 0 4px 12px 0 rgba(0,0,0,.2); }`, originalCaption: "Original — no depth", targetCaption: "Target — restrained depth", previewLabel: "depth", previewHTML: `<article class="depth-card"><span>ACTIVE CARD</span><h2>Evidence is ready.</h2><p>A restrained shadow separates the working surface from the page.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.depth-card { width: min(100%, 460px); padding: 28px; background: #fffefa; border: 1px solid #c6cbc2; } .depth-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .depth-card h2 { margin: 14px 0 8px; font: 600 28px Georgia, serif; } .depth-card p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The card still has its content and boundary."], ["Concept", "box-shadow separates surfaces without changing their layout size."], ["Targeted clue", "Restore the approved X, Y, blur, spread and color values."]], checkingTitle: "Inspecting the card depth…", checkingText: " Comparing the active surface with the approved elevation.", successText: " The card now has a restrained separation from the page.", validator: "computed-style", expectedProperty: "boxShadow", expectedValue: "rgba(0, 0, 0, 0.2) 0px 4px 12px 0px", rootCause: "box-shadow: none removed the visual separation from the page.", remember: "Remember box-shadow as X, Y, blur, spread, color.", recommendedCSS: `.depth-card {\n  box-shadow: 0 4px 12px 0 rgba(0,0,0,.2);\n}`, question: "Which declaration restores the card shadow?", choices: [["box-shadow: none", false], ["box-shadow: 0 4px 12px 0 rgba(0,0,0,.2)", true]], correctFeedback: "Correct. The restrained shadow separates the card without overpowering it.", incorrectFeedback: "Not quite. none removes the depth cue entirely.", guideHref: "field-guide.html#chapter-06", guideLabel: "Review shadows →", nextCase: "021", storageKey: "css-casebook-c020" }),
+    id: "020",
+    fileCode: "CO-002",
+    chapter: "CH06 CSS Colors",
+    topic: "Shadows",
+    title: "The Shadow That Escaped",
+    objective:
+      "Restore a restrained shadow that separates the active card from the page.",
+    incidentTitle: "The card lost its depth cue.",
+    incident:
+      "The content is still present, but removing its shadow makes the active card visually merge with the page beneath it.",
+    evidence: [
+      ["Expected", "Quiet separation from the page"],
+      ["Observed", "Card edge visually escapes"],
+      ["Constraint", "Keep the card surface"],
+    ],
+    selector: ".depth-card",
+    starterCSS: `.depth-card {\n  box-shadow: none;\n}`,
+    originalCSS: "box-shadow:none",
+    targetCSS: "box-shadow:0 4px 12px 0 rgba(0,0,0,.2)",
+    targetPreviewCSS: `.depth-card { box-shadow: 0 4px 12px 0 rgba(0,0,0,.2); }`,
+    originalCaption: "Original — no depth",
+    targetCaption: "Target — restrained depth",
+    previewLabel: "depth",
+    previewHTML: `<article class="depth-card"><span>ACTIVE CARD</span><h2>Evidence is ready.</h2><p>A restrained shadow separates the working surface from the page.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.depth-card { width: min(100%, 460px); padding: 28px; background: #fffefa; border: 1px solid #c6cbc2; } .depth-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .depth-card h2 { margin: 14px 0 8px; font: 600 28px Georgia, serif; } .depth-card p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      ["Observation", "The card still has its content and boundary."],
+      [
+        "Concept",
+        "box-shadow separates surfaces without changing their layout size.",
+      ],
+      [
+        "Targeted clue",
+        "Restore the approved X, Y, blur, spread and color values.",
+      ],
+    ],
+    checkingTitle: "Inspecting the card depth…",
+    checkingText: " Comparing the active surface with the approved elevation.",
+    successText: " The card now has a restrained separation from the page.",
+    validator: "computed-style",
+    expectedProperty: "boxShadow",
+    expectedValue: "rgba(0, 0, 0, 0.2) 0px 4px 12px 0px",
+    rootCause: "box-shadow: none removed the visual separation from the page.",
+    remember: "Remember box-shadow as X, Y, blur, spread, color.",
+    recommendedCSS: `.depth-card {\n  box-shadow: 0 4px 12px 0 rgba(0,0,0,.2);\n}`,
+    question: "Which declaration restores the card shadow?",
+    choices: [
+      ["box-shadow: none", false],
+      ["box-shadow: 0 4px 12px 0 rgba(0,0,0,.2)", true],
+    ],
+    correctFeedback:
+      "Correct. The restrained shadow separates the card without overpowering it.",
+    incorrectFeedback: "Not quite. none removes the depth cue entirely.",
+    guideHref: "field-guide.html#chapter-06",
+    guideLabel: "Review shadows →",
+    nextCase: "021",
+    storageKey: "css-casebook-c020",
+  }),
   "021": makeCase({
-    id: "021", fileCode: "CO-003", chapter: "CH06 CSS Colors", topic: "Transparency", title: "The Transparent Overlay", objective: "Restore the translucent overlay so the background remains part of the composition.", incidentTitle: "The overlay became opaque.", incident: "The illustration beneath the panel should remain part of the composition, but the current fill blocks that relationship completely.", evidence: [["Expected", "Background remains subtly visible"], ["Observed", "Overlay blocks the layer beneath"], ["Constraint", "Keep the foreground copy readable"]], selector: ".overlay-panel", starterCSS: `.overlay-panel {\n  background-color: rgba(255,255,255,1);\n}`, originalCSS: "background-color:rgba(255,255,255,1)", targetCSS: "background-color:rgba(255,255,255,.72)", targetPreviewCSS: `.overlay-panel { background-color: rgba(255,255,255,.72); }`, originalCaption: "Original — opaque overlay", targetCaption: "Target — translucent overlay", previewLabel: "layer", previewHTML: `<div class="overlay-scene"><div class="overlay-art">BACKGROUND LAYER</div><article class="overlay-panel"><span>TRANSPARENT NOTE</span><p>The illustration remains part of the composition.</p></article></div>`, previewBaseCSS: sharedPreviewCSS + `.overlay-scene { position: relative; width: min(100%, 500px); min-height: 210px; padding: 24px; background: linear-gradient(135deg,#173d2c,#9fc5ad); } .overlay-art { color: #fffefa; font: 700 11px monospace; letter-spacing: .1em; } .overlay-panel { position: absolute; inset: 56px 24px 24px; padding: 20px; background-color: rgba(255,255,255,1); color: #18221c; } .overlay-panel span { color: #a44d2f; font: 700 10px monospace; } .overlay-panel p { margin: 12px 0 0; line-height: 1.5; }`, hints: [["Observation", "The panel is readable, but the background relationship has disappeared."], ["Concept", "An alpha channel controls how much of the layer beneath remains visible."], ["Targeted clue", "Use the approved .72 alpha value."]], checkingTitle: "Inspecting the overlay layer…", checkingText: " Comparing the panel transparency with the composition target.", successText: " The background layer is now visible beneath the overlay.", validator: "computed-style", expectedProperty: "backgroundColor", expectedValue: "rgba(255, 255, 255, 0.72)", rootCause: "An alpha value of 1 made the overlay fully opaque.", remember: "Transparency changes the color users actually perceive.", recommendedCSS: `.overlay-panel {\n  background-color: rgba(255,255,255,.72);\n}`, question: "Which alpha value lets the layer beneath show?", choices: [["rgba(255,255,255,1)", false], ["rgba(255,255,255,.72)", true]], correctFeedback: "Correct. The .72 alpha preserves the background relationship while keeping the copy readable.", incorrectFeedback: "Not quite. An alpha of 1 makes the overlay fully opaque.", guideHref: "field-guide.html#chapter-06", guideLabel: "Review transparency →", nextCase: "022", storageKey: "css-casebook-c021" })
+    id: "021",
+    fileCode: "CO-003",
+    chapter: "CH06 CSS Colors",
+    topic: "Transparency",
+    title: "The Transparent Overlay",
+    objective:
+      "Restore the translucent overlay so the background remains part of the composition.",
+    incidentTitle: "The overlay became opaque.",
+    incident:
+      "The illustration beneath the panel should remain part of the composition, but the current fill blocks that relationship completely.",
+    evidence: [
+      ["Expected", "Background remains subtly visible"],
+      ["Observed", "Overlay blocks the layer beneath"],
+      ["Constraint", "Keep the foreground copy readable"],
+    ],
+    selector: ".overlay-panel",
+    starterCSS: `.overlay-panel {\n  background-color: rgba(255,255,255,1);\n}`,
+    originalCSS: "background-color:rgba(255,255,255,1)",
+    targetCSS: "background-color:rgba(255,255,255,.72)",
+    targetPreviewCSS: `.overlay-panel { background-color: rgba(255,255,255,.72); }`,
+    originalCaption: "Original — opaque overlay",
+    targetCaption: "Target — translucent overlay",
+    previewLabel: "layer",
+    previewHTML: `<div class="overlay-scene"><div class="overlay-art">BACKGROUND LAYER</div><article class="overlay-panel"><span>TRANSPARENT NOTE</span><p>The illustration remains part of the composition.</p></article></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.overlay-scene { position: relative; width: min(100%, 500px); min-height: 210px; padding: 24px; background: linear-gradient(135deg,#173d2c,#9fc5ad); } .overlay-art { color: #fffefa; font: 700 11px monospace; letter-spacing: .1em; } .overlay-panel { position: absolute; inset: 56px 24px 24px; padding: 20px; background-color: rgba(255,255,255,1); color: #18221c; } .overlay-panel span { color: #a44d2f; font: 700 10px monospace; } .overlay-panel p { margin: 12px 0 0; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The panel is readable, but the background relationship has disappeared.",
+      ],
+      [
+        "Concept",
+        "An alpha channel controls how much of the layer beneath remains visible.",
+      ],
+      ["Targeted clue", "Use the approved .72 alpha value."],
+    ],
+    checkingTitle: "Inspecting the overlay layer…",
+    checkingText:
+      " Comparing the panel transparency with the composition target.",
+    successText: " The background layer is now visible beneath the overlay.",
+    validator: "computed-style",
+    expectedProperty: "backgroundColor",
+    expectedValue: "rgba(255, 255, 255, 0.72)",
+    rootCause: "An alpha value of 1 made the overlay fully opaque.",
+    remember: "Transparency changes the color users actually perceive.",
+    recommendedCSS: `.overlay-panel {\n  background-color: rgba(255,255,255,.72);\n}`,
+    question: "Which alpha value lets the layer beneath show?",
+    choices: [
+      ["rgba(255,255,255,1)", false],
+      ["rgba(255,255,255,.72)", true],
+    ],
+    correctFeedback:
+      "Correct. The .72 alpha preserves the background relationship while keeping the copy readable.",
+    incorrectFeedback:
+      "Not quite. An alpha of 1 makes the overlay fully opaque.",
+    guideHref: "field-guide.html#chapter-06",
+    guideLabel: "Review transparency →",
+    nextCase: "022",
+    storageKey: "css-casebook-c021",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "025": makeCase({ id: "025", fileCode: "LE-001", chapter: "CH08 Layouts & Effects", topic: "Overflow", title: "The Overflowing Card", objective: "Contain decorative content inside the card boundary without hiding meaningful content.", incidentTitle: "The card decoration escaped its boundary.", incident: "A decorative edge treatment extends past the card and overlaps neighboring content. The effect is safe to clip because the decoration is not the message.", evidence: [["Expected", "Decoration stays inside card"], ["Observed", "Decoration leaks outside"], ["Constraint", "Keep the card content visible"]], selector: ".decorative-card", starterCSS: `.decorative-card {\n  overflow: visible;\n}`, originalCSS: "overflow:visible", targetCSS: "overflow:hidden", targetPreviewCSS: `.decorative-card { overflow: hidden; }`, originalCaption: "Original — decoration escapes", targetCaption: "Target — decoration contained", previewLabel: "overflow", previewHTML: `<article class="decorative-card"><span>LAYOUT EDGE</span><h2>Contain the decoration.</h2><i aria-hidden="true"></i><p>The content stays readable while the accent remains inside the surface.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.decorative-card { position: relative; width: min(100%, 470px); min-height: 180px; padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .decorative-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .decorative-card h2 { margin: 14px 0 8px; font: 600 27px Georgia, serif; } .decorative-card p { margin: 0; color: #657067; line-height: 1.5; } .decorative-card i { position: absolute; width: 120px; height: 120px; right: -48px; top: -48px; border-radius: 50%; background: #9fc5ad; }`, hints: [["Observation", "Only the decorative circle crosses the card edge."], ["Concept", "Overflow decides whether content outside the box is shown or clipped."], ["Targeted clue", "Contain the decorative child, but keep the text in the card."]], checkingTitle: "Inspecting the card boundary…", checkingText: " Comparing the decorative edge with the approved layout.", successText: " The decorative treatment now stays inside the card.", validator: "computed-style", expectedProperty: "overflow", expectedValue: "hidden", rootCause: "overflow: visible allowed a decorative child to escape the card surface.", remember: "Clip only content that is intentionally decorative or safely replaceable.", recommendedCSS: `.decorative-card {\n  overflow: hidden;\n}`, question: "Which overflow value contains the decoration?", choices: [["overflow: visible", false], ["overflow: hidden", true]], correctFeedback: "Correct. hidden contains the decorative edge without changing the card content.", incorrectFeedback: "Not quite. visible allows the decoration to overlap neighboring content.", guideHref: "field-guide.html#chapter-08", guideLabel: "Review overflow →", nextCase: "026", storageKey: "css-casebook-c025" }),
-  "026": makeCase({ id: "026", fileCode: "LE-002", chapter: "CH08 Layouts & Effects", topic: "Box model", title: "The Unexpected Extra Width", objective: "Keep the declared card width inclusive of its padding and border.", incidentTitle: "Padding made the card wider than its track.", incident: "The card declares a sensible width, but content-box adds padding and border outside that measurement. The result pushes into the neighboring column.", evidence: [["Expected", "Rendered width respects declaration"], ["Observed", "Card exceeds its track"], ["Constraint", "Keep the current width value"]], selector: ".track-card", starterCSS: `.track-card {\n  box-sizing: content-box;\n}`, originalCSS: "box-sizing:content-box", targetCSS: "box-sizing:border-box", targetPreviewCSS: `.track-card { box-sizing: border-box; }`, originalCaption: "Original — width expands", targetCaption: "Target — width contains chrome", previewLabel: "box model", previewHTML: `<div class="track-card"><span>TRACK WIDTH</span><strong>240px declared</strong><p>Padding and border should fit inside the card's track.</p></div>`, previewBaseCSS: sharedPreviewCSS + `.track-card { width: 240px; padding: 28px; border: 6px solid #1f5b43; background: #fffefa; color: #18221c; } .track-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .track-card strong { display: block; margin: 14px 0 8px; font: 600 26px Georgia, serif; } .track-card p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The declared width is correct, but the rendered edge is wider."], ["Concept", "content-box adds padding and border outside width; border-box includes them."], ["Targeted clue", "Use the sizing model that keeps the whole card inside 240px."]], checkingTitle: "Measuring the card box…", checkingText: " Comparing the declared track width with the rendered edge.", successText: " The card now respects its declared track width.", validator: "computed-style", expectedProperty: "boxSizing", expectedValue: "border-box", rootCause: "content-box added the card's padding and border outside the declared width.", remember: "border-box includes content, padding and border in the declared size.", recommendedCSS: `.track-card {\n  box-sizing: border-box;\n}`, question: "Which box-sizing value includes padding and border?", choices: [["box-sizing: content-box", false], ["box-sizing: border-box", true]], correctFeedback: "Correct. border-box keeps the card's complete rendered width at 240px.", incorrectFeedback: "Not quite. content-box adds padding and border outside the width.", guideHref: "field-guide.html#chapter-08", guideLabel: "Review the box model →", nextCase: "027", storageKey: "css-casebook-c026" }),
-  "027": makeCase({ id: "027", fileCode: "LE-003", chapter: "CH08 Layouts & Effects", topic: "Transforms", title: "The Transforming Hit Area", objective: "Lift the card visually without changing the layout space reserved for it.", incidentTitle: "The hover lift changed the hit area unexpectedly.", incident: "The card should move a few pixels as feedback, while neighboring content keeps its original relationship. Use a visual transform rather than a layout offset.", evidence: [["Expected", "Visual lift without reflow"], ["Observed", "Card position changes the layout model"], ["Constraint", "Keep the neighboring cards in place"]], selector: ".lift-card", starterCSS: `.lift-card {\n  transform: none;\n}`, originalCSS: "transform:none", targetCSS: "transform:translateY(-4px)", targetPreviewCSS: `.lift-card { transform: translateY(-4px); }`, originalCaption: "Original — no lift", targetCaption: "Target — visual lift", previewLabel: "effect", previewHTML: `<article class="lift-card"><span>HOVER FEEDBACK</span><h2>Move the pixels, not the flow.</h2><p>A small transform gives feedback without reserving a new layout position.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.lift-card { width: min(100%, 470px); padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .lift-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .lift-card h2 { margin: 14px 0 8px; font: 600 27px Georgia, serif; } .lift-card p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The card needs visual feedback, not a new flow position."], ["Concept", "Transforms move the rendered pixels without changing normal flow."], ["Targeted clue", "Translate the card upward by the documented four pixels."]], checkingTitle: "Inspecting the card effect…", checkingText: " Comparing the visual lift with the neighboring layout relationship.", successText: " The card now lifts visually without changing normal flow.", validator: "computed-style", expectedProperty: "transform", expectedValue: "matrix(1, 0, 0, 1, 0, -4)", rootCause: "transform: none removed the visual feedback from the card state.", remember: "Transforms move pixels; they do not rewrite normal flow.", recommendedCSS: `.lift-card {\n  transform: translateY(-4px);\n}`, question: "Which transform creates the visual lift?", choices: [["transform: none", false], ["transform: translateY(-4px)", true]], correctFeedback: "Correct. translateY provides feedback while the layout space stays stable.", incorrectFeedback: "Not quite. none leaves the card visually static.", guideHref: "field-guide.html#chapter-08", guideLabel: "Review transforms →", nextCase: "028", storageKey: "css-casebook-c027" })
+  "025": makeCase({
+    id: "025",
+    fileCode: "LE-001",
+    chapter: "CH08 Layouts & Effects",
+    topic: "Overflow",
+    title: "The Overflowing Card",
+    objective:
+      "Contain decorative content inside the card boundary without hiding meaningful content.",
+    incidentTitle: "The card decoration escaped its boundary.",
+    incident:
+      "A decorative edge treatment extends past the card and overlaps neighboring content. The effect is safe to clip because the decoration is not the message.",
+    evidence: [
+      ["Expected", "Decoration stays inside card"],
+      ["Observed", "Decoration leaks outside"],
+      ["Constraint", "Keep the card content visible"],
+    ],
+    selector: ".decorative-card",
+    starterCSS: `.decorative-card {\n  overflow: visible;\n}`,
+    originalCSS: "overflow:visible",
+    targetCSS: "overflow:hidden",
+    targetPreviewCSS: `.decorative-card { overflow: hidden; }`,
+    originalCaption: "Original — decoration escapes",
+    targetCaption: "Target — decoration contained",
+    previewLabel: "overflow",
+    previewHTML: `<article class="decorative-card"><span>LAYOUT EDGE</span><h2>Contain the decoration.</h2><i aria-hidden="true"></i><p>The content stays readable while the accent remains inside the surface.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.decorative-card { position: relative; width: min(100%, 470px); min-height: 180px; padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .decorative-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .decorative-card h2 { margin: 14px 0 8px; font: 600 27px Georgia, serif; } .decorative-card p { margin: 0; color: #657067; line-height: 1.5; } .decorative-card i { position: absolute; width: 120px; height: 120px; right: -48px; top: -48px; border-radius: 50%; background: #9fc5ad; }`,
+    hints: [
+      ["Observation", "Only the decorative circle crosses the card edge."],
+      [
+        "Concept",
+        "Overflow decides whether content outside the box is shown or clipped.",
+      ],
+      [
+        "Targeted clue",
+        "Contain the decorative child, but keep the text in the card.",
+      ],
+    ],
+    checkingTitle: "Inspecting the card boundary…",
+    checkingText: " Comparing the decorative edge with the approved layout.",
+    successText: " The decorative treatment now stays inside the card.",
+    validator: "computed-style",
+    expectedProperty: "overflow",
+    expectedValue: "hidden",
+    rootCause:
+      "overflow: visible allowed a decorative child to escape the card surface.",
+    remember:
+      "Clip only content that is intentionally decorative or safely replaceable.",
+    recommendedCSS: `.decorative-card {\n  overflow: hidden;\n}`,
+    question: "Which overflow value contains the decoration?",
+    choices: [
+      ["overflow: visible", false],
+      ["overflow: hidden", true],
+    ],
+    correctFeedback:
+      "Correct. hidden contains the decorative edge without changing the card content.",
+    incorrectFeedback:
+      "Not quite. visible allows the decoration to overlap neighboring content.",
+    guideHref: "field-guide.html#chapter-08",
+    guideLabel: "Review overflow →",
+    nextCase: "026",
+    storageKey: "css-casebook-c025",
+  }),
+  "026": makeCase({
+    id: "026",
+    fileCode: "LE-002",
+    chapter: "CH08 Layouts & Effects",
+    topic: "Box model",
+    title: "The Unexpected Extra Width",
+    objective:
+      "Keep the declared card width inclusive of its padding and border.",
+    incidentTitle: "Padding made the card wider than its track.",
+    incident:
+      "The card declares a sensible width, but content-box adds padding and border outside that measurement. The result pushes into the neighboring column.",
+    evidence: [
+      ["Expected", "Rendered width respects declaration"],
+      ["Observed", "Card exceeds its track"],
+      ["Constraint", "Keep the current width value"],
+    ],
+    selector: ".track-card",
+    starterCSS: `.track-card {\n  box-sizing: content-box;\n}`,
+    originalCSS: "box-sizing:content-box",
+    targetCSS: "box-sizing:border-box",
+    targetPreviewCSS: `.track-card { box-sizing: border-box; }`,
+    originalCaption: "Original — width expands",
+    targetCaption: "Target — width contains chrome",
+    previewLabel: "box model",
+    previewHTML: `<div class="track-card"><span>TRACK WIDTH</span><strong>240px declared</strong><p>Padding and border should fit inside the card's track.</p></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.track-card { width: 240px; padding: 28px; border: 6px solid #1f5b43; background: #fffefa; color: #18221c; } .track-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .track-card strong { display: block; margin: 14px 0 8px; font: 600 26px Georgia, serif; } .track-card p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The declared width is correct, but the rendered edge is wider.",
+      ],
+      [
+        "Concept",
+        "content-box adds padding and border outside width; border-box includes them.",
+      ],
+      [
+        "Targeted clue",
+        "Use the sizing model that keeps the whole card inside 240px.",
+      ],
+    ],
+    checkingTitle: "Measuring the card box…",
+    checkingText: " Comparing the declared track width with the rendered edge.",
+    successText: " The card now respects its declared track width.",
+    validator: "computed-style",
+    expectedProperty: "boxSizing",
+    expectedValue: "border-box",
+    rootCause:
+      "content-box added the card's padding and border outside the declared width.",
+    remember:
+      "border-box includes content, padding and border in the declared size.",
+    recommendedCSS: `.track-card {\n  box-sizing: border-box;\n}`,
+    question: "Which box-sizing value includes padding and border?",
+    choices: [
+      ["box-sizing: content-box", false],
+      ["box-sizing: border-box", true],
+    ],
+    correctFeedback:
+      "Correct. border-box keeps the card's complete rendered width at 240px.",
+    incorrectFeedback:
+      "Not quite. content-box adds padding and border outside the width.",
+    guideHref: "field-guide.html#chapter-08",
+    guideLabel: "Review the box model →",
+    nextCase: "027",
+    storageKey: "css-casebook-c026",
+  }),
+  "027": makeCase({
+    id: "027",
+    fileCode: "LE-003",
+    chapter: "CH08 Layouts & Effects",
+    topic: "Transforms",
+    title: "The Transforming Hit Area",
+    objective:
+      "Lift the card visually without changing the layout space reserved for it.",
+    incidentTitle: "The hover lift changed the hit area unexpectedly.",
+    incident:
+      "The card should move a few pixels as feedback, while neighboring content keeps its original relationship. Use a visual transform rather than a layout offset.",
+    evidence: [
+      ["Expected", "Visual lift without reflow"],
+      ["Observed", "Card position changes the layout model"],
+      ["Constraint", "Keep the neighboring cards in place"],
+    ],
+    selector: ".lift-card",
+    starterCSS: `.lift-card {\n  transform: none;\n}`,
+    originalCSS: "transform:none",
+    targetCSS: "transform:translateY(-4px)",
+    targetPreviewCSS: `.lift-card { transform: translateY(-4px); }`,
+    originalCaption: "Original — no lift",
+    targetCaption: "Target — visual lift",
+    previewLabel: "effect",
+    previewHTML: `<article class="lift-card"><span>HOVER FEEDBACK</span><h2>Move the pixels, not the flow.</h2><p>A small transform gives feedback without reserving a new layout position.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.lift-card { width: min(100%, 470px); padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .lift-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .lift-card h2 { margin: 14px 0 8px; font: 600 27px Georgia, serif; } .lift-card p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The card needs visual feedback, not a new flow position.",
+      ],
+      [
+        "Concept",
+        "Transforms move the rendered pixels without changing normal flow.",
+      ],
+      [
+        "Targeted clue",
+        "Translate the card upward by the documented four pixels.",
+      ],
+    ],
+    checkingTitle: "Inspecting the card effect…",
+    checkingText:
+      " Comparing the visual lift with the neighboring layout relationship.",
+    successText: " The card now lifts visually without changing normal flow.",
+    validator: "computed-style",
+    expectedProperty: "transform",
+    expectedValue: "matrix(1, 0, 0, 1, 0, -4)",
+    rootCause:
+      "transform: none removed the visual feedback from the card state.",
+    remember: "Transforms move pixels; they do not rewrite normal flow.",
+    recommendedCSS: `.lift-card {\n  transform: translateY(-4px);\n}`,
+    question: "Which transform creates the visual lift?",
+    choices: [
+      ["transform: none", false],
+      ["transform: translateY(-4px)", true],
+    ],
+    correctFeedback:
+      "Correct. translateY provides feedback while the layout space stays stable.",
+    incorrectFeedback: "Not quite. none leaves the card visually static.",
+    guideHref: "field-guide.html#chapter-08",
+    guideLabel: "Review transforms →",
+    nextCase: "028",
+    storageKey: "css-casebook-c027",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "028": makeCase({ id: "028", fileCode: "TY-001", chapter: "CH10 CSS Typography", topic: "Type hierarchy", title: "The Misaligned Heading", objective: "Restore the heading weight so its role is clear in the type hierarchy.", incidentTitle: "The heading lost its typographic weight.", incident: "The page title uses the correct family and size, but a weight reset makes it compete with secondary labels. Restore the weight without changing the copy.", evidence: [["Expected", "Heading leads through weight"], ["Observed", "Heading is visually equal to labels"], ["Constraint", "Keep the type family and size"]], selector: ".type-card h2", starterCSS: `.type-card h2 {\n  font-weight: 400;\n}`, originalCSS: "font-weight:400", targetCSS: "font-weight:700", targetPreviewCSS: `.type-card h2 { font-weight: 700; }`, originalCaption: "Original — light heading", targetCaption: "Target — weighted heading", previewLabel: "type note", previewHTML: `<article class="type-card"><span>TYPOGRAPHY NOTE</span><h2>Make hierarchy audible.</h2><p>Weight tells the reader which message should lead.</p><small>Supporting label · 10:42</small></article>`, previewBaseCSS: sharedPreviewCSS + `.type-card { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .type-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .type-card h2 { margin: 14px 0 8px; font: 400 29px/1.1 Georgia, serif; } .type-card p { margin: 0 0 16px; color: #657067; line-height: 1.5; } .type-card small { color: #657067; }`, hints: [["Observation", "The heading size is already larger; its weight is the missing hierarchy cue."], ["Concept", "font-weight changes emphasis without changing the family or content."], ["Targeted clue", "Restore the bold weight documented for the page title."]], checkingTitle: "Inspecting the heading hierarchy…", checkingText: " Comparing the title weight with the editorial type system.", successText: " The heading now leads the reading path through weight.", validator: "computed-style", expectedProperty: "fontWeight", expectedValue: "700", rootCause: "font-weight: 400 made the primary heading compete with secondary labels.", remember: "Weight is one part of hierarchy; line-height and contrast matter too.", recommendedCSS: `.type-card h2 {\n  font-weight: 700;\n}`, question: "Which weight restores the heading hierarchy?", choices: [["font-weight: 400", false], ["font-weight: 700", true]], correctFeedback: "Correct. The stronger weight restores the heading's role.", incorrectFeedback: "Not quite. 400 leaves the primary heading at ordinary text weight.", guideHref: "field-guide.html#chapter-10", guideLabel: "Review type hierarchy →", nextCase: "029", storageKey: "css-casebook-c028" }),
-  "029": makeCase({ id: "029", fileCode: "TY-002", chapter: "CH10 CSS Typography", topic: "Font families", title: "The Missing Web Font", objective: "Apply the intended display face while retaining a predictable fallback in the stack.", incidentTitle: "The intended display face never appears.", incident: "The component falls back to the body face even though the design calls for a distinct editorial voice. Keep the family choice explicit so the next fallback remains understandable.", evidence: [["Expected", "Display face with fallback"], ["Observed", "Everything uses the body face"], ["Constraint", "Keep the readable body copy"]], selector: ".display-card h2", starterCSS: `.display-card h2 {\n  font-family: Arial;\n}`, originalCSS: "font-family:Arial", targetCSS: "font-family:Georgia", targetPreviewCSS: `.display-card h2 { font-family: Georgia, serif; }`, originalCaption: "Original — body face", targetCaption: "Target — display face", previewLabel: "display face", previewHTML: `<article class="display-card"><span>DISPLAY FACE</span><h2>Editorial evidence</h2><p>The heading face gives this investigation a distinct voice without changing the body copy.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.display-card { width: min(100%, 480px); padding: 28px; border-top: 4px solid #1f5b43; background: #fffefa; color: #18221c; } .display-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .display-card h2 { margin: 14px 0 8px; font: 600 30px/1.1 Arial, sans-serif; } .display-card p { margin: 0; color: #657067; line-height: 1.55; }`, hints: [["Observation", "The copy is correct; only the heading face is wrong."], ["Concept", "font-family lists preferred faces and should end with a generic fallback."], ["Targeted clue", "Apply Georgia with a serif fallback to the heading only."]], checkingTitle: "Checking the display face…", checkingText: " Comparing the heading family with the editorial type system.", successText: " The heading now uses the intended display face with a fallback.", validator: "computed-style", expectedProperty: "fontFamily", expectedValue: "Georgia", rootCause: "The heading was forced into the body Arial face instead of the editorial display family.", remember: "A fallback is part of the design, not an afterthought.", recommendedCSS: `.display-card h2 {\n  font-family: Georgia, serif;\n}`, question: "Which family applies the intended display face?", choices: [["font-family: Arial", false], ["font-family: Georgia, serif", true]], correctFeedback: "Correct. Georgia provides the intended display voice and serif preserves the fallback role.", incorrectFeedback: "Not quite. Arial keeps the heading in the body face.", guideHref: "field-guide.html#chapter-10", guideLabel: "Review font families →", nextCase: "030", storageKey: "css-casebook-c029" }),
-  "030": makeCase({ id: "030", fileCode: "TY-003", chapter: "CH10 CSS Typography", topic: "Line height", title: "The Line-height That Drifted", objective: "Restore enough line spacing for the paragraph to remain readable.", incidentTitle: "Paragraph lines are colliding.", incident: "The copy uses a compact line-height that makes descenders and adjacent lines visually merge in the reading surface. Increase leading without changing the font size.", evidence: [["Expected", "Comfortable line spacing"], ["Observed", "Lines feel compressed"], ["Constraint", "Keep the paragraph font size"]], selector: ".reading-copy p", starterCSS: `.reading-copy p {\n  line-height: 1;\n}`, originalCSS: "line-height:1", targetCSS: "line-height:1.6", targetPreviewCSS: `.reading-copy p { line-height: 1.6; }`, originalCaption: "Original — compressed leading", targetCaption: "Target — readable leading", previewLabel: "reading copy", previewHTML: `<article class="reading-copy"><span>READING COPY</span><h2>Give every line room.</h2><p>Line-height creates the vertical rhythm that lets readers move from one sentence to the next without the letters colliding.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.reading-copy { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .reading-copy span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .reading-copy h2 { margin: 14px 0 10px; font: 600 28px Georgia, serif; } .reading-copy p { margin: 0; line-height: 1; color: #657067; }`, hints: [["Observation", "The font size is readable; the lines are vertically too close."], ["Concept", "line-height controls leading, the distance between baselines."], ["Targeted clue", "Use the approved 1.6 unitless value for the paragraph."]], checkingTitle: "Inspecting the reading rhythm…", checkingText: " Comparing the paragraph leading with the typography target.", successText: " The paragraph now has comfortable line spacing.", validator: "computed-style", expectedProperty: "lineHeight", expectedValue: "25.6px", rootCause: "line-height: 1 compressed the paragraph's vertical rhythm.", remember: "Leading controls the distance between lines; it is not the same as tracking.", recommendedCSS: `.reading-copy p {\n  line-height: 1.6;\n}`, question: "Which line-height restores readable spacing?", choices: [["line-height: 1", false], ["line-height: 1.6", true]], correctFeedback: "Correct. 1.6 gives the paragraph a readable vertical rhythm.", incorrectFeedback: "Not quite. 1 keeps the lines too compressed for comfortable reading.", guideHref: "field-guide.html#chapter-10", guideLabel: "Review line-height →", nextCase: "031", storageKey: "css-casebook-c030" })
+  "028": makeCase({
+    id: "028",
+    fileCode: "TY-001",
+    chapter: "CH10 CSS Typography",
+    topic: "Type hierarchy",
+    title: "The Misaligned Heading",
+    objective:
+      "Restore the heading weight so its role is clear in the type hierarchy.",
+    incidentTitle: "The heading lost its typographic weight.",
+    incident:
+      "The page title uses the correct family and size, but a weight reset makes it compete with secondary labels. Restore the weight without changing the copy.",
+    evidence: [
+      ["Expected", "Heading leads through weight"],
+      ["Observed", "Heading is visually equal to labels"],
+      ["Constraint", "Keep the type family and size"],
+    ],
+    selector: ".type-card h2",
+    starterCSS: `.type-card h2 {\n  font-weight: 400;\n}`,
+    originalCSS: "font-weight:400",
+    targetCSS: "font-weight:700",
+    targetPreviewCSS: `.type-card h2 { font-weight: 700; }`,
+    originalCaption: "Original — light heading",
+    targetCaption: "Target — weighted heading",
+    previewLabel: "type note",
+    previewHTML: `<article class="type-card"><span>TYPOGRAPHY NOTE</span><h2>Make hierarchy audible.</h2><p>Weight tells the reader which message should lead.</p><small>Supporting label · 10:42</small></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.type-card { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .type-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .type-card h2 { margin: 14px 0 8px; font: 400 29px/1.1 Georgia, serif; } .type-card p { margin: 0 0 16px; color: #657067; line-height: 1.5; } .type-card small { color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The heading size is already larger; its weight is the missing hierarchy cue.",
+      ],
+      [
+        "Concept",
+        "font-weight changes emphasis without changing the family or content.",
+      ],
+      [
+        "Targeted clue",
+        "Restore the bold weight documented for the page title.",
+      ],
+    ],
+    checkingTitle: "Inspecting the heading hierarchy…",
+    checkingText: " Comparing the title weight with the editorial type system.",
+    successText: " The heading now leads the reading path through weight.",
+    validator: "computed-style",
+    expectedProperty: "fontWeight",
+    expectedValue: "700",
+    rootCause:
+      "font-weight: 400 made the primary heading compete with secondary labels.",
+    remember:
+      "Weight is one part of hierarchy; line-height and contrast matter too.",
+    recommendedCSS: `.type-card h2 {\n  font-weight: 700;\n}`,
+    question: "Which weight restores the heading hierarchy?",
+    choices: [
+      ["font-weight: 400", false],
+      ["font-weight: 700", true],
+    ],
+    correctFeedback:
+      "Correct. The stronger weight restores the heading's role.",
+    incorrectFeedback:
+      "Not quite. 400 leaves the primary heading at ordinary text weight.",
+    guideHref: "field-guide.html#chapter-10",
+    guideLabel: "Review type hierarchy →",
+    nextCase: "029",
+    storageKey: "css-casebook-c028",
+  }),
+  "029": makeCase({
+    id: "029",
+    fileCode: "TY-002",
+    chapter: "CH10 CSS Typography",
+    topic: "Font families",
+    title: "The Missing Web Font",
+    objective:
+      "Apply the intended display face while retaining a predictable fallback in the stack.",
+    incidentTitle: "The intended display face never appears.",
+    incident:
+      "The component falls back to the body face even though the design calls for a distinct editorial voice. Keep the family choice explicit so the next fallback remains understandable.",
+    evidence: [
+      ["Expected", "Display face with fallback"],
+      ["Observed", "Everything uses the body face"],
+      ["Constraint", "Keep the readable body copy"],
+    ],
+    selector: ".display-card h2",
+    starterCSS: `.display-card h2 {\n  font-family: Arial;\n}`,
+    originalCSS: "font-family:Arial",
+    targetCSS: "font-family:Georgia",
+    targetPreviewCSS: `.display-card h2 { font-family: Georgia, serif; }`,
+    originalCaption: "Original — body face",
+    targetCaption: "Target — display face",
+    previewLabel: "display face",
+    previewHTML: `<article class="display-card"><span>DISPLAY FACE</span><h2>Editorial evidence</h2><p>The heading face gives this investigation a distinct voice without changing the body copy.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.display-card { width: min(100%, 480px); padding: 28px; border-top: 4px solid #1f5b43; background: #fffefa; color: #18221c; } .display-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .display-card h2 { margin: 14px 0 8px; font: 600 30px/1.1 Arial, sans-serif; } .display-card p { margin: 0; color: #657067; line-height: 1.55; }`,
+    hints: [
+      ["Observation", "The copy is correct; only the heading face is wrong."],
+      [
+        "Concept",
+        "font-family lists preferred faces and should end with a generic fallback.",
+      ],
+      [
+        "Targeted clue",
+        "Apply Georgia with a serif fallback to the heading only.",
+      ],
+    ],
+    checkingTitle: "Checking the display face…",
+    checkingText:
+      " Comparing the heading family with the editorial type system.",
+    successText:
+      " The heading now uses the intended display face with a fallback.",
+    validator: "computed-style",
+    expectedProperty: "fontFamily",
+    expectedValue: "Georgia",
+    rootCause:
+      "The heading was forced into the body Arial face instead of the editorial display family.",
+    remember: "A fallback is part of the design, not an afterthought.",
+    recommendedCSS: `.display-card h2 {\n  font-family: Georgia, serif;\n}`,
+    question: "Which family applies the intended display face?",
+    choices: [
+      ["font-family: Arial", false],
+      ["font-family: Georgia, serif", true],
+    ],
+    correctFeedback:
+      "Correct. Georgia provides the intended display voice and serif preserves the fallback role.",
+    incorrectFeedback: "Not quite. Arial keeps the heading in the body face.",
+    guideHref: "field-guide.html#chapter-10",
+    guideLabel: "Review font families →",
+    nextCase: "030",
+    storageKey: "css-casebook-c029",
+  }),
+  "030": makeCase({
+    id: "030",
+    fileCode: "TY-003",
+    chapter: "CH10 CSS Typography",
+    topic: "Line height",
+    title: "The Line-height That Drifted",
+    objective:
+      "Restore enough line spacing for the paragraph to remain readable.",
+    incidentTitle: "Paragraph lines are colliding.",
+    incident:
+      "The copy uses a compact line-height that makes descenders and adjacent lines visually merge in the reading surface. Increase leading without changing the font size.",
+    evidence: [
+      ["Expected", "Comfortable line spacing"],
+      ["Observed", "Lines feel compressed"],
+      ["Constraint", "Keep the paragraph font size"],
+    ],
+    selector: ".reading-copy p",
+    starterCSS: `.reading-copy p {\n  line-height: 1;\n}`,
+    originalCSS: "line-height:1",
+    targetCSS: "line-height:1.6",
+    targetPreviewCSS: `.reading-copy p { line-height: 1.6; }`,
+    originalCaption: "Original — compressed leading",
+    targetCaption: "Target — readable leading",
+    previewLabel: "reading copy",
+    previewHTML: `<article class="reading-copy"><span>READING COPY</span><h2>Give every line room.</h2><p>Line-height creates the vertical rhythm that lets readers move from one sentence to the next without the letters colliding.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.reading-copy { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .reading-copy span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .reading-copy h2 { margin: 14px 0 10px; font: 600 28px Georgia, serif; } .reading-copy p { margin: 0; line-height: 1; color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The font size is readable; the lines are vertically too close.",
+      ],
+      [
+        "Concept",
+        "line-height controls leading, the distance between baselines.",
+      ],
+      [
+        "Targeted clue",
+        "Use the approved 1.6 unitless value for the paragraph.",
+      ],
+    ],
+    checkingTitle: "Inspecting the reading rhythm…",
+    checkingText:
+      " Comparing the paragraph leading with the typography target.",
+    successText: " The paragraph now has comfortable line spacing.",
+    validator: "computed-style",
+    expectedProperty: "lineHeight",
+    expectedValue: "25.6px",
+    rootCause: "line-height: 1 compressed the paragraph's vertical rhythm.",
+    remember:
+      "Leading controls the distance between lines; it is not the same as tracking.",
+    recommendedCSS: `.reading-copy p {\n  line-height: 1.6;\n}`,
+    question: "Which line-height restores readable spacing?",
+    choices: [
+      ["line-height: 1", false],
+      ["line-height: 1.6", true],
+    ],
+    correctFeedback:
+      "Correct. 1.6 gives the paragraph a readable vertical rhythm.",
+    incorrectFeedback:
+      "Not quite. 1 keeps the lines too compressed for comfortable reading.",
+    guideHref: "field-guide.html#chapter-10",
+    guideLabel: "Review line-height →",
+    nextCase: "031",
+    storageKey: "css-casebook-c030",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "031": makeCase({ id: "031", fileCode: "AC-001", chapter: "CH11 CSS Accessibility", topic: "Focus", title: "The Invisible Focus", objective: "Restore the visible focus ring required for keyboard navigation.", incidentTitle: "Keyboard focus is invisible.", incident: "The interactive control receives focus, but a reset rule removes the outline without providing a replacement. A keyboard user can move through the interface without knowing where they are.", evidence: [["Expected", "Focus remains obvious"], ["Observed", "Focus state cannot be located"], ["Constraint", "Keep the existing control"]], selector: ".next-case:focus", starterCSS: `.next-case:focus {\n  outline-style: none;\n}`, originalCSS: "outline-style:none", targetCSS: "outline-style:solid", targetPreviewCSS: `.next-case:focus { outline: 3px solid #1f5b43; outline-offset: 4px; }`, originalCaption: "Original — focus removed", targetCaption: "Target — focus restored", previewLabel: "focus", previewHTML: `<div class="access-panel"><span>KEYBOARD PATH</span><a class="next-case" href="#">Continue to evidence →</a><small>Focus must remain visible without a mouse.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.access-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .access-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .next-case { display: inline-block; margin: 18px 0 14px; color: #1f5b43; font-weight: 700; } .access-panel small { display: block; color: #657067; }`, hints: [["Observation", "The link still works, but the keyboard location cue is gone."], ["Concept", ":focus is a state; removing outline requires an equally obvious replacement."], ["Targeted clue", "Restore a solid outline and keep an offset for separation."]], checkingTitle: "Checking keyboard focus…", checkingText: " Comparing the focus state with the accessibility requirement.", successText: " Keyboard users now have a reliable focus location.", validator: "computed-style", expectedProperty: "outlineStyle", expectedValue: "solid", rootCause: "outline-style: none removed the visible keyboard focus indicator.", remember: "If focus disappears, keyboard users lose their place.", recommendedCSS: `.next-case:focus {\n  outline: 3px solid #1f5b43;\n  outline-offset: 4px;\n}`, question: "Which outline style restores keyboard focus?", choices: [["outline-style: none", false], ["outline-style: solid", true]], correctFeedback: "Correct. A solid focus ring keeps the keyboard path visible.", incorrectFeedback: "Not quite. none removes the location cue users need.", guideHref: "field-guide.html#chapter-11", guideLabel: "Review focus accessibility →", nextCase: "032", storageKey: "css-casebook-c031" }),
-  "032": makeCase({ id: "032", fileCode: "AC-002", chapter: "CH11 CSS Accessibility", topic: "Visual hiding", title: "The Hidden-but-Readable Button", objective: "Keep the accessible action text available within a usable visual area.", incidentTitle: "The accessible action has no usable visual box.", incident: "The button text is technically present, but its visual width collapsed. The action is difficult to discover and activate even though it still exists in the DOM.", evidence: [["Expected", "Action retains a usable width"], ["Observed", "Button collapses to nothing"], ["Constraint", "Keep the accessible text"]], selector: ".accessible-action", starterCSS: `.accessible-action {\n  max-width: 0px;\n}`, originalCSS: "max-width:0px", targetCSS: "max-width:240px", targetPreviewCSS: `.accessible-action { max-width: 240px; }`, originalCaption: "Original — action collapsed", targetCaption: "Target — action usable", previewLabel: "access", previewHTML: `<div class="action-panel"><span>PRIMARY ACTION</span><button class="accessible-action" type="button">Open accessible report</button><small>Visual availability and semantic availability should agree.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.action-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .action-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .accessible-action { display: block; width: 100%; max-width: 0; overflow: hidden; margin: 18px 0 12px; padding: 12px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; } .action-panel small { color: #657067; }`, hints: [["Observation", "The action is in the markup, but its visual box has collapsed."], ["Concept", "Visual hiding and semantic hiding are different jobs; an accessible action still needs a usable target."], ["Targeted clue", "Restore the documented 240px maximum width."]], checkingTitle: "Inspecting the action box…", checkingText: " Comparing the rendered action with the usable-control requirement.", successText: " The accessible action now has a usable visual area.", validator: "computed-style", expectedProperty: "maxWidth", expectedValue: "240px", rootCause: "max-width: 0px collapsed the action's visual box even though its text remained in the DOM.", remember: "Visual hiding and semantic hiding are different jobs.", recommendedCSS: `.accessible-action {\n  max-width: 240px;\n}`, question: "Which maximum width keeps the action usable?", choices: [["max-width: 0px", false], ["max-width: 240px", true]], correctFeedback: "Correct. 240px gives the action a discoverable, usable visual width.", incorrectFeedback: "Not quite. 0px collapses the action's visual area.", guideHref: "field-guide.html#chapter-11", guideLabel: "Review hiding behavior →", nextCase: "033", storageKey: "css-casebook-c032" }),
-  "033": makeCase({ id: "033", fileCode: "AC-003", chapter: "CH11 CSS Accessibility", topic: "Contrast", title: "The Contrast That Failed", objective: "Restore a darker text color that can be checked against the light surface.", incidentTitle: "The status message fails contrast review.", incident: "The color communicates a state in the design file but does not provide enough contrast against the light surface. The status word must remain readable even when color is not the only cue.", evidence: [["Expected", "Text meets contrast target"], ["Observed", "Color is too pale"], ["Constraint", "Keep the status text and icon"]], selector: ".contrast-status", starterCSS: `.contrast-status {\n  color: #fffefa;\n}`, originalCSS: "color:#fffefa", targetCSS: "color:#173d2c", targetPreviewCSS: `.contrast-status { color: #173d2c; }`, originalCaption: "Original — pale status", targetCaption: "Target — readable status", previewLabel: "contrast", previewHTML: `<div class="contrast-panel"><span>STATUS · READY</span><p class="contrast-status">Review complete</p><small>The word carries the meaning; color reinforces it.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.contrast-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .contrast-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .contrast-status { margin: 18px 0 8px; color: #fffefa; font: 600 27px Georgia, serif; } .contrast-panel small { color: #657067; }`, hints: [["Observation", "The status word remains, but the foreground is too close to the surface."], ["Concept", "Contrast is evaluated on the final foreground/background pair."], ["Targeted clue", "Use the darker approved green text color."]], checkingTitle: "Checking contrast…", checkingText: " Comparing the status foreground with the light surface.", successText: " The status message now has a readable foreground.", validator: "computed-style", expectedProperty: "color", expectedValue: "rgb(23, 61, 44)", rootCause: "The pale foreground failed contrast against the light panel surface.", remember: "Do not communicate meaning through color alone.", recommendedCSS: `.contrast-status {\n  color: #173d2c;\n}`, question: "Which text color restores stronger contrast?", choices: [["color: #fffefa", false], ["color: #173d2c", true]], correctFeedback: "Correct. The darker green foreground is readable against the light surface.", incorrectFeedback: "Not quite. The pale foreground remains too close to the background.", guideHref: "field-guide.html#chapter-11", guideLabel: "Review contrast →", nextCase: "034", storageKey: "css-casebook-c033" })
+  "031": makeCase({
+    id: "031",
+    fileCode: "AC-001",
+    chapter: "CH11 CSS Accessibility",
+    topic: "Focus",
+    title: "The Invisible Focus",
+    objective:
+      "Restore the visible focus ring required for keyboard navigation.",
+    incidentTitle: "Keyboard focus is invisible.",
+    incident:
+      "The interactive control receives focus, but a reset rule removes the outline without providing a replacement. A keyboard user can move through the interface without knowing where they are.",
+    evidence: [
+      ["Expected", "Focus remains obvious"],
+      ["Observed", "Focus state cannot be located"],
+      ["Constraint", "Keep the existing control"],
+    ],
+    selector: ".next-case:focus",
+    starterCSS: `.next-case:focus {\n  outline-style: none;\n}`,
+    originalCSS: "outline-style:none",
+    targetCSS: "outline-style:solid",
+    targetPreviewCSS: `.next-case:focus { outline: 3px solid #1f5b43; outline-offset: 4px; }`,
+    originalCaption: "Original — focus removed",
+    targetCaption: "Target — focus restored",
+    previewLabel: "focus",
+    previewHTML: `<div class="access-panel"><span>KEYBOARD PATH</span><a class="next-case" href="#">Continue to evidence →</a><small>Focus must remain visible without a mouse.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.access-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .access-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .next-case { display: inline-block; margin: 18px 0 14px; color: #1f5b43; font-weight: 700; } .access-panel small { display: block; color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The link still works, but the keyboard location cue is gone.",
+      ],
+      [
+        "Concept",
+        ":focus is a state; removing outline requires an equally obvious replacement.",
+      ],
+      [
+        "Targeted clue",
+        "Restore a solid outline and keep an offset for separation.",
+      ],
+    ],
+    checkingTitle: "Checking keyboard focus…",
+    checkingText:
+      " Comparing the focus state with the accessibility requirement.",
+    successText: " Keyboard users now have a reliable focus location.",
+    validator: "computed-style",
+    expectedProperty: "outlineStyle",
+    expectedValue: "solid",
+    rootCause:
+      "outline-style: none removed the visible keyboard focus indicator.",
+    remember: "If focus disappears, keyboard users lose their place.",
+    recommendedCSS: `.next-case:focus {\n  outline: 3px solid #1f5b43;\n  outline-offset: 4px;\n}`,
+    question: "Which outline style restores keyboard focus?",
+    choices: [
+      ["outline-style: none", false],
+      ["outline-style: solid", true],
+    ],
+    correctFeedback:
+      "Correct. A solid focus ring keeps the keyboard path visible.",
+    incorrectFeedback: "Not quite. none removes the location cue users need.",
+    guideHref: "field-guide.html#chapter-11",
+    guideLabel: "Review focus accessibility →",
+    nextCase: "032",
+    storageKey: "css-casebook-c031",
+  }),
+  "032": makeCase({
+    id: "032",
+    fileCode: "AC-002",
+    chapter: "CH11 CSS Accessibility",
+    topic: "Visual hiding",
+    title: "The Hidden-but-Readable Button",
+    objective:
+      "Keep the accessible action text available within a usable visual area.",
+    incidentTitle: "The accessible action has no usable visual box.",
+    incident:
+      "The button text is technically present, but its visual width collapsed. The action is difficult to discover and activate even though it still exists in the DOM.",
+    evidence: [
+      ["Expected", "Action retains a usable width"],
+      ["Observed", "Button collapses to nothing"],
+      ["Constraint", "Keep the accessible text"],
+    ],
+    selector: ".accessible-action",
+    starterCSS: `.accessible-action {\n  max-width: 0px;\n}`,
+    originalCSS: "max-width:0px",
+    targetCSS: "max-width:240px",
+    targetPreviewCSS: `.accessible-action { max-width: 240px; }`,
+    originalCaption: "Original — action collapsed",
+    targetCaption: "Target — action usable",
+    previewLabel: "access",
+    previewHTML: `<div class="action-panel"><span>PRIMARY ACTION</span><button class="accessible-action" type="button">Open accessible report</button><small>Visual availability and semantic availability should agree.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.action-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .action-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .accessible-action { display: block; width: 100%; max-width: 0; overflow: hidden; margin: 18px 0 12px; padding: 12px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; } .action-panel small { color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The action is in the markup, but its visual box has collapsed.",
+      ],
+      [
+        "Concept",
+        "Visual hiding and semantic hiding are different jobs; an accessible action still needs a usable target.",
+      ],
+      ["Targeted clue", "Restore the documented 240px maximum width."],
+    ],
+    checkingTitle: "Inspecting the action box…",
+    checkingText:
+      " Comparing the rendered action with the usable-control requirement.",
+    successText: " The accessible action now has a usable visual area.",
+    validator: "computed-style",
+    expectedProperty: "maxWidth",
+    expectedValue: "240px",
+    rootCause:
+      "max-width: 0px collapsed the action's visual box even though its text remained in the DOM.",
+    remember: "Visual hiding and semantic hiding are different jobs.",
+    recommendedCSS: `.accessible-action {\n  max-width: 240px;\n}`,
+    question: "Which maximum width keeps the action usable?",
+    choices: [
+      ["max-width: 0px", false],
+      ["max-width: 240px", true],
+    ],
+    correctFeedback:
+      "Correct. 240px gives the action a discoverable, usable visual width.",
+    incorrectFeedback: "Not quite. 0px collapses the action's visual area.",
+    guideHref: "field-guide.html#chapter-11",
+    guideLabel: "Review hiding behavior →",
+    nextCase: "033",
+    storageKey: "css-casebook-c032",
+  }),
+  "033": makeCase({
+    id: "033",
+    fileCode: "AC-003",
+    chapter: "CH11 CSS Accessibility",
+    topic: "Contrast",
+    title: "The Contrast That Failed",
+    objective:
+      "Restore a darker text color that can be checked against the light surface.",
+    incidentTitle: "The status message fails contrast review.",
+    incident:
+      "The color communicates a state in the design file but does not provide enough contrast against the light surface. The status word must remain readable even when color is not the only cue.",
+    evidence: [
+      ["Expected", "Text meets contrast target"],
+      ["Observed", "Color is too pale"],
+      ["Constraint", "Keep the status text and icon"],
+    ],
+    selector: ".contrast-status",
+    starterCSS: `.contrast-status {\n  color: #fffefa;\n}`,
+    originalCSS: "color:#fffefa",
+    targetCSS: "color:#173d2c",
+    targetPreviewCSS: `.contrast-status { color: #173d2c; }`,
+    originalCaption: "Original — pale status",
+    targetCaption: "Target — readable status",
+    previewLabel: "contrast",
+    previewHTML: `<div class="contrast-panel"><span>STATUS · READY</span><p class="contrast-status">Review complete</p><small>The word carries the meaning; color reinforces it.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.contrast-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .contrast-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .contrast-status { margin: 18px 0 8px; color: #fffefa; font: 600 27px Georgia, serif; } .contrast-panel small { color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The status word remains, but the foreground is too close to the surface.",
+      ],
+      [
+        "Concept",
+        "Contrast is evaluated on the final foreground/background pair.",
+      ],
+      ["Targeted clue", "Use the darker approved green text color."],
+    ],
+    checkingTitle: "Checking contrast…",
+    checkingText: " Comparing the status foreground with the light surface.",
+    successText: " The status message now has a readable foreground.",
+    validator: "computed-style",
+    expectedProperty: "color",
+    expectedValue: "rgb(23, 61, 44)",
+    rootCause:
+      "The pale foreground failed contrast against the light panel surface.",
+    remember: "Do not communicate meaning through color alone.",
+    recommendedCSS: `.contrast-status {\n  color: #173d2c;\n}`,
+    question: "Which text color restores stronger contrast?",
+    choices: [
+      ["color: #fffefa", false],
+      ["color: #173d2c", true],
+    ],
+    correctFeedback:
+      "Correct. The darker green foreground is readable against the light surface.",
+    incorrectFeedback:
+      "Not quite. The pale foreground remains too close to the background.",
+    guideHref: "field-guide.html#chapter-11",
+    guideLabel: "Review contrast →",
+    nextCase: "034",
+    storageKey: "css-casebook-c033",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "034": makeCase({ id: "034", fileCode: "PO-001", chapter: "CH12 CSS Positioning", topic: "Sticky positioning", title: "The Stubborn Navbar", objective: "Keep the navigation available while the user moves through a long case file.", incidentTitle: "The navigation scrolls away too soon.", incident: "The long case file has a persistent navigation requirement, but the bar remains in ordinary document flow. The user loses access to the section links after scrolling.", evidence: [["Expected", "Navigation stays available"], ["Observed", "Navigation disappears above the viewport"], ["Constraint", "Keep the bar in document flow"]], selector: ".case-nav", starterCSS: `.case-nav {\n  position: static;\n}`, originalCSS: "position:static", targetCSS: "position:sticky", targetPreviewCSS: `.case-nav { position: sticky; top: 12px; }`, originalCaption: "Original — ordinary flow", targetCaption: "Target — sticky navigation", previewLabel: "position", previewHTML: `<div class="position-demo"><nav class="case-nav"><span>CASE NAV</span><a href="#">Evidence</a><a href="#">Resolution</a></nav><article><h2>Long case file</h2><p>Navigation should remain available while the investigator reviews each section.</p></article></div>`, previewBaseCSS: sharedPreviewCSS + `.position-demo { width: min(100%, 520px); min-height: 220px; padding: 16px; border: 1px solid #c6cbc2; background: #f3f0e6; } .case-nav { display: flex; gap: 14px; align-items: center; padding: 12px 14px; background: #173d2c; color: #fffefa; } .case-nav span { color: #9fc5ad; font: 700 10px monospace; } .case-nav a { color: #fffefa; font-size: 12px; } .position-demo article { margin-top: 42px; padding: 22px; background: #fffefa; } .position-demo h2 { margin: 0 0 8px; font: 600 25px Georgia, serif; } .position-demo p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The bar keeps its place in normal flow but does not remain available while scrolling."], ["Concept", "sticky stays in flow until it reaches its inset threshold."], ["Targeted clue", "Use sticky positioning and preserve the top offset in the target preview."]], checkingTitle: "Inspecting navigation positioning…", checkingText: " Comparing the case navigation with the persistent-reading requirement.", successText: " The navigation now remains available during the long case.", validator: "computed-style", expectedProperty: "position", expectedValue: "sticky", rootCause: "position: static left the navigation in ordinary flow, so it scrolled away with the document.", remember: "Sticky remains in flow until it reaches its inset threshold.", recommendedCSS: `.case-nav {\n  position: sticky;\n  top: 12px;\n}`, question: "Which position value keeps the navbar available?", choices: [["position: static", false], ["position: sticky", true]], correctFeedback: "Correct. sticky keeps the bar in flow and available at its threshold.", incorrectFeedback: "Not quite. static lets the bar scroll away normally.", guideHref: "field-guide.html#chapter-12", guideLabel: "Review sticky positioning →", nextCase: "035", storageKey: "css-casebook-c034" }),
-  "035": makeCase({ id: "035", fileCode: "PO-002", chapter: "CH12 CSS Positioning", topic: "Absolute positioning", title: "The Badge in the Wrong Corner", objective: "Anchor the badge to the positioned card instead of the page flow.", incidentTitle: "The badge follows the document instead of the card.", incident: "The badge should sit in the card corner, but static flow places it after the card content and changes the card height. Anchor it to the card's containing block.", evidence: [["Expected", "Badge anchors to card corner"], ["Observed", "Badge occupies normal flow"], ["Constraint", "Keep the card content order"]], selector: ".priority-badge", starterCSS: `.priority-badge {\n  position: static;\n}`, originalCSS: "position:static", targetCSS: "position:absolute", targetPreviewCSS: `.priority-badge { position: absolute; top: 16px; right: 16px; }`, originalCaption: "Original — badge in flow", targetCaption: "Target — corner badge", previewLabel: "anchor", previewHTML: `<article class="badge-card"><span class="priority-badge">HIGH PRIORITY</span><h2>Review the evidence</h2><p>The badge belongs to the card corner, not the reading order.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.badge-card { position: relative; width: min(100%, 470px); min-height: 170px; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .priority-badge { display: inline-block; margin-bottom: 18px; padding: 6px 9px; border-radius: 999px; background: #a44d2f; color: #fffefa; font: 700 10px monospace; letter-spacing: .06em; } .badge-card h2 { margin: 0 0 8px; font: 600 27px Georgia, serif; } .badge-card p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The badge is changing card height because it remains in normal flow."], ["Concept", "absolute removes the badge from flow and uses the nearest positioned ancestor."], ["Targeted clue", "Anchor the badge after making the card the containing block."]], checkingTitle: "Inspecting the badge anchor…", checkingText: " Comparing the badge placement with the card-corner requirement.", successText: " The badge now anchors to the card corner without changing content flow.", validator: "computed-style", expectedProperty: "position", expectedValue: "absolute", rootCause: "position: static kept the badge in normal flow instead of anchoring it to the card.", remember: "Absolute positioning needs a containing block you can name.", recommendedCSS: `.badge-card { position: relative; }\n.priority-badge {\n  position: absolute;\n  top: 16px;\n  right: 16px;\n}`, question: "Which position value removes the badge from normal flow?", choices: [["position: static", false], ["position: absolute", true]], correctFeedback: "Correct. absolute lets the badge anchor to the positioned card.", incorrectFeedback: "Not quite. static keeps the badge in the card's normal flow.", guideHref: "field-guide.html#chapter-12", guideLabel: "Review absolute positioning →", nextCase: "036", storageKey: "css-casebook-c035" }),
-  "036": makeCase({ id: "036", fileCode: "PO-003", chapter: "CH12 CSS Positioning", topic: "Stacking contexts", title: "The Layer Behind the Modal", objective: "Place the modal layer above the page content within its stacking context.", incidentTitle: "The modal sits behind the page layer.", incident: "The modal is positioned correctly, but a lower stacking order leaves page content visually above its backdrop. Raise the modal within the comparison being made.", evidence: [["Expected", "Modal is above page content"], ["Observed", "Page layer covers modal"], ["Constraint", "Keep the modal position"]], selector: ".case-modal", starterCSS: `.case-modal {\n  z-index: 0;\n}`, originalCSS: "z-index:0", targetCSS: "z-index:100", targetPreviewCSS: `.case-modal { z-index: 100; }`, originalCaption: "Original — layer behind", targetCaption: "Target — modal above", previewLabel: "stack", previewHTML: `<div class="stack-scene"><div class="page-layer">CASE CONTENT</div><div class="case-modal"><span>MODAL</span><strong>Resolve this case?</strong><button type="button">Confirm</button></div></div>`, previewBaseCSS: sharedPreviewCSS + `.stack-scene { position: relative; width: min(100%, 500px); min-height: 210px; padding: 24px; background: #d5d8d1; } .page-layer { padding: 42px 20px; color: #657067; font: 700 11px monospace; letter-spacing: .1em; } .case-modal { position: absolute; z-index: 0; inset: 52px 60px 42px; display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #fffefa; border: 2px solid #1f5b43; color: #18221c; } .case-modal span { color: #a44d2f; font: 700 10px monospace; } .case-modal strong { font: 600 22px Georgia, serif; } .case-modal button { align-self: flex-start; padding: 8px 12px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; }`, hints: [["Observation", "The modal exists, but the page layer can paint above it."], ["Concept", "z-index compares stacking order within the relevant stacking context."], ["Targeted clue", "Raise the modal to the approved 100 level."]], checkingTitle: "Inspecting the modal stack…", checkingText: " Comparing the modal layer with the page-content stacking order.", successText: " The modal now sits above the page content.", validator: "computed-style", expectedProperty: "zIndex", expectedValue: "100", rootCause: "z-index: 0 left the modal at the same low stacking level as the page layer.", remember: "A large z-index cannot escape an ancestor stacking context.", recommendedCSS: `.case-modal {\n  position: absolute;\n  z-index: 100;\n}`, question: "Which value raises the modal layer?", choices: [["z-index: 0", false], ["z-index: 100", true]], correctFeedback: "Correct. 100 raises the modal above the page layer in this context.", incorrectFeedback: "Not quite. 0 leaves the modal at the low stacking level.", guideHref: "field-guide.html#chapter-12", guideLabel: "Review stacking order →", nextCase: "037", storageKey: "css-casebook-c036" })
+  "034": makeCase({
+    id: "034",
+    fileCode: "PO-001",
+    chapter: "CH12 CSS Positioning",
+    topic: "Sticky positioning",
+    title: "The Stubborn Navbar",
+    objective:
+      "Keep the navigation available while the user moves through a long case file.",
+    incidentTitle: "The navigation scrolls away too soon.",
+    incident:
+      "The long case file has a persistent navigation requirement, but the bar remains in ordinary document flow. The user loses access to the section links after scrolling.",
+    evidence: [
+      ["Expected", "Navigation stays available"],
+      ["Observed", "Navigation disappears above the viewport"],
+      ["Constraint", "Keep the bar in document flow"],
+    ],
+    selector: ".case-nav",
+    starterCSS: `.case-nav {\n  position: static;\n}`,
+    originalCSS: "position:static",
+    targetCSS: "position:sticky",
+    targetPreviewCSS: `.case-nav { position: sticky; top: 12px; }`,
+    originalCaption: "Original — ordinary flow",
+    targetCaption: "Target — sticky navigation",
+    previewLabel: "position",
+    previewHTML: `<div class="position-demo"><nav class="case-nav"><span>CASE NAV</span><a href="#">Evidence</a><a href="#">Resolution</a></nav><article><h2>Long case file</h2><p>Navigation should remain available while the investigator reviews each section.</p></article></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.position-demo { width: min(100%, 520px); min-height: 220px; padding: 16px; border: 1px solid #c6cbc2; background: #f3f0e6; } .case-nav { display: flex; gap: 14px; align-items: center; padding: 12px 14px; background: #173d2c; color: #fffefa; } .case-nav span { color: #9fc5ad; font: 700 10px monospace; } .case-nav a { color: #fffefa; font-size: 12px; } .position-demo article { margin-top: 42px; padding: 22px; background: #fffefa; } .position-demo h2 { margin: 0 0 8px; font: 600 25px Georgia, serif; } .position-demo p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The bar keeps its place in normal flow but does not remain available while scrolling.",
+      ],
+      ["Concept", "sticky stays in flow until it reaches its inset threshold."],
+      [
+        "Targeted clue",
+        "Use sticky positioning and preserve the top offset in the target preview.",
+      ],
+    ],
+    checkingTitle: "Inspecting navigation positioning…",
+    checkingText:
+      " Comparing the case navigation with the persistent-reading requirement.",
+    successText: " The navigation now remains available during the long case.",
+    validator: "computed-style",
+    expectedProperty: "position",
+    expectedValue: "sticky",
+    rootCause:
+      "position: static left the navigation in ordinary flow, so it scrolled away with the document.",
+    remember: "Sticky remains in flow until it reaches its inset threshold.",
+    recommendedCSS: `.case-nav {\n  position: sticky;\n  top: 12px;\n}`,
+    question: "Which position value keeps the navbar available?",
+    choices: [
+      ["position: static", false],
+      ["position: sticky", true],
+    ],
+    correctFeedback:
+      "Correct. sticky keeps the bar in flow and available at its threshold.",
+    incorrectFeedback: "Not quite. static lets the bar scroll away normally.",
+    guideHref: "field-guide.html#chapter-12",
+    guideLabel: "Review sticky positioning →",
+    nextCase: "035",
+    storageKey: "css-casebook-c034",
+  }),
+  "035": makeCase({
+    id: "035",
+    fileCode: "PO-002",
+    chapter: "CH12 CSS Positioning",
+    topic: "Absolute positioning",
+    title: "The Badge in the Wrong Corner",
+    objective:
+      "Anchor the badge to the positioned card instead of the page flow.",
+    incidentTitle: "The badge follows the document instead of the card.",
+    incident:
+      "The badge should sit in the card corner, but static flow places it after the card content and changes the card height. Anchor it to the card's containing block.",
+    evidence: [
+      ["Expected", "Badge anchors to card corner"],
+      ["Observed", "Badge occupies normal flow"],
+      ["Constraint", "Keep the card content order"],
+    ],
+    selector: ".priority-badge",
+    starterCSS: `.priority-badge {\n  position: static;\n}`,
+    originalCSS: "position:static",
+    targetCSS: "position:absolute",
+    targetPreviewCSS: `.priority-badge { position: absolute; top: 16px; right: 16px; }`,
+    originalCaption: "Original — badge in flow",
+    targetCaption: "Target — corner badge",
+    previewLabel: "anchor",
+    previewHTML: `<article class="badge-card"><span class="priority-badge">HIGH PRIORITY</span><h2>Review the evidence</h2><p>The badge belongs to the card corner, not the reading order.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.badge-card { position: relative; width: min(100%, 470px); min-height: 170px; padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .priority-badge { display: inline-block; margin-bottom: 18px; padding: 6px 9px; border-radius: 999px; background: #a44d2f; color: #fffefa; font: 700 10px monospace; letter-spacing: .06em; } .badge-card h2 { margin: 0 0 8px; font: 600 27px Georgia, serif; } .badge-card p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The badge is changing card height because it remains in normal flow.",
+      ],
+      [
+        "Concept",
+        "absolute removes the badge from flow and uses the nearest positioned ancestor.",
+      ],
+      [
+        "Targeted clue",
+        "Anchor the badge after making the card the containing block.",
+      ],
+    ],
+    checkingTitle: "Inspecting the badge anchor…",
+    checkingText:
+      " Comparing the badge placement with the card-corner requirement.",
+    successText:
+      " The badge now anchors to the card corner without changing content flow.",
+    validator: "computed-style",
+    expectedProperty: "position",
+    expectedValue: "absolute",
+    rootCause:
+      "position: static kept the badge in normal flow instead of anchoring it to the card.",
+    remember: "Absolute positioning needs a containing block you can name.",
+    recommendedCSS: `.badge-card { position: relative; }\n.priority-badge {\n  position: absolute;\n  top: 16px;\n  right: 16px;\n}`,
+    question: "Which position value removes the badge from normal flow?",
+    choices: [
+      ["position: static", false],
+      ["position: absolute", true],
+    ],
+    correctFeedback:
+      "Correct. absolute lets the badge anchor to the positioned card.",
+    incorrectFeedback:
+      "Not quite. static keeps the badge in the card's normal flow.",
+    guideHref: "field-guide.html#chapter-12",
+    guideLabel: "Review absolute positioning →",
+    nextCase: "036",
+    storageKey: "css-casebook-c035",
+  }),
+  "036": makeCase({
+    id: "036",
+    fileCode: "PO-003",
+    chapter: "CH12 CSS Positioning",
+    topic: "Stacking contexts",
+    title: "The Layer Behind the Modal",
+    objective:
+      "Place the modal layer above the page content within its stacking context.",
+    incidentTitle: "The modal sits behind the page layer.",
+    incident:
+      "The modal is positioned correctly, but a lower stacking order leaves page content visually above its backdrop. Raise the modal within the comparison being made.",
+    evidence: [
+      ["Expected", "Modal is above page content"],
+      ["Observed", "Page layer covers modal"],
+      ["Constraint", "Keep the modal position"],
+    ],
+    selector: ".case-modal",
+    starterCSS: `.case-modal {\n  z-index: 0;\n}`,
+    originalCSS: "z-index:0",
+    targetCSS: "z-index:100",
+    targetPreviewCSS: `.case-modal { z-index: 100; }`,
+    originalCaption: "Original — layer behind",
+    targetCaption: "Target — modal above",
+    previewLabel: "stack",
+    previewHTML: `<div class="stack-scene"><div class="page-layer">CASE CONTENT</div><div class="case-modal"><span>MODAL</span><strong>Resolve this case?</strong><button type="button">Confirm</button></div></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.stack-scene { position: relative; width: min(100%, 500px); min-height: 210px; padding: 24px; background: #d5d8d1; } .page-layer { padding: 42px 20px; color: #657067; font: 700 11px monospace; letter-spacing: .1em; } .case-modal { position: absolute; z-index: 0; inset: 52px 60px 42px; display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #fffefa; border: 2px solid #1f5b43; color: #18221c; } .case-modal span { color: #a44d2f; font: 700 10px monospace; } .case-modal strong { font: 600 22px Georgia, serif; } .case-modal button { align-self: flex-start; padding: 8px 12px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; }`,
+    hints: [
+      [
+        "Observation",
+        "The modal exists, but the page layer can paint above it.",
+      ],
+      [
+        "Concept",
+        "z-index compares stacking order within the relevant stacking context.",
+      ],
+      ["Targeted clue", "Raise the modal to the approved 100 level."],
+    ],
+    checkingTitle: "Inspecting the modal stack…",
+    checkingText:
+      " Comparing the modal layer with the page-content stacking order.",
+    successText: " The modal now sits above the page content.",
+    validator: "computed-style",
+    expectedProperty: "zIndex",
+    expectedValue: "100",
+    rootCause:
+      "z-index: 0 left the modal at the same low stacking level as the page layer.",
+    remember: "A large z-index cannot escape an ancestor stacking context.",
+    recommendedCSS: `.case-modal {\n  position: absolute;\n  z-index: 100;\n}`,
+    question: "Which value raises the modal layer?",
+    choices: [
+      ["z-index: 0", false],
+      ["z-index: 100", true],
+    ],
+    correctFeedback:
+      "Correct. 100 raises the modal above the page layer in this context.",
+    incorrectFeedback:
+      "Not quite. 0 leaves the modal at the low stacking level.",
+    guideHref: "field-guide.html#chapter-12",
+    guideLabel: "Review stacking order →",
+    nextCase: "037",
+    storageKey: "css-casebook-c036",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "037": makeCase({ id: "037", fileCode: "AT-001", chapter: "CH13 CSS Attribute Selectors", topic: "Attribute matching", title: "The Selector Mystery", objective: "Make the attribute-matched resource link visibly distinct from ordinary text.", incidentTitle: "The matching link has no visual cue.", incident: "The selector finds the intended attribute-bearing link, but the style that distinguishes it was removed. Readers need a recognizable cue before following the resource.", evidence: [["Expected", "Matched link is recognizable"], ["Observed", "Matched link looks ordinary"], ["Constraint", "Keep the attribute selector"]], selector: ".resource-link", starterCSS: `.resource-link {\n  text-decoration-line: none;\n}`, originalCSS: "text-decoration-line:none", targetCSS: "text-decoration-line:underline", targetPreviewCSS: `.resource-link { text-decoration-line: underline; }`, originalCaption: "Original — no cue", targetCaption: "Target — matched cue", previewLabel: "attribute", previewHTML: `<div class="attribute-panel"><span>RESOURCE MATCH</span><a class="resource-link" href="/guide">Open the field guide →</a><p>The attribute relationship selects this link; the visual cue confirms it.</p></div>`, previewBaseCSS: sharedPreviewCSS + `.attribute-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .attribute-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .resource-link { display: inline-block; margin: 16px 0 10px; color: #1f5b43; text-decoration-line: none; font-weight: 700; } .attribute-panel p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The link is selected by its attribute relationship, but looks ordinary."], ["Concept", "Attribute selectors can target a precise semantic relationship without extra classes."], ["Targeted clue", "Restore an underline on the matched resource link."]], checkingTitle: "Checking the matched link…", checkingText: " Comparing the attribute cue with the resource-link pattern.", successText: " The matched link now has a clear visual cue.", validator: "computed-style", expectedProperty: "textDecorationLine", expectedValue: "underline", rootCause: "text-decoration-line: none removed the visual distinction from the matched link.", remember: "Start from the attribute relationship, then add only the specificity you need.", recommendedCSS: `.resource-link {\n  text-decoration-line: underline;\n}`, question: "Which value distinguishes the matched link?", choices: [["text-decoration-line: none", false], ["text-decoration-line: underline", true]], correctFeedback: "Correct. The underline confirms the link's matched resource role.", incorrectFeedback: "Not quite. none removes the cue that distinguishes the matched link.", guideHref: "field-guide.html#chapter-13", guideLabel: "Review attribute matching →", nextCase: "038", storageKey: "css-casebook-c037" }),
-  "038": makeCase({ id: "038", fileCode: "AT-002", chapter: "CH13 CSS Attribute Selectors", topic: "Download links", title: "The Wrong Download Link", objective: "Signal the PDF download link with the intended file-type treatment.", incidentTitle: "The PDF link looks like every other link.", incident: "The download target ends with .pdf, but the file-type cue is missing from the link treatment. The selector should communicate the resource type without changing its destination.", evidence: [["Expected", "Download link is distinct"], ["Observed", "File type is invisible"], ["Constraint", "Keep the download URL"]], selector: ".pdf-link", starterCSS: `.pdf-link {\n  color: #173d2c;\n}`, originalCSS: "color:#173d2c", targetCSS: "color:#a44d2f", targetPreviewCSS: `.pdf-link { color: #a44d2f; }`, originalCaption: "Original — ordinary download", targetCaption: "Target — PDF cue", previewLabel: "download", previewHTML: `<div class="download-panel"><span>FILE TYPE</span><a class="pdf-link" href="guide.pdf">Download the field guide.pdf</a><p>The file ending tells the selector which treatment to apply.</p></div>`, previewBaseCSS: sharedPreviewCSS + `.download-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .download-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .pdf-link { display: inline-block; margin: 16px 0 10px; color: #173d2c; font-weight: 700; } .download-panel p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The target ends in .pdf; the link treatment is the only missing cue."], ["Concept", "$= matches the end of an attribute value, making it useful for file types."], ["Targeted clue", "Apply the approved rust color to the matched PDF link."]], checkingTitle: "Checking the download treatment…", checkingText: " Comparing the file-type cue with the download-link pattern.", successText: " The PDF link now signals its file type clearly.", validator: "computed-style", expectedProperty: "color", expectedValue: "rgb(164, 77, 47)", rootCause: "The PDF selector kept the same green color as ordinary links, hiding the file-type distinction.", remember: "The $= operator matches the end of an attribute value.", recommendedCSS: `.pdf-link {\n  color: #a44d2f;\n}`, question: "Which color applies the download treatment?", choices: [["color: #173d2c", false], ["color: #a44d2f", true]], correctFeedback: "Correct. The rust color makes the PDF download distinct.", incorrectFeedback: "Not quite. The green color is the ordinary resource-link treatment.", guideHref: "field-guide.html#chapter-13", guideLabel: "Review download selectors →", nextCase: "039", storageKey: "css-casebook-c038" }),
-  "039": makeCase({ id: "039", fileCode: "AT-003", chapter: "CH13 CSS Attribute Selectors", topic: "Language attributes", title: "The Language That Was Missed", objective: "Apply the language-specific typographic cue to the matched content.", incidentTitle: "The language-specific note was missed.", incident: "The content declares a language variant, but the language selector does not produce the intended typographic cue. The note should be signposted without changing its words.", evidence: [["Expected", "Language variant is signposted"], ["Observed", "Language variant looks unmarked"], ["Constraint", "Keep the lang attribute"]], selector: ".language-note", starterCSS: `.language-note {\n  font-style: normal;\n}`, originalCSS: "font-style:normal", targetCSS: "font-style:italic", targetPreviewCSS: `.language-note { font-style: italic; }`, originalCaption: "Original — language unmarked", targetCaption: "Target — language signposted", previewLabel: "language", previewHTML: `<div class="language-panel"><span>LANGUAGE NOTE</span><p class="language-note" lang="en-US">A language-specific note keeps its meaning and gains a quiet cue.</p><small>Matched through the language attribute.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.language-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .language-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .language-note { margin: 16px 0 8px; color: #18221c; font-style: normal; font-size: 19px; line-height: 1.5; } .language-panel small { color: #657067; }`, hints: [["Observation", "The note declares a language variant, but its type looks unmarked."], ["Concept", "|= matches a language token such as en or en-US."], ["Targeted clue", "Use italic styling for the matched language note."]], checkingTitle: "Checking the language cue…", checkingText: " Comparing the matched note with the language-signposting pattern.", successText: " The language variant is now visibly signposted.", validator: "computed-style", expectedProperty: "fontStyle", expectedValue: "italic", rootCause: "font-style: normal removed the typographic cue from the matched language content.", remember: "The |= operator matches a language token such as en or en-US.", recommendedCSS: `.language-note {\n  font-style: italic;\n}`, question: "Which style marks the language-specific note?", choices: [["font-style: normal", false], ["font-style: italic", true]], correctFeedback: "Correct. Italic styling signposts the language variant without changing the content.", incorrectFeedback: "Not quite. normal removes the language-specific cue.", guideHref: "field-guide.html#chapter-13", guideLabel: "Review language attributes →", nextCase: "040", storageKey: "css-casebook-c039" })
+  "037": makeCase({
+    id: "037",
+    fileCode: "AT-001",
+    chapter: "CH13 CSS Attribute Selectors",
+    topic: "Attribute matching",
+    title: "The Selector Mystery",
+    objective:
+      "Make the attribute-matched resource link visibly distinct from ordinary text.",
+    incidentTitle: "The matching link has no visual cue.",
+    incident:
+      "The selector finds the intended attribute-bearing link, but the style that distinguishes it was removed. Readers need a recognizable cue before following the resource.",
+    evidence: [
+      ["Expected", "Matched link is recognizable"],
+      ["Observed", "Matched link looks ordinary"],
+      ["Constraint", "Keep the attribute selector"],
+    ],
+    selector: ".resource-link",
+    starterCSS: `.resource-link {\n  text-decoration-line: none;\n}`,
+    originalCSS: "text-decoration-line:none",
+    targetCSS: "text-decoration-line:underline",
+    targetPreviewCSS: `.resource-link { text-decoration-line: underline; }`,
+    originalCaption: "Original — no cue",
+    targetCaption: "Target — matched cue",
+    previewLabel: "attribute",
+    previewHTML: `<div class="attribute-panel"><span>RESOURCE MATCH</span><a class="resource-link" href="/guide">Open the field guide →</a><p>The attribute relationship selects this link; the visual cue confirms it.</p></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.attribute-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .attribute-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .resource-link { display: inline-block; margin: 16px 0 10px; color: #1f5b43; text-decoration-line: none; font-weight: 700; } .attribute-panel p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The link is selected by its attribute relationship, but looks ordinary.",
+      ],
+      [
+        "Concept",
+        "Attribute selectors can target a precise semantic relationship without extra classes.",
+      ],
+      ["Targeted clue", "Restore an underline on the matched resource link."],
+    ],
+    checkingTitle: "Checking the matched link…",
+    checkingText:
+      " Comparing the attribute cue with the resource-link pattern.",
+    successText: " The matched link now has a clear visual cue.",
+    validator: "computed-style",
+    expectedProperty: "textDecorationLine",
+    expectedValue: "underline",
+    rootCause:
+      "text-decoration-line: none removed the visual distinction from the matched link.",
+    remember:
+      "Start from the attribute relationship, then add only the specificity you need.",
+    recommendedCSS: `.resource-link {\n  text-decoration-line: underline;\n}`,
+    question: "Which value distinguishes the matched link?",
+    choices: [
+      ["text-decoration-line: none", false],
+      ["text-decoration-line: underline", true],
+    ],
+    correctFeedback:
+      "Correct. The underline confirms the link's matched resource role.",
+    incorrectFeedback:
+      "Not quite. none removes the cue that distinguishes the matched link.",
+    guideHref: "field-guide.html#chapter-13",
+    guideLabel: "Review attribute matching →",
+    nextCase: "038",
+    storageKey: "css-casebook-c037",
+  }),
+  "038": makeCase({
+    id: "038",
+    fileCode: "AT-002",
+    chapter: "CH13 CSS Attribute Selectors",
+    topic: "Download links",
+    title: "The Wrong Download Link",
+    objective:
+      "Signal the PDF download link with the intended file-type treatment.",
+    incidentTitle: "The PDF link looks like every other link.",
+    incident:
+      "The download target ends with .pdf, but the file-type cue is missing from the link treatment. The selector should communicate the resource type without changing its destination.",
+    evidence: [
+      ["Expected", "Download link is distinct"],
+      ["Observed", "File type is invisible"],
+      ["Constraint", "Keep the download URL"],
+    ],
+    selector: ".pdf-link",
+    starterCSS: `.pdf-link {\n  color: #173d2c;\n}`,
+    originalCSS: "color:#173d2c",
+    targetCSS: "color:#a44d2f",
+    targetPreviewCSS: `.pdf-link { color: #a44d2f; }`,
+    originalCaption: "Original — ordinary download",
+    targetCaption: "Target — PDF cue",
+    previewLabel: "download",
+    previewHTML: `<div class="download-panel"><span>FILE TYPE</span><a class="pdf-link" href="guide.pdf">Download the field guide.pdf</a><p>The file ending tells the selector which treatment to apply.</p></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.download-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .download-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .pdf-link { display: inline-block; margin: 16px 0 10px; color: #173d2c; font-weight: 700; } .download-panel p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The target ends in .pdf; the link treatment is the only missing cue.",
+      ],
+      [
+        "Concept",
+        "$= matches the end of an attribute value, making it useful for file types.",
+      ],
+      [
+        "Targeted clue",
+        "Apply the approved rust color to the matched PDF link.",
+      ],
+    ],
+    checkingTitle: "Checking the download treatment…",
+    checkingText:
+      " Comparing the file-type cue with the download-link pattern.",
+    successText: " The PDF link now signals its file type clearly.",
+    validator: "computed-style",
+    expectedProperty: "color",
+    expectedValue: "rgb(164, 77, 47)",
+    rootCause:
+      "The PDF selector kept the same green color as ordinary links, hiding the file-type distinction.",
+    remember: "The $= operator matches the end of an attribute value.",
+    recommendedCSS: `.pdf-link {\n  color: #a44d2f;\n}`,
+    question: "Which color applies the download treatment?",
+    choices: [
+      ["color: #173d2c", false],
+      ["color: #a44d2f", true],
+    ],
+    correctFeedback: "Correct. The rust color makes the PDF download distinct.",
+    incorrectFeedback:
+      "Not quite. The green color is the ordinary resource-link treatment.",
+    guideHref: "field-guide.html#chapter-13",
+    guideLabel: "Review download selectors →",
+    nextCase: "039",
+    storageKey: "css-casebook-c038",
+  }),
+  "039": makeCase({
+    id: "039",
+    fileCode: "AT-003",
+    chapter: "CH13 CSS Attribute Selectors",
+    topic: "Language attributes",
+    title: "The Language That Was Missed",
+    objective:
+      "Apply the language-specific typographic cue to the matched content.",
+    incidentTitle: "The language-specific note was missed.",
+    incident:
+      "The content declares a language variant, but the language selector does not produce the intended typographic cue. The note should be signposted without changing its words.",
+    evidence: [
+      ["Expected", "Language variant is signposted"],
+      ["Observed", "Language variant looks unmarked"],
+      ["Constraint", "Keep the lang attribute"],
+    ],
+    selector: ".language-note",
+    starterCSS: `.language-note {\n  font-style: normal;\n}`,
+    originalCSS: "font-style:normal",
+    targetCSS: "font-style:italic",
+    targetPreviewCSS: `.language-note { font-style: italic; }`,
+    originalCaption: "Original — language unmarked",
+    targetCaption: "Target — language signposted",
+    previewLabel: "language",
+    previewHTML: `<div class="language-panel"><span>LANGUAGE NOTE</span><p class="language-note" lang="en-US">A language-specific note keeps its meaning and gains a quiet cue.</p><small>Matched through the language attribute.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.language-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .language-panel span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .language-note { margin: 16px 0 8px; color: #18221c; font-style: normal; font-size: 19px; line-height: 1.5; } .language-panel small { color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The note declares a language variant, but its type looks unmarked.",
+      ],
+      ["Concept", "|= matches a language token such as en or en-US."],
+      ["Targeted clue", "Use italic styling for the matched language note."],
+    ],
+    checkingTitle: "Checking the language cue…",
+    checkingText:
+      " Comparing the matched note with the language-signposting pattern.",
+    successText: " The language variant is now visibly signposted.",
+    validator: "computed-style",
+    expectedProperty: "fontStyle",
+    expectedValue: "italic",
+    rootCause:
+      "font-style: normal removed the typographic cue from the matched language content.",
+    remember: "The |= operator matches a language token such as en or en-US.",
+    recommendedCSS: `.language-note {\n  font-style: italic;\n}`,
+    question: "Which style marks the language-specific note?",
+    choices: [
+      ["font-style: normal", false],
+      ["font-style: italic", true],
+    ],
+    correctFeedback:
+      "Correct. Italic styling signposts the language variant without changing the content.",
+    incorrectFeedback: "Not quite. normal removes the language-specific cue.",
+    guideHref: "field-guide.html#chapter-13",
+    guideLabel: "Review language attributes →",
+    nextCase: "040",
+    storageKey: "css-casebook-c039",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "040": makeCase({ id: "040", fileCode: "RW-001", chapter: "CH14 Responsive Web Design", topic: "Fluid foundations", title: "The Broken Mobile Layout", objective: "Keep the content surface within the viewport on narrow screens.", incidentTitle: "The mobile surface overflows its viewport.", incident: "The layout is fluid in theory, but the content surface has no maximum-width rule to keep it inside the narrow screen. Users must scroll sideways to read the case.", evidence: [["Expected", "Surface fits viewport"], ["Observed", "Horizontal overflow appears"], ["Constraint", "Keep the content readable"]], selector: ".mobile-surface", starterCSS: `.mobile-surface {\n  max-width: none;\n}`, originalCSS: "max-width:none", targetCSS: "max-width:100%", targetPreviewCSS: `.mobile-surface { max-width: 100%; }`, originalCaption: "Original — viewport overflow", targetCaption: "Target — fluid surface", previewLabel: "narrow view", previewHTML: `<article class="mobile-surface"><span>NARROW VIEW</span><h2>Fit the content before adding a breakpoint.</h2><p>The surface should stay inside the viewport while its text continues to wrap naturally.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.mobile-surface { width: 560px; padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .mobile-surface span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .mobile-surface h2 { margin: 14px 0 8px; font: 600 27px Georgia, serif; } .mobile-surface p { margin: 0; color: #657067; line-height: 1.55; }`, hints: [["Observation", "The surface is wider than the narrow viewport, not the text itself."], ["Concept", "A fluid max-width lets a component shrink with its containing space."], ["Targeted clue", "Limit the surface to 100% of the available width."]], checkingTitle: "Checking the narrow layout…", checkingText: " Comparing the surface with the mobile viewport requirement.", successText: " The content surface now stays inside the narrow viewport.", validator: "computed-style", expectedProperty: "maxWidth", expectedValue: "100%", rootCause: "max-width: none allowed the fixed surface to exceed the narrow viewport.", remember: "Make the content fluid before adding a breakpoint.", recommendedCSS: `.mobile-surface {\n  max-width: 100%;\n}`, question: "Which maximum width keeps the surface fluid?", choices: [["max-width: none", false], ["max-width: 100%", true]], correctFeedback: "Correct. 100% lets the surface fit its available viewport.", incorrectFeedback: "Not quite. none leaves the fixed surface free to overflow.", guideHref: "field-guide.html#chapter-14", guideLabel: "Review fluid foundations →", nextCase: "041", storageKey: "css-casebook-c040" }),
-  "041": makeCase({ id: "041", fileCode: "RW-002", chapter: "CH14 Responsive Web Design", topic: "Responsive actions", title: "The Desktop-only Button", objective: "Make the primary action available when the responsive layout calls for it.", incidentTitle: "The essential action is desktop-only.", incident: "The responsive state hides the button even though mobile users still need the same primary task. The action should remain available at the compact layout size.", evidence: [["Expected", "Primary action remains available"], ["Observed", "Button disappears at the wrong state"], ["Constraint", "Keep the same action label"]], selector: ".mobile-action", starterCSS: `.mobile-action {\n  display: none;\n}`, originalCSS: "display:none", targetCSS: "display:block", targetPreviewCSS: `.mobile-action { display: block; }`, originalCaption: "Original — action hidden", targetCaption: "Target — action available", previewLabel: "action", previewHTML: `<div class="responsive-action"><span>COMPACT LAYOUT</span><p>Mobile users still need the primary task.</p><button class="mobile-action" type="button">Continue review →</button></div>`, previewBaseCSS: sharedPreviewCSS + `.responsive-action { width: min(100%, 470px); padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; } .responsive-action span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .responsive-action p { margin: 14px 0; color: #657067; } .mobile-action { padding: 11px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; }`, hints: [["Observation", "The task is essential; only the responsive visibility rule is wrong."], ["Concept", "Responsive styling can change layout, but it must preserve access to essential actions."], ["Targeted clue", "Restore block display for the action in this case state."]], checkingTitle: "Checking the responsive action…", checkingText: " Comparing action availability with the compact-layout requirement.", successText: " The primary action remains available in the responsive state.", validator: "computed-style", expectedProperty: "display", expectedValue: "block", rootCause: "display: none hid an essential action from users in the compact layout.", remember: "A responsive change should preserve access to essential actions.", recommendedCSS: `.mobile-action {\n  display: block;\n}`, question: "Which display value keeps the action available?", choices: [["display: none", false], ["display: block", true]], correctFeedback: "Correct. block keeps the primary task available in the compact layout.", incorrectFeedback: "Not quite. none removes the action from the responsive interface.", guideHref: "field-guide.html#chapter-14", guideLabel: "Review responsive actions →", nextCase: "042", storageKey: "css-casebook-c041" }),
-  "042": makeCase({ id: "042", fileCode: "RW-003", chapter: "CH14 Responsive Web Design", topic: "Breakpoints", title: "The Breakpoint That Came Too Early", objective: "Preserve access to the layout when its content exceeds the available width.", incidentTitle: "The breakpoint hides content before the layout changes.", incident: "The viewport becomes tight, but the rule clips the surface before a usable responsive treatment can take over. Preserve a scroll path while the layout adapts.", evidence: [["Expected", "Content remains reachable"], ["Observed", "Breakpoint state clips the surface"], ["Constraint", "Keep the horizontal evidence row"]], selector: ".breakpoint-row", starterCSS: `.breakpoint-row {\n  overflow: hidden;\n}`, originalCSS: "overflow:hidden", targetCSS: "overflow:auto", targetPreviewCSS: `.breakpoint-row { overflow: auto; }`, originalCaption: "Original — content clipped", targetCaption: "Target — content reachable", previewLabel: "breakpoint", previewHTML: `<div class="breakpoint-shell"><span>BREAKPOINT CHECK</span><div class="breakpoint-row"><div>Evidence item A</div><div>Evidence item B</div><div>Evidence item C</div></div><small>Reach every item while the layout is tight.</small></div>`, previewBaseCSS: sharedPreviewCSS + `.breakpoint-shell { width: min(100%, 500px); padding: 24px; border: 1px solid #c6cbc2; background: #f3f0e6; } .breakpoint-shell > span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .breakpoint-row { display: flex; gap: 12px; width: 620px; margin: 16px 0 10px; overflow: hidden; } .breakpoint-row div { flex: 0 0 180px; padding: 22px 16px; background: #fffefa; border: 1px solid #d5d8d1; } .breakpoint-shell small { color: #657067; }`, hints: [["Observation", "The row is wider than the compact frame, but its items are still useful."], ["Concept", "A breakpoint should introduce a usable layout change, not erase content first."], ["Targeted clue", "Use auto overflow to preserve a reachable path."]], checkingTitle: "Checking the breakpoint state…", checkingText: " Comparing the tight layout with the content-reachability requirement.", successText: " The responsive row now preserves access to every item.", validator: "computed-style", expectedProperty: "overflow", expectedValue: "auto", rootCause: "overflow: hidden clipped the evidence row before a usable responsive treatment could take over.", remember: "A breakpoint should mark a content change, not a device label.", recommendedCSS: `.breakpoint-row {\n  overflow: auto;\n}`, question: "Which overflow value preserves the responsive surface?", choices: [["overflow: hidden", false], ["overflow: auto", true]], correctFeedback: "Correct. auto preserves a scroll path when the row is temporarily wider.", incorrectFeedback: "Not quite. hidden clips the evidence before users can reach it.", guideHref: "field-guide.html#chapter-14", guideLabel: "Review breakpoints →", nextCase: "043", storageKey: "css-casebook-c042" })
+  "040": makeCase({
+    id: "040",
+    fileCode: "RW-001",
+    chapter: "CH14 Responsive Web Design",
+    topic: "Fluid foundations",
+    title: "The Broken Mobile Layout",
+    objective:
+      "Keep the content surface within the viewport on narrow screens.",
+    incidentTitle: "The mobile surface overflows its viewport.",
+    incident:
+      "The layout is fluid in theory, but the content surface has no maximum-width rule to keep it inside the narrow screen. Users must scroll sideways to read the case.",
+    evidence: [
+      ["Expected", "Surface fits viewport"],
+      ["Observed", "Horizontal overflow appears"],
+      ["Constraint", "Keep the content readable"],
+    ],
+    selector: ".mobile-surface",
+    starterCSS: `.mobile-surface {\n  max-width: none;\n}`,
+    originalCSS: "max-width:none",
+    targetCSS: "max-width:100%",
+    targetPreviewCSS: `.mobile-surface { max-width: 100%; }`,
+    originalCaption: "Original — viewport overflow",
+    targetCaption: "Target — fluid surface",
+    previewLabel: "narrow view",
+    previewHTML: `<article class="mobile-surface"><span>NARROW VIEW</span><h2>Fit the content before adding a breakpoint.</h2><p>The surface should stay inside the viewport while its text continues to wrap naturally.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.mobile-surface { width: 560px; padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .mobile-surface span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .mobile-surface h2 { margin: 14px 0 8px; font: 600 27px Georgia, serif; } .mobile-surface p { margin: 0; color: #657067; line-height: 1.55; }`,
+    hints: [
+      [
+        "Observation",
+        "The surface is wider than the narrow viewport, not the text itself.",
+      ],
+      [
+        "Concept",
+        "A fluid max-width lets a component shrink with its containing space.",
+      ],
+      ["Targeted clue", "Limit the surface to 100% of the available width."],
+    ],
+    checkingTitle: "Checking the narrow layout…",
+    checkingText:
+      " Comparing the surface with the mobile viewport requirement.",
+    successText: " The content surface now stays inside the narrow viewport.",
+    validator: "computed-style",
+    expectedProperty: "maxWidth",
+    expectedValue: "100%",
+    rootCause:
+      "max-width: none allowed the fixed surface to exceed the narrow viewport.",
+    remember: "Make the content fluid before adding a breakpoint.",
+    recommendedCSS: `.mobile-surface {\n  max-width: 100%;\n}`,
+    question: "Which maximum width keeps the surface fluid?",
+    choices: [
+      ["max-width: none", false],
+      ["max-width: 100%", true],
+    ],
+    correctFeedback:
+      "Correct. 100% lets the surface fit its available viewport.",
+    incorrectFeedback:
+      "Not quite. none leaves the fixed surface free to overflow.",
+    guideHref: "field-guide.html#chapter-14",
+    guideLabel: "Review fluid foundations →",
+    nextCase: "041",
+    storageKey: "css-casebook-c040",
+  }),
+  "041": makeCase({
+    id: "041",
+    fileCode: "RW-002",
+    chapter: "CH14 Responsive Web Design",
+    topic: "Responsive actions",
+    title: "The Desktop-only Button",
+    objective:
+      "Make the primary action available when the responsive layout calls for it.",
+    incidentTitle: "The essential action is desktop-only.",
+    incident:
+      "The responsive state hides the button even though mobile users still need the same primary task. The action should remain available at the compact layout size.",
+    evidence: [
+      ["Expected", "Primary action remains available"],
+      ["Observed", "Button disappears at the wrong state"],
+      ["Constraint", "Keep the same action label"],
+    ],
+    selector: ".mobile-action",
+    starterCSS: `.mobile-action {\n  display: none;\n}`,
+    originalCSS: "display:none",
+    targetCSS: "display:block",
+    targetPreviewCSS: `.mobile-action { display: block; }`,
+    originalCaption: "Original — action hidden",
+    targetCaption: "Target — action available",
+    previewLabel: "action",
+    previewHTML: `<div class="responsive-action"><span>COMPACT LAYOUT</span><p>Mobile users still need the primary task.</p><button class="mobile-action" type="button">Continue review →</button></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.responsive-action { width: min(100%, 470px); padding: 26px; border: 1px solid #c6cbc2; background: #fffefa; } .responsive-action span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .responsive-action p { margin: 14px 0; color: #657067; } .mobile-action { padding: 11px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; }`,
+    hints: [
+      [
+        "Observation",
+        "The task is essential; only the responsive visibility rule is wrong.",
+      ],
+      [
+        "Concept",
+        "Responsive styling can change layout, but it must preserve access to essential actions.",
+      ],
+      [
+        "Targeted clue",
+        "Restore block display for the action in this case state.",
+      ],
+    ],
+    checkingTitle: "Checking the responsive action…",
+    checkingText:
+      " Comparing action availability with the compact-layout requirement.",
+    successText:
+      " The primary action remains available in the responsive state.",
+    validator: "computed-style",
+    expectedProperty: "display",
+    expectedValue: "block",
+    rootCause:
+      "display: none hid an essential action from users in the compact layout.",
+    remember:
+      "A responsive change should preserve access to essential actions.",
+    recommendedCSS: `.mobile-action {\n  display: block;\n}`,
+    question: "Which display value keeps the action available?",
+    choices: [
+      ["display: none", false],
+      ["display: block", true],
+    ],
+    correctFeedback:
+      "Correct. block keeps the primary task available in the compact layout.",
+    incorrectFeedback:
+      "Not quite. none removes the action from the responsive interface.",
+    guideHref: "field-guide.html#chapter-14",
+    guideLabel: "Review responsive actions →",
+    nextCase: "042",
+    storageKey: "css-casebook-c041",
+  }),
+  "042": makeCase({
+    id: "042",
+    fileCode: "RW-003",
+    chapter: "CH14 Responsive Web Design",
+    topic: "Breakpoints",
+    title: "The Breakpoint That Came Too Early",
+    objective:
+      "Preserve access to the layout when its content exceeds the available width.",
+    incidentTitle: "The breakpoint hides content before the layout changes.",
+    incident:
+      "The viewport becomes tight, but the rule clips the surface before a usable responsive treatment can take over. Preserve a scroll path while the layout adapts.",
+    evidence: [
+      ["Expected", "Content remains reachable"],
+      ["Observed", "Breakpoint state clips the surface"],
+      ["Constraint", "Keep the horizontal evidence row"],
+    ],
+    selector: ".breakpoint-row",
+    starterCSS: `.breakpoint-row {\n  overflow: hidden;\n}`,
+    originalCSS: "overflow:hidden",
+    targetCSS: "overflow:auto",
+    targetPreviewCSS: `.breakpoint-row { overflow: auto; }`,
+    originalCaption: "Original — content clipped",
+    targetCaption: "Target — content reachable",
+    previewLabel: "breakpoint",
+    previewHTML: `<div class="breakpoint-shell"><span>BREAKPOINT CHECK</span><div class="breakpoint-row"><div>Evidence item A</div><div>Evidence item B</div><div>Evidence item C</div></div><small>Reach every item while the layout is tight.</small></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.breakpoint-shell { width: min(100%, 500px); padding: 24px; border: 1px solid #c6cbc2; background: #f3f0e6; } .breakpoint-shell > span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .breakpoint-row { display: flex; gap: 12px; width: 620px; margin: 16px 0 10px; overflow: hidden; } .breakpoint-row div { flex: 0 0 180px; padding: 22px 16px; background: #fffefa; border: 1px solid #d5d8d1; } .breakpoint-shell small { color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The row is wider than the compact frame, but its items are still useful.",
+      ],
+      [
+        "Concept",
+        "A breakpoint should introduce a usable layout change, not erase content first.",
+      ],
+      ["Targeted clue", "Use auto overflow to preserve a reachable path."],
+    ],
+    checkingTitle: "Checking the breakpoint state…",
+    checkingText:
+      " Comparing the tight layout with the content-reachability requirement.",
+    successText: " The responsive row now preserves access to every item.",
+    validator: "computed-style",
+    expectedProperty: "overflow",
+    expectedValue: "auto",
+    rootCause:
+      "overflow: hidden clipped the evidence row before a usable responsive treatment could take over.",
+    remember: "A breakpoint should mark a content change, not a device label.",
+    recommendedCSS: `.breakpoint-row {\n  overflow: auto;\n}`,
+    question: "Which overflow value preserves the responsive surface?",
+    choices: [
+      ["overflow: hidden", false],
+      ["overflow: auto", true],
+    ],
+    correctFeedback:
+      "Correct. auto preserves a scroll path when the row is temporarily wider.",
+    incorrectFeedback:
+      "Not quite. hidden clips the evidence before users can reach it.",
+    guideHref: "field-guide.html#chapter-14",
+    guideLabel: "Review breakpoints →",
+    nextCase: "043",
+    storageKey: "css-casebook-c042",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "043": makeCase({ id: "043", fileCode: "GR-001", chapter: "CH15 CSS Grid", topic: "Grid layout", title: "The Collapsed Gallery", objective: "Restore the two-dimensional gallery layout.", incidentTitle: "The gallery lost its two-dimensional layout.", incident: "The cards remain in the markup, but block flow removes the rows-and-columns relationship the gallery depends on. Restore the layout model without changing the card order.", evidence: [["Expected", "Cards form a gallery"], ["Observed", "Cards become a long stack"], ["Constraint", "Keep the card order"]], selector: ".case-gallery", starterCSS: `.case-gallery {\n  display: block;\n}`, originalCSS: "display:block", targetCSS: "display:grid", targetPreviewCSS: `.case-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }`, originalCaption: "Original — stacked cards", targetCaption: "Target — grid gallery", previewLabel: "grid", previewHTML: `<section class="case-gallery"><article><span>01</span><strong>Evidence</strong><p>Trace the rule.</p></article><article><span>02</span><strong>Context</strong><p>Read the constraint.</p></article><article><span>03</span><strong>Fix</strong><p>Test the target.</p></article><article><span>04</span><strong>Report</strong><p>Record the reason.</p></article></section>`, previewBaseCSS: sharedPreviewCSS + `.case-gallery { width: min(100%, 520px); padding: 14px; border: 1px solid #c6cbc2; background: #f3f0e6; } .case-gallery article { min-height: 90px; padding: 18px; background: #fffefa; border: 1px solid #d5d8d1; color: #18221c; } .case-gallery span { display: block; color: #a44d2f; font: 700 10px monospace; } .case-gallery strong { display: block; margin: 10px 0 4px; font: 600 22px Georgia, serif; } .case-gallery p { margin: 0; color: #657067; }`, hints: [["Observation", "The cards are present; the layout relationship is missing."], ["Concept", "Grid is a two-dimensional layout model for rows and columns."], ["Targeted clue", "Restore grid on the gallery container."]], checkingTitle: "Inspecting the gallery tracks…", checkingText: " Comparing the card arrangement with the two-dimensional layout target.", successText: " The cards now form a two-dimensional gallery.", validator: "computed-style", expectedProperty: "display", expectedValue: "grid", rootCause: "display: block reduced the gallery to ordinary document flow.", remember: "Grid is the right model when rows and columns matter together.", recommendedCSS: `.case-gallery {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 12px;\n}`, question: "Which display value restores the gallery?", choices: [["display: block", false], ["display: grid", true]], correctFeedback: "Correct. Grid restores the gallery's two-dimensional structure.", incorrectFeedback: "Not quite. block stacks the cards in ordinary flow.", guideHref: "field-guide.html#chapter-15", guideLabel: "Review grid layout →", nextCase: "044", storageKey: "css-casebook-c043" }),
-  "044": makeCase({ id: "044", fileCode: "GR-002", chapter: "CH15 CSS Grid", topic: "Grid tracks", title: "The Misplaced Sidebar", objective: "Give the sidebar its track and let the main content use the remaining space.", incidentTitle: "The sidebar has no dedicated track.", incident: "The layout needs a narrow navigation column and a flexible content column, but both regions compete in one track. Define the track structure before placing items.", evidence: [["Expected", "Sidebar and main have separate tracks"], ["Observed", "Sidebar steals the content track"], ["Constraint", "Keep both regions visible"]], selector: ".two-column-layout", starterCSS: `.two-column-layout {\n  grid-template-columns: 1fr;\n}`, originalCSS: "grid-template-columns:1fr", targetCSS: "grid-template-columns:200px 1fr", targetPreviewCSS: `.two-column-layout { grid-template-columns: 200px 1fr; }`, originalCaption: "Original — one track", targetCaption: "Target — sidebar plus main", previewLabel: "tracks", previewHTML: `<section class="two-column-layout"><nav><span>SIDEBAR</span><a href="#">Evidence</a><a href="#">Notes</a></nav><main><span>MAIN CONTENT</span><h2>Use the remaining track.</h2><p>The sidebar stays narrow while the main region receives the flexible space.</p></main></section>`, previewBaseCSS: sharedPreviewCSS + `.two-column-layout { display: grid; width: min(100%, 560px); grid-template-columns: 1fr; gap: 14px; padding: 14px; border: 1px solid #c6cbc2; background: #f3f0e6; } .two-column-layout nav, .two-column-layout main { padding: 18px; background: #fffefa; border: 1px solid #d5d8d1; } .two-column-layout span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .two-column-layout nav a { display: block; margin-top: 12px; color: #1f5b43; } .two-column-layout h2 { margin: 12px 0 6px; font: 600 25px Georgia, serif; } .two-column-layout p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "Both regions are visible, but they are competing in a single track."], ["Concept", "grid-template-columns defines the track structure before placement."], ["Targeted clue", "Use a 200px sidebar followed by one flexible track."]], checkingTitle: "Measuring the grid tracks…", checkingText: " Comparing the sidebar and main-column relationship.", successText: " The sidebar now has a dedicated track beside flexible content.", validator: "computed-style", expectedProperty: "gridTemplateColumns", expectedValue: "200px 1fr", rootCause: "The one-track definition gave the sidebar no dedicated column.", remember: "Define the track structure before placing items.", recommendedCSS: `.two-column-layout {\n  display: grid;\n  grid-template-columns: 200px 1fr;\n}`, question: "Which track definition creates sidebar plus main?", choices: [["grid-template-columns: 1fr", false], ["grid-template-columns: 200px 1fr", true]], correctFeedback: "Correct. The 200px plus 1fr definition gives each region its role.", incorrectFeedback: "Not quite. One flexible track leaves the sidebar without its own column.", guideHref: "field-guide.html#chapter-15", guideLabel: "Review grid tracks →", nextCase: "045", storageKey: "css-casebook-c044" }),
-  "045": makeCase({ id: "045", fileCode: "GR-003", chapter: "CH15 CSS Grid", topic: "Grid placement", title: "The Track That Would Not Stretch", objective: "Make the banner span the full explicit grid width.", incidentTitle: "The banner occupies only one grid cell.", incident: "The banner should introduce the full gallery, but its default placement leaves it constrained to the first track. Span from the first grid line to the last.", evidence: [["Expected", "Banner spans the gallery"], ["Observed", "Banner stops at one column"], ["Constraint", "Keep the explicit columns"]], selector: ".gallery-banner", starterCSS: `.gallery-banner {\n  grid-column: auto;\n}`, originalCSS: "grid-column:auto", targetCSS: "grid-column:1 / -1", targetPreviewCSS: `.gallery-banner { grid-column: 1 / -1; }`, originalCaption: "Original — one-cell banner", targetCaption: "Target — full-width banner", previewLabel: "placement", previewHTML: `<section class="placement-grid"><header class="gallery-banner"><span>GALLERY INTRO</span><h2>One banner, every column.</h2></header><article>Card one</article><article>Card two</article><article>Card three</article></section>`, previewBaseCSS: sharedPreviewCSS + `.placement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(100%, 560px); padding: 14px; border: 1px solid #c6cbc2; background: #f3f0e6; } .placement-grid > * { padding: 16px; background: #fffefa; border: 1px solid #d5d8d1; color: #18221c; } .gallery-banner { grid-column: auto; min-height: 90px; } .gallery-banner span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .gallery-banner h2 { margin: 12px 0 0; font: 600 24px Georgia, serif; }`, hints: [["Observation", "The banner is a grid item, but it stops at the first track."], ["Concept", "Grid lines define placement; 1 / -1 spans the explicit grid."], ["Targeted clue", "Set the banner from the first line to the last line."]], checkingTitle: "Inspecting banner placement…", checkingText: " Comparing the banner span with the gallery introduction target.", successText: " The banner now spans the full gallery width.", validator: "computed-style", expectedProperty: "gridColumn", expectedValue: "1 / -1", rootCause: "grid-column: auto left the banner in one default grid cell.", remember: "1 / -1 spans from the first grid line to the last.", recommendedCSS: `.gallery-banner {\n  grid-column: 1 / -1;\n}`, question: "Which grid-column value spans the full gallery?", choices: [["grid-column: auto", false], ["grid-column: 1 / -1", true]], correctFeedback: "Correct. 1 / -1 spans the banner across every explicit column.", incorrectFeedback: "Not quite. auto keeps the banner in its default single cell.", guideHref: "field-guide.html#chapter-15", guideLabel: "Review grid placement →", nextCase: "046", storageKey: "css-casebook-c045" })
+  "043": makeCase({
+    id: "043",
+    fileCode: "GR-001",
+    chapter: "CH15 CSS Grid",
+    topic: "Grid layout",
+    title: "The Collapsed Gallery",
+    objective: "Restore the two-dimensional gallery layout.",
+    incidentTitle: "The gallery lost its two-dimensional layout.",
+    incident:
+      "The cards remain in the markup, but block flow removes the rows-and-columns relationship the gallery depends on. Restore the layout model without changing the card order.",
+    evidence: [
+      ["Expected", "Cards form a gallery"],
+      ["Observed", "Cards become a long stack"],
+      ["Constraint", "Keep the card order"],
+    ],
+    selector: ".case-gallery",
+    starterCSS: `.case-gallery {\n  display: block;\n}`,
+    originalCSS: "display:block",
+    targetCSS: "display:grid",
+    targetPreviewCSS: `.case-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }`,
+    originalCaption: "Original — stacked cards",
+    targetCaption: "Target — grid gallery",
+    previewLabel: "grid",
+    previewHTML: `<section class="case-gallery"><article><span>01</span><strong>Evidence</strong><p>Trace the rule.</p></article><article><span>02</span><strong>Context</strong><p>Read the constraint.</p></article><article><span>03</span><strong>Fix</strong><p>Test the target.</p></article><article><span>04</span><strong>Report</strong><p>Record the reason.</p></article></section>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.case-gallery { width: min(100%, 520px); padding: 14px; border: 1px solid #c6cbc2; background: #f3f0e6; } .case-gallery article { min-height: 90px; padding: 18px; background: #fffefa; border: 1px solid #d5d8d1; color: #18221c; } .case-gallery span { display: block; color: #a44d2f; font: 700 10px monospace; } .case-gallery strong { display: block; margin: 10px 0 4px; font: 600 22px Georgia, serif; } .case-gallery p { margin: 0; color: #657067; }`,
+    hints: [
+      [
+        "Observation",
+        "The cards are present; the layout relationship is missing.",
+      ],
+      [
+        "Concept",
+        "Grid is a two-dimensional layout model for rows and columns.",
+      ],
+      ["Targeted clue", "Restore grid on the gallery container."],
+    ],
+    checkingTitle: "Inspecting the gallery tracks…",
+    checkingText:
+      " Comparing the card arrangement with the two-dimensional layout target.",
+    successText: " The cards now form a two-dimensional gallery.",
+    validator: "computed-style",
+    expectedProperty: "display",
+    expectedValue: "grid",
+    rootCause: "display: block reduced the gallery to ordinary document flow.",
+    remember: "Grid is the right model when rows and columns matter together.",
+    recommendedCSS: `.case-gallery {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 12px;\n}`,
+    question: "Which display value restores the gallery?",
+    choices: [
+      ["display: block", false],
+      ["display: grid", true],
+    ],
+    correctFeedback:
+      "Correct. Grid restores the gallery's two-dimensional structure.",
+    incorrectFeedback: "Not quite. block stacks the cards in ordinary flow.",
+    guideHref: "field-guide.html#chapter-15",
+    guideLabel: "Review grid layout →",
+    nextCase: "044",
+    storageKey: "css-casebook-c043",
+  }),
+  "044": makeCase({
+    id: "044",
+    fileCode: "GR-002",
+    chapter: "CH15 CSS Grid",
+    topic: "Grid tracks",
+    title: "The Misplaced Sidebar",
+    objective:
+      "Give the sidebar its track and let the main content use the remaining space.",
+    incidentTitle: "The sidebar has no dedicated track.",
+    incident:
+      "The layout needs a narrow navigation column and a flexible content column, but both regions compete in one track. Define the track structure before placing items.",
+    evidence: [
+      ["Expected", "Sidebar and main have separate tracks"],
+      ["Observed", "Sidebar steals the content track"],
+      ["Constraint", "Keep both regions visible"],
+    ],
+    selector: ".two-column-layout",
+    starterCSS: `.two-column-layout {\n  grid-template-columns: 1fr;\n}`,
+    originalCSS: "grid-template-columns:1fr",
+    targetCSS: "grid-template-columns:200px 1fr",
+    targetPreviewCSS: `.two-column-layout { grid-template-columns: 200px 1fr; }`,
+    originalCaption: "Original — one track",
+    targetCaption: "Target — sidebar plus main",
+    previewLabel: "tracks",
+    previewHTML: `<section class="two-column-layout"><nav><span>SIDEBAR</span><a href="#">Evidence</a><a href="#">Notes</a></nav><main><span>MAIN CONTENT</span><h2>Use the remaining track.</h2><p>The sidebar stays narrow while the main region receives the flexible space.</p></main></section>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.two-column-layout { display: grid; width: min(100%, 560px); grid-template-columns: 1fr; gap: 14px; padding: 14px; border: 1px solid #c6cbc2; background: #f3f0e6; } .two-column-layout nav, .two-column-layout main { padding: 18px; background: #fffefa; border: 1px solid #d5d8d1; } .two-column-layout span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .two-column-layout nav a { display: block; margin-top: 12px; color: #1f5b43; } .two-column-layout h2 { margin: 12px 0 6px; font: 600 25px Georgia, serif; } .two-column-layout p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "Both regions are visible, but they are competing in a single track.",
+      ],
+      [
+        "Concept",
+        "grid-template-columns defines the track structure before placement.",
+      ],
+      ["Targeted clue", "Use a 200px sidebar followed by one flexible track."],
+    ],
+    checkingTitle: "Measuring the grid tracks…",
+    checkingText: " Comparing the sidebar and main-column relationship.",
+    successText:
+      " The sidebar now has a dedicated track beside flexible content.",
+    validator: "computed-style",
+    expectedProperty: "gridTemplateColumns",
+    expectedValue: "200px 1fr",
+    rootCause: "The one-track definition gave the sidebar no dedicated column.",
+    remember: "Define the track structure before placing items.",
+    recommendedCSS: `.two-column-layout {\n  display: grid;\n  grid-template-columns: 200px 1fr;\n}`,
+    question: "Which track definition creates sidebar plus main?",
+    choices: [
+      ["grid-template-columns: 1fr", false],
+      ["grid-template-columns: 200px 1fr", true],
+    ],
+    correctFeedback:
+      "Correct. The 200px plus 1fr definition gives each region its role.",
+    incorrectFeedback:
+      "Not quite. One flexible track leaves the sidebar without its own column.",
+    guideHref: "field-guide.html#chapter-15",
+    guideLabel: "Review grid tracks →",
+    nextCase: "045",
+    storageKey: "css-casebook-c044",
+  }),
+  "045": makeCase({
+    id: "045",
+    fileCode: "GR-003",
+    chapter: "CH15 CSS Grid",
+    topic: "Grid placement",
+    title: "The Track That Would Not Stretch",
+    objective: "Make the banner span the full explicit grid width.",
+    incidentTitle: "The banner occupies only one grid cell.",
+    incident:
+      "The banner should introduce the full gallery, but its default placement leaves it constrained to the first track. Span from the first grid line to the last.",
+    evidence: [
+      ["Expected", "Banner spans the gallery"],
+      ["Observed", "Banner stops at one column"],
+      ["Constraint", "Keep the explicit columns"],
+    ],
+    selector: ".gallery-banner",
+    starterCSS: `.gallery-banner {\n  grid-column: auto;\n}`,
+    originalCSS: "grid-column:auto",
+    targetCSS: "grid-column:1 / -1",
+    targetPreviewCSS: `.gallery-banner { grid-column: 1 / -1; }`,
+    originalCaption: "Original — one-cell banner",
+    targetCaption: "Target — full-width banner",
+    previewLabel: "placement",
+    previewHTML: `<section class="placement-grid"><header class="gallery-banner"><span>GALLERY INTRO</span><h2>One banner, every column.</h2></header><article>Card one</article><article>Card two</article><article>Card three</article></section>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.placement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(100%, 560px); padding: 14px; border: 1px solid #c6cbc2; background: #f3f0e6; } .placement-grid > * { padding: 16px; background: #fffefa; border: 1px solid #d5d8d1; color: #18221c; } .gallery-banner { grid-column: auto; min-height: 90px; } .gallery-banner span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .gallery-banner h2 { margin: 12px 0 0; font: 600 24px Georgia, serif; }`,
+    hints: [
+      [
+        "Observation",
+        "The banner is a grid item, but it stops at the first track.",
+      ],
+      [
+        "Concept",
+        "Grid lines define placement; 1 / -1 spans the explicit grid.",
+      ],
+      ["Targeted clue", "Set the banner from the first line to the last line."],
+    ],
+    checkingTitle: "Inspecting banner placement…",
+    checkingText:
+      " Comparing the banner span with the gallery introduction target.",
+    successText: " The banner now spans the full gallery width.",
+    validator: "computed-style",
+    expectedProperty: "gridColumn",
+    expectedValue: "1 / -1",
+    rootCause: "grid-column: auto left the banner in one default grid cell.",
+    remember: "1 / -1 spans from the first grid line to the last.",
+    recommendedCSS: `.gallery-banner {\n  grid-column: 1 / -1;\n}`,
+    question: "Which grid-column value spans the full gallery?",
+    choices: [
+      ["grid-column: auto", false],
+      ["grid-column: 1 / -1", true],
+    ],
+    correctFeedback:
+      "Correct. 1 / -1 spans the banner across every explicit column.",
+    incorrectFeedback:
+      "Not quite. auto keeps the banner in its default single cell.",
+    guideHref: "field-guide.html#chapter-15",
+    guideLabel: "Review grid placement →",
+    nextCase: "046",
+    storageKey: "css-casebook-c045",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
-  "046": makeCase({ id: "046", fileCode: "AN-001", chapter: "CH16 CSS Animations", topic: "Iteration", title: "The Animation That Never Ends", objective: "Let the entrance animation finish instead of repeating forever.", incidentTitle: "The entrance animation never settles.", incident: "The card repeats its entrance forever, which distracts from the content and makes the interface feel unstable. This is an entrance cue, not ongoing status information.", evidence: [["Expected", "Animation completes once"], ["Observed", "Animation loops continuously"], ["Constraint", "Keep the entrance effect"]], selector: ".entrance-card", starterCSS: `.entrance-card {\n  animation-iteration-count: infinite;\n}`, originalCSS: "animation-iteration-count:infinite", targetCSS: "animation-iteration-count:1", targetPreviewCSS: `.entrance-card { animation-iteration-count: 1; }`, originalCaption: "Original — endless entrance", targetCaption: "Target — one entrance", previewLabel: "motion", previewHTML: `<article class="entrance-card"><span>ENTRANCE MOTION</span><h2>Let the message settle.</h2><p>An entrance animation should introduce the content, then get out of the way.</p></article>`, previewBaseCSS: sharedPreviewCSS + `@keyframes caseRise { from { opacity: .2; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } } .entrance-card { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; animation-name: caseRise; animation-duration: 900ms; animation-iteration-count: infinite; } .entrance-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .entrance-card h2 { margin: 14px 0 8px; font: 600 28px Georgia, serif; } .entrance-card p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The effect is an entrance cue, but it keeps restarting after the content appears."], ["Concept", "animation-iteration-count controls how many times a keyframe timeline repeats."], ["Targeted clue", "Use one iteration for a single entrance."]], checkingTitle: "Inspecting animation repetition…", checkingText: " Comparing the entrance timeline with the settled-content requirement.", successText: " The entrance animation now completes once and settles.", validator: "computed-style", expectedProperty: "animationIterationCount", expectedValue: "1", rootCause: "infinite repeated an entrance cue that should have run only once.", remember: "Iteration count controls repeats; essential information should not depend on motion.", recommendedCSS: `.entrance-card {\n  animation-iteration-count: 1;\n}`, question: "Which count lets the animation finish?", choices: [["animation-iteration-count: infinite", false], ["animation-iteration-count: 1", true]], correctFeedback: "Correct. One iteration lets the entrance introduce the card and then stop.", incorrectFeedback: "Not quite. infinite keeps replaying the entrance indefinitely.", guideHref: "field-guide.html#chapter-16", guideLabel: "Review animation iteration →", nextCase: "047", storageKey: "css-casebook-c046" }),
-  "047": makeCase({ id: "047", fileCode: "AN-002", chapter: "CH16 CSS Animations", topic: "Timing", title: "The Button That Moves Too Much", objective: "Slow the movement enough that the action remains comfortable to follow.", incidentTitle: "The action animates too abruptly.", incident: "The button moves in a fraction of a second, making the motion feel like a jump rather than a readable state change. Give the transition enough time to be perceived without delaying the action.", evidence: [["Expected", "Motion has a comfortable duration"], ["Observed", "Motion is too sudden"], ["Constraint", "Keep the button response"]], selector: ".motion-action", starterCSS: `.motion-action {\n  animation-duration: 100ms;\n}`, originalCSS: "animation-duration:100ms", targetCSS: "animation-duration:600ms", targetPreviewCSS: `.motion-action { animation-duration: 600ms; }`, originalCaption: "Original — abrupt motion", targetCaption: "Target — readable timing", previewLabel: "timing", previewHTML: `<div class="timing-panel"><span>TIMING CHECK</span><button class="motion-action" type="button">Review case →</button><p>The action should move clearly, not jump past the user's attention.</p></div>`, previewBaseCSS: sharedPreviewCSS + `@keyframes nudge { from { transform: translateX(0); } to { transform: translateX(8px); } } .timing-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .timing-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .motion-action { margin: 18px 0 12px; padding: 11px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; animation-name: nudge; animation-duration: 100ms; } .timing-panel p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The action is understandable; the speed makes the feedback feel like a jump."], ["Concept", "animation-duration controls how long the timeline takes to complete."], ["Targeted clue", "Use the documented 600ms duration for a readable movement."]], checkingTitle: "Checking motion timing…", checkingText: " Comparing the action timeline with the comfortable-motion target.", successText: " The action now moves at a readable, comfortable pace.", validator: "computed-style", expectedProperty: "animationDuration", expectedValue: "0.6s", rootCause: "100ms completed the action motion too quickly to read as intentional feedback.", remember: "Use timing as communication, not as noise.", recommendedCSS: `.motion-action {\n  animation-duration: 600ms;\n}`, question: "Which duration makes the motion readable?", choices: [["animation-duration: 100ms", false], ["animation-duration: 600ms", true]], correctFeedback: "Correct. 600ms gives the movement a readable pace.", incorrectFeedback: "Not quite. 100ms makes the action feel like a jump.", guideHref: "field-guide.html#chapter-16", guideLabel: "Review animation timing →", nextCase: "048", storageKey: "css-casebook-c047" }),
-  "048": makeCase({ id: "048", fileCode: "AN-003", chapter: "CH16 CSS Animations", topic: "Reduced motion", title: "The Motion That Ignored Preferences", objective: "Respect a reduced-motion preference by disabling the nonessential animation.", incidentTitle: "Reduced-motion preference is ignored.", incident: "The animation still runs for a user who asked the interface to minimize nonessential movement. The content must remain available without the decorative timeline.", evidence: [["Expected", "Nonessential motion is disabled"], ["Observed", "Animation keeps running"], ["Constraint", "Keep the content visible"]], selector: ".preference-card", starterCSS: `.preference-card {\n  animation-name: fadeIn;\n}`, originalCSS: "animation-name:fadeIn", targetCSS: "animation-name:none", targetPreviewCSS: `.preference-card { animation-name: none; }`, originalCaption: "Original — motion runs", targetCaption: "Target — motion disabled", previewLabel: "preference", previewHTML: `<article class="preference-card"><span>REDUCED MOTION</span><h2>Meaning should survive without movement.</h2><p>The card remains present and readable when nonessential animation is disabled.</p></article>`, previewBaseCSS: sharedPreviewCSS + `@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } .preference-card { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; animation-name: fadeIn; animation-duration: 700ms; } .preference-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .preference-card h2 { margin: 14px 0 8px; font: 600 28px Georgia, serif; } .preference-card p { margin: 0; color: #657067; line-height: 1.5; }`, hints: [["Observation", "The card's information is not essential to the motion; it must stand without it."], ["Concept", "prefers-reduced-motion lets the interface disable nonessential animation for a user preference."], ["Targeted clue", "Set animation-name to none in the reduced-motion state."]], checkingTitle: "Checking motion preference handling…", checkingText: " Comparing the card with the reduced-motion requirement.", successText: " The nonessential animation is now disabled while the content remains.", validator: "computed-style", expectedProperty: "animationName", expectedValue: "none", rootCause: "animation-name: fadeIn kept nonessential motion active for users who requested less movement.", remember: "Reduced motion is a user preference, not a design failure.", recommendedCSS: `.preference-card {\n  animation-name: none;\n}`, question: "Which animation name disables the motion?", choices: [["animation-name: fadeIn", false], ["animation-name: none", true]], correctFeedback: "Correct. none disables the nonessential timeline while preserving the content.", incorrectFeedback: "Not quite. fadeIn keeps the motion running.", guideHref: "field-guide.html#chapter-16", guideLabel: "Review reduced motion →", nextCase: null, storageKey: "css-casebook-c048" })
+  "046": makeCase({
+    id: "046",
+    fileCode: "AN-001",
+    chapter: "CH16 CSS Animations",
+    topic: "Iteration",
+    title: "The Animation That Never Ends",
+    objective:
+      "Let the entrance animation finish instead of repeating forever.",
+    incidentTitle: "The entrance animation never settles.",
+    incident:
+      "The card repeats its entrance forever, which distracts from the content and makes the interface feel unstable. This is an entrance cue, not ongoing status information.",
+    evidence: [
+      ["Expected", "Animation completes once"],
+      ["Observed", "Animation loops continuously"],
+      ["Constraint", "Keep the entrance effect"],
+    ],
+    selector: ".entrance-card",
+    starterCSS: `.entrance-card {\n  animation-iteration-count: infinite;\n}`,
+    originalCSS: "animation-iteration-count:infinite",
+    targetCSS: "animation-iteration-count:1",
+    targetPreviewCSS: `.entrance-card { animation-iteration-count: 1; }`,
+    originalCaption: "Original — endless entrance",
+    targetCaption: "Target — one entrance",
+    previewLabel: "motion",
+    previewHTML: `<article class="entrance-card"><span>ENTRANCE MOTION</span><h2>Let the message settle.</h2><p>An entrance animation should introduce the content, then get out of the way.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `@keyframes caseRise { from { opacity: .2; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } } .entrance-card { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; animation-name: caseRise; animation-duration: 900ms; animation-iteration-count: infinite; } .entrance-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .entrance-card h2 { margin: 14px 0 8px; font: 600 28px Georgia, serif; } .entrance-card p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The effect is an entrance cue, but it keeps restarting after the content appears.",
+      ],
+      [
+        "Concept",
+        "animation-iteration-count controls how many times a keyframe timeline repeats.",
+      ],
+      ["Targeted clue", "Use one iteration for a single entrance."],
+    ],
+    checkingTitle: "Inspecting animation repetition…",
+    checkingText:
+      " Comparing the entrance timeline with the settled-content requirement.",
+    successText: " The entrance animation now completes once and settles.",
+    validator: "computed-style",
+    expectedProperty: "animationIterationCount",
+    expectedValue: "1",
+    rootCause:
+      "infinite repeated an entrance cue that should have run only once.",
+    remember:
+      "Iteration count controls repeats; essential information should not depend on motion.",
+    recommendedCSS: `.entrance-card {\n  animation-iteration-count: 1;\n}`,
+    question: "Which count lets the animation finish?",
+    choices: [
+      ["animation-iteration-count: infinite", false],
+      ["animation-iteration-count: 1", true],
+    ],
+    correctFeedback:
+      "Correct. One iteration lets the entrance introduce the card and then stop.",
+    incorrectFeedback:
+      "Not quite. infinite keeps replaying the entrance indefinitely.",
+    guideHref: "field-guide.html#chapter-16",
+    guideLabel: "Review animation iteration →",
+    nextCase: "047",
+    storageKey: "css-casebook-c046",
+  }),
+  "047": makeCase({
+    id: "047",
+    fileCode: "AN-002",
+    chapter: "CH16 CSS Animations",
+    topic: "Timing",
+    title: "The Button That Moves Too Much",
+    objective:
+      "Slow the movement enough that the action remains comfortable to follow.",
+    incidentTitle: "The action animates too abruptly.",
+    incident:
+      "The button moves in a fraction of a second, making the motion feel like a jump rather than a readable state change. Give the transition enough time to be perceived without delaying the action.",
+    evidence: [
+      ["Expected", "Motion has a comfortable duration"],
+      ["Observed", "Motion is too sudden"],
+      ["Constraint", "Keep the button response"],
+    ],
+    selector: ".motion-action",
+    starterCSS: `.motion-action {\n  animation-duration: 100ms;\n}`,
+    originalCSS: "animation-duration:100ms",
+    targetCSS: "animation-duration:600ms",
+    targetPreviewCSS: `.motion-action { animation-duration: 600ms; }`,
+    originalCaption: "Original — abrupt motion",
+    targetCaption: "Target — readable timing",
+    previewLabel: "timing",
+    previewHTML: `<div class="timing-panel"><span>TIMING CHECK</span><button class="motion-action" type="button">Review case →</button><p>The action should move clearly, not jump past the user's attention.</p></div>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `@keyframes nudge { from { transform: translateX(0); } to { transform: translateX(8px); } } .timing-panel { width: min(100%, 470px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; } .timing-panel span { display: block; color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .motion-action { margin: 18px 0 12px; padding: 11px 16px; border: 0; border-radius: 999px; background: #1f5b43; color: #fffefa; font-weight: 700; animation-name: nudge; animation-duration: 100ms; } .timing-panel p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The action is understandable; the speed makes the feedback feel like a jump.",
+      ],
+      [
+        "Concept",
+        "animation-duration controls how long the timeline takes to complete.",
+      ],
+      [
+        "Targeted clue",
+        "Use the documented 600ms duration for a readable movement.",
+      ],
+    ],
+    checkingTitle: "Checking motion timing…",
+    checkingText:
+      " Comparing the action timeline with the comfortable-motion target.",
+    successText: " The action now moves at a readable, comfortable pace.",
+    validator: "computed-style",
+    expectedProperty: "animationDuration",
+    expectedValue: "0.6s",
+    rootCause:
+      "100ms completed the action motion too quickly to read as intentional feedback.",
+    remember: "Use timing as communication, not as noise.",
+    recommendedCSS: `.motion-action {\n  animation-duration: 600ms;\n}`,
+    question: "Which duration makes the motion readable?",
+    choices: [
+      ["animation-duration: 100ms", false],
+      ["animation-duration: 600ms", true],
+    ],
+    correctFeedback: "Correct. 600ms gives the movement a readable pace.",
+    incorrectFeedback: "Not quite. 100ms makes the action feel like a jump.",
+    guideHref: "field-guide.html#chapter-16",
+    guideLabel: "Review animation timing →",
+    nextCase: "048",
+    storageKey: "css-casebook-c047",
+  }),
+  "048": makeCase({
+    id: "048",
+    fileCode: "AN-003",
+    chapter: "CH16 CSS Animations",
+    topic: "Reduced motion",
+    title: "The Motion That Ignored Preferences",
+    objective:
+      "Respect a reduced-motion preference by disabling the nonessential animation.",
+    incidentTitle: "Reduced-motion preference is ignored.",
+    incident:
+      "The animation still runs for a user who asked the interface to minimize nonessential movement. The content must remain available without the decorative timeline.",
+    evidence: [
+      ["Expected", "Nonessential motion is disabled"],
+      ["Observed", "Animation keeps running"],
+      ["Constraint", "Keep the content visible"],
+    ],
+    selector: ".preference-card",
+    starterCSS: `.preference-card {\n  animation-name: fadeIn;\n}`,
+    originalCSS: "animation-name:fadeIn",
+    targetCSS: "animation-name:none",
+    targetPreviewCSS: `.preference-card { animation-name: none; }`,
+    originalCaption: "Original — motion runs",
+    targetCaption: "Target — motion disabled",
+    previewLabel: "preference",
+    previewHTML: `<article class="preference-card"><span>REDUCED MOTION</span><h2>Meaning should survive without movement.</h2><p>The card remains present and readable when nonessential animation is disabled.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } .preference-card { width: min(100%, 480px); padding: 28px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; animation-name: fadeIn; animation-duration: 700ms; } .preference-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .1em; } .preference-card h2 { margin: 14px 0 8px; font: 600 28px Georgia, serif; } .preference-card p { margin: 0; color: #657067; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The card's information is not essential to the motion; it must stand without it.",
+      ],
+      [
+        "Concept",
+        "prefers-reduced-motion lets the interface disable nonessential animation for a user preference.",
+      ],
+      [
+        "Targeted clue",
+        "Set animation-name to none in the reduced-motion state.",
+      ],
+    ],
+    checkingTitle: "Checking motion preference handling…",
+    checkingText: " Comparing the card with the reduced-motion requirement.",
+    successText:
+      " The nonessential animation is now disabled while the content remains.",
+    validator: "computed-style",
+    expectedProperty: "animationName",
+    expectedValue: "none",
+    rootCause:
+      "animation-name: fadeIn kept nonessential motion active for users who requested less movement.",
+    remember: "Reduced motion is a user preference, not a design failure.",
+    recommendedCSS: `.preference-card {\n  animation-name: none;\n}`,
+    question: "Which animation name disables the motion?",
+    choices: [
+      ["animation-name: fadeIn", false],
+      ["animation-name: none", true],
+    ],
+    correctFeedback:
+      "Correct. none disables the nonessential timeline while preserving the content.",
+    incorrectFeedback: "Not quite. fadeIn keeps the motion running.",
+    guideHref: "field-guide.html#chapter-16",
+    guideLabel: "Review reduced motion →",
+    nextCase: null,
+    storageKey: "css-casebook-c048",
+  }),
 });
 
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
-    id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
-    objective: "Make the case-study hero fill its banner while keeping the focal subject visible.", incidentTitle: "The hero image left empty bands.", incident: "The editorial hero uses a landscape image inside a wide banner. The current sizing preserves the whole image, but leaves distracting empty space around it.", evidence: [["Expected", "Banner is fully covered"], ["Observed", "Empty bands around the image"], ["Constraint", "Keep the focal subject centered"]], selector: ".hero-banner", starterCSS: `.hero-banner {\n  background-image: url("hero.jpg");\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}`, originalCSS: "background-size:contain", targetCSS: "background-size:cover", targetPreviewCSS: `.hero-banner { background-image: linear-gradient(120deg, #173d2c, #9fc5ad); background-size: cover; background-position: center; background-repeat: no-repeat; }`, originalCaption: "Original — contained hero", targetCaption: "Target — covered hero", previewLabel: "hero banner", previewHTML: `<article class="hero-banner"><span>FIELD NOTE 07</span><h2>Read the evidence</h2><p>Backgrounds should support the story, not expose the empty canvas.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.hero-banner { width: min(100%, 560px); min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 28px; color: #fffefa; background-color: #173d2c; border: 1px dashed #738078; } .hero-banner span { font: 700 10px monospace; letter-spacing: .12em; } .hero-banner h2 { margin: 0; font: 600 34px/1 Georgia, serif; } .hero-banner p { max-width: 330px; margin: 0; line-height: 1.5; }`, hints: [["Observation", "The banner is wider than the source image's natural ratio."], ["Concept", "contain keeps the whole image visible; cover fills the box and may crop."], ["Targeted clue", "Change only background-size from contain to cover."]], checkingTitle: "Inspecting the hero…", checkingText: " Comparing the rendered banner with the editorial target.", successText: " The hero now fills the banner without empty bands.", validator: "computed-style", expectedProperty: "backgroundSize", expectedValue: "cover", rootCause: "background-size: contain preserved the entire image at the cost of empty space in the banner.", remember: "Cover fills the box; contain preserves the whole image.", recommendedCSS: `.hero-banner {\n  background-size: cover;\n  background-position: center;\n}`, question: "Which value fills the entire background box?", choices: [["contain", false], ["cover", true]], correctFeedback: "Correct. cover fills the box and may crop the image.", incorrectFeedback: "Not quite. contain keeps the whole image visible and may leave empty space.", guideHref: "field-guide.html#chapter-02", guideLabel: "Review backgrounds →", nextCase: "008", storageKey: "css-casebook-c007" }),
+    id: "007",
+    fileCode: "LB-001",
+    chapter: "CH02 Lists, Links, Backgrounds & Borders",
+    topic: "Backgrounds",
+    title: "The Cropped Hero",
+    objective:
+      "Make the case-study hero fill its banner while keeping the focal subject visible.",
+    incidentTitle: "The hero image left empty bands.",
+    incident:
+      "The editorial hero uses a landscape image inside a wide banner. The current sizing preserves the whole image, but leaves distracting empty space around it.",
+    evidence: [
+      ["Expected", "Banner is fully covered"],
+      ["Observed", "Empty bands around the image"],
+      ["Constraint", "Keep the focal subject centered"],
+    ],
+    selector: ".hero-banner",
+    starterCSS: `.hero-banner {\n  background-image: url("hero.jpg");\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}`,
+    originalCSS: "background-size:contain",
+    targetCSS: "background-size:cover",
+    targetPreviewCSS: `.hero-banner { background-image: linear-gradient(120deg, #173d2c, #9fc5ad); background-size: cover; background-position: center; background-repeat: no-repeat; }`,
+    originalCaption: "Original — contained hero",
+    targetCaption: "Target — covered hero",
+    previewLabel: "hero banner",
+    previewHTML: `<article class="hero-banner"><span>FIELD NOTE 07</span><h2>Read the evidence</h2><p>Backgrounds should support the story, not expose the empty canvas.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.hero-banner { width: min(100%, 560px); min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 28px; color: #fffefa; background-color: #173d2c; border: 1px dashed #738078; } .hero-banner span { font: 700 10px monospace; letter-spacing: .12em; } .hero-banner h2 { margin: 0; font: 600 34px/1 Georgia, serif; } .hero-banner p { max-width: 330px; margin: 0; line-height: 1.5; }`,
+    hints: [
+      [
+        "Observation",
+        "The banner is wider than the source image's natural ratio.",
+      ],
+      [
+        "Concept",
+        "contain keeps the whole image visible; cover fills the box and may crop.",
+      ],
+      ["Targeted clue", "Change only background-size from contain to cover."],
+    ],
+    checkingTitle: "Inspecting the hero…",
+    checkingText: " Comparing the rendered banner with the editorial target.",
+    successText: " The hero now fills the banner without empty bands.",
+    validator: "computed-style",
+    expectedProperty: "backgroundSize",
+    expectedValue: "cover",
+    rootCause:
+      "background-size: contain preserved the entire image at the cost of empty space in the banner.",
+    remember: "Cover fills the box; contain preserves the whole image.",
+    recommendedCSS: `.hero-banner {\n  background-size: cover;\n  background-position: center;\n}`,
+    question: "Which value fills the entire background box?",
+    choices: [
+      ["contain", false],
+      ["cover", true],
+    ],
+    correctFeedback: "Correct. cover fills the box and may crop the image.",
+    incorrectFeedback:
+      "Not quite. contain keeps the whole image visible and may leave empty space.",
+    guideHref: "field-guide.html#chapter-02",
+    guideLabel: "Review backgrounds →",
+    nextCase: "008",
+    storageKey: "css-casebook-c007",
+  }),
   "008": makeCase({
-    id: "008", fileCode: "LB-002", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Lists", title: "The Missing Marker",
-    objective: "Restore the list marker so the evidence items read as a deliberate collection.", incidentTitle: "The evidence list lost its visual structure.", incident: "The evidence panel contains three related findings, but the markers were removed. Without them, the items look like disconnected paragraphs.", evidence: [["Expected", "Clear list markers"], ["Observed", "Unmarked evidence items"], ["Constraint", "Keep the semantic list"]], selector: ".evidence-list", starterCSS: `.evidence-list {\n  list-style-type: none;\n  list-style-position: outside;\n}`, originalCSS: "list-style-type:none", targetCSS: "list-style-type:circle", targetPreviewCSS: `.evidence-list { list-style-type: circle; list-style-position: outside; }`, originalCaption: "Original — markers removed", targetCaption: "Target — visible markers", previewLabel: "evidence list", previewHTML: `<ul class="evidence-list"><li><strong>Expected</strong> Focus ring remains visible</li><li><strong>Observed</strong> Keyboard focus disappears</li><li><strong>Constraint</strong> Keep the native button</li></ul>`, previewBaseCSS: sharedPreviewCSS + `.evidence-list { width: min(100%, 470px); margin: 0; padding: 24px 28px 24px 48px; border: 1px dashed #738078; background: #fffefa; color: #18221c; } .evidence-list li { padding: 10px 0; border-bottom: 1px solid #d5d8d1; line-height: 1.5; } .evidence-list li:last-child { border-bottom: 0; } .evidence-list strong { color: #a44d2f; font: 700 10px monospace; letter-spacing: .08em; }`, hints: [["Observation", "The HTML is already a ul with li items."], ["Concept", "list-style-type controls the marker shape; it does not change the semantic list."], ["Targeted clue", "Restore a circle marker without changing the list position."]], checkingTitle: "Checking the evidence list…", checkingText: " Comparing the marker treatment with the casebook pattern.", successText: " The evidence list now reads as a structured collection.", validator: "computed-style", expectedProperty: "listStyleType", expectedValue: "circle", rootCause: "The list marker was explicitly removed with list-style-type: none.", remember: "A list marker is part of the list's visual structure, not decoration to remove by default.", recommendedCSS: `.evidence-list {\n  list-style-type: circle;\n  list-style-position: outside;\n}`, question: "Which property chooses a list marker shape?", choices: [["list-style-type", true], ["list-style-position", false]], correctFeedback: "Correct. list-style-type chooses disc, circle, decimal and other marker styles.", incorrectFeedback: "Not quite. list-style-position controls where the marker sits relative to the list content.", guideHref: "field-guide.html#chapter-02", guideLabel: "Review lists →", nextCase: "009", storageKey: "css-casebook-c008" }),
+    id: "008",
+    fileCode: "LB-002",
+    chapter: "CH02 Lists, Links, Backgrounds & Borders",
+    topic: "Lists",
+    title: "The Missing Marker",
+    objective:
+      "Restore the list marker so the evidence items read as a deliberate collection.",
+    incidentTitle: "The evidence list lost its visual structure.",
+    incident:
+      "The evidence panel contains three related findings, but the markers were removed. Without them, the items look like disconnected paragraphs.",
+    evidence: [
+      ["Expected", "Clear list markers"],
+      ["Observed", "Unmarked evidence items"],
+      ["Constraint", "Keep the semantic list"],
+    ],
+    selector: ".evidence-list",
+    starterCSS: `.evidence-list {\n  list-style-type: none;\n  list-style-position: outside;\n}`,
+    originalCSS: "list-style-type:none",
+    targetCSS: "list-style-type:circle",
+    targetPreviewCSS: `.evidence-list { list-style-type: circle; list-style-position: outside; }`,
+    originalCaption: "Original — markers removed",
+    targetCaption: "Target — visible markers",
+    previewLabel: "evidence list",
+    previewHTML: `<ul class="evidence-list"><li><strong>Expected</strong> Focus ring remains visible</li><li><strong>Observed</strong> Keyboard focus disappears</li><li><strong>Constraint</strong> Keep the native button</li></ul>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.evidence-list { width: min(100%, 470px); margin: 0; padding: 24px 28px 24px 48px; border: 1px dashed #738078; background: #fffefa; color: #18221c; } .evidence-list li { padding: 10px 0; border-bottom: 1px solid #d5d8d1; line-height: 1.5; } .evidence-list li:last-child { border-bottom: 0; } .evidence-list strong { color: #a44d2f; font: 700 10px monospace; letter-spacing: .08em; }`,
+    hints: [
+      ["Observation", "The HTML is already a ul with li items."],
+      [
+        "Concept",
+        "list-style-type controls the marker shape; it does not change the semantic list.",
+      ],
+      [
+        "Targeted clue",
+        "Restore a circle marker without changing the list position.",
+      ],
+    ],
+    checkingTitle: "Checking the evidence list…",
+    checkingText: " Comparing the marker treatment with the casebook pattern.",
+    successText: " The evidence list now reads as a structured collection.",
+    validator: "computed-style",
+    expectedProperty: "listStyleType",
+    expectedValue: "circle",
+    rootCause:
+      "The list marker was explicitly removed with list-style-type: none.",
+    remember:
+      "A list marker is part of the list's visual structure, not decoration to remove by default.",
+    recommendedCSS: `.evidence-list {\n  list-style-type: circle;\n  list-style-position: outside;\n}`,
+    question: "Which property chooses a list marker shape?",
+    choices: [
+      ["list-style-type", true],
+      ["list-style-position", false],
+    ],
+    correctFeedback:
+      "Correct. list-style-type chooses disc, circle, decimal and other marker styles.",
+    incorrectFeedback:
+      "Not quite. list-style-position controls where the marker sits relative to the list content.",
+    guideHref: "field-guide.html#chapter-02",
+    guideLabel: "Review lists →",
+    nextCase: "009",
+    storageKey: "css-casebook-c008",
+  }),
   "009": makeCase({
-    id: "009", fileCode: "LB-003", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Borders", title: "The Border That Disappeared",
-    objective: "Restore the boundary around the trusted evidence panel without changing its spacing.", incidentTitle: "The card lost its boundary.", incident: "The evidence panel still has the correct padding and color, but its edge blends into the page because the border style was removed.", evidence: [["Expected", "A clear panel boundary"], ["Observed", "Panel blends into the page"], ["Constraint", "Keep width and padding"]], selector: ".evidence-card", starterCSS: `.evidence-card {\n  border-width: 1px;\n  border-style: none;\n  border-color: #738078;\n  border-radius: 12px;\n}`, originalCSS: "border-style:none", targetCSS: "border-style:solid", targetPreviewCSS: `.evidence-card { border-width: 1px; border-style: solid; border-color: #738078; border-radius: 12px; }`, originalCaption: "Original — boundary removed", targetCaption: "Target — defined panel", previewLabel: "bordered card", previewHTML: `<article class="evidence-card"><span>CASE NOTE</span><h2>Why borders matter</h2><p>A quiet boundary helps users group related evidence before they read every line.</p></article>`, previewBaseCSS: sharedPreviewCSS + `.evidence-card { width: min(100%, 500px); min-height: 190px; padding: 28px; background: #fffefa; color: #18221c; } .evidence-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .12em; } .evidence-card h2 { margin: 14px 0 8px; font: 600 28px/1.1 Georgia, serif; } .evidence-card p { max-width: 360px; margin: 0; color: #657067; line-height: 1.55; }`, hints: [["Observation", "The card has a border width and color, but no border style."], ["Concept", "A border needs width, style and color before it becomes visible."], ["Targeted clue", "Use the standard solid border style."]], checkingTitle: "Inspecting the panel edge…", checkingText: " Comparing the rendered boundary with the evidence card target.", successText: " The evidence card now has a clear, restrained boundary.", validator: "computed-style", expectedProperty: "borderStyle", expectedValue: "solid", rootCause: "border-style: none disables the border even though width and color remain declared.", remember: "A border shorthand usually follows width, style, then color.", recommendedCSS: `.evidence-card {\n  border: 1px solid #738078;\n  border-radius: 12px;\n}`, question: "Which border declaration makes the edge render?", choices: [["border-style: solid", true], ["border-style: none", false]], correctFeedback: "Correct. A visible style completes the border definition.", incorrectFeedback: "Not quite. none explicitly removes the border edge.", guideHref: "field-guide.html#chapter-02", guideLabel: "Review borders →", nextCase: "010", storageKey: "css-casebook-c009" }),
+    id: "009",
+    fileCode: "LB-003",
+    chapter: "CH02 Lists, Links, Backgrounds & Borders",
+    topic: "Borders",
+    title: "The Border That Disappeared",
+    objective:
+      "Restore the boundary around the trusted evidence panel without changing its spacing.",
+    incidentTitle: "The card lost its boundary.",
+    incident:
+      "The evidence panel still has the correct padding and color, but its edge blends into the page because the border style was removed.",
+    evidence: [
+      ["Expected", "A clear panel boundary"],
+      ["Observed", "Panel blends into the page"],
+      ["Constraint", "Keep width and padding"],
+    ],
+    selector: ".evidence-card",
+    starterCSS: `.evidence-card {\n  border-width: 1px;\n  border-style: none;\n  border-color: #738078;\n  border-radius: 12px;\n}`,
+    originalCSS: "border-style:none",
+    targetCSS: "border-style:solid",
+    targetPreviewCSS: `.evidence-card { border-width: 1px; border-style: solid; border-color: #738078; border-radius: 12px; }`,
+    originalCaption: "Original — boundary removed",
+    targetCaption: "Target — defined panel",
+    previewLabel: "bordered card",
+    previewHTML: `<article class="evidence-card"><span>CASE NOTE</span><h2>Why borders matter</h2><p>A quiet boundary helps users group related evidence before they read every line.</p></article>`,
+    previewBaseCSS:
+      sharedPreviewCSS +
+      `.evidence-card { width: min(100%, 500px); min-height: 190px; padding: 28px; background: #fffefa; color: #18221c; } .evidence-card span { color: #a44d2f; font: 700 10px monospace; letter-spacing: .12em; } .evidence-card h2 { margin: 14px 0 8px; font: 600 28px/1.1 Georgia, serif; } .evidence-card p { max-width: 360px; margin: 0; color: #657067; line-height: 1.55; }`,
+    hints: [
+      [
+        "Observation",
+        "The card has a border width and color, but no border style.",
+      ],
+      [
+        "Concept",
+        "A border needs width, style and color before it becomes visible.",
+      ],
+      ["Targeted clue", "Use the standard solid border style."],
+    ],
+    checkingTitle: "Inspecting the panel edge…",
+    checkingText:
+      " Comparing the rendered boundary with the evidence card target.",
+    successText: " The evidence card now has a clear, restrained boundary.",
+    validator: "computed-style",
+    expectedProperty: "borderStyle",
+    expectedValue: "solid",
+    rootCause:
+      "border-style: none disables the border even though width and color remain declared.",
+    remember: "A border shorthand usually follows width, style, then color.",
+    recommendedCSS: `.evidence-card {\n  border: 1px solid #738078;\n  border-radius: 12px;\n}`,
+    question: "Which border declaration makes the edge render?",
+    choices: [
+      ["border-style: solid", true],
+      ["border-style: none", false],
+    ],
+    correctFeedback:
+      "Correct. A visible style completes the border definition.",
+    incorrectFeedback: "Not quite. none explicitly removes the border edge.",
+    guideHref: "field-guide.html#chapter-02",
+    guideLabel: "Review borders →",
+    nextCase: "010",
+    storageKey: "css-casebook-c009",
+  }),
 });

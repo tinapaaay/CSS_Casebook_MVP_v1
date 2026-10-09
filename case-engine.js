@@ -157,16 +157,23 @@ function initializeCase(data) {
       };
     const style = doc.defaultView.getComputedStyle(root);
     const bounds = root.getBoundingClientRect();
-    const hasVisibleSurface = style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0" && bounds.width > 0 && bounds.height > 0;
+    const hasVisibleSurface =
+      style.display !== "none" &&
+      style.visibility !== "hidden" &&
+      style.opacity !== "0" &&
+      bounds.width > 0 &&
+      bounds.height > 0;
     if (!hasVisibleSurface)
       return {
         ok: false,
-        message: "The target rule matches, but the required preview surface is hidden or has no usable size.",
+        message:
+          "The target rule matches, but the required preview surface is hidden or has no usable size.",
       };
     if (!root.textContent.trim())
       return {
         ok: false,
-        message: "The preview surface has no readable content. Keep the case evidence visible.",
+        message:
+          "The preview surface has no readable content. Keep the case evidence visible.",
       };
     const items = [...root.children];
 
@@ -280,13 +287,21 @@ function initializeCase(data) {
 
     if (data.validator === "sibling-divider") {
       const dividers = [...root.querySelectorAll(".case-item + .case-item")];
-      const valid = dividers.length === 2 && dividers.every((item) => {
-        const style = doc.defaultView.getComputedStyle(item);
-        return style.borderTopStyle !== "none" && parseFloat(style.borderTopWidth) >= 1;
-      });
+      const valid =
+        dividers.length === 2 &&
+        dividers.every((item) => {
+          const style = doc.defaultView.getComputedStyle(item);
+          return (
+            style.borderTopStyle !== "none" &&
+            parseFloat(style.borderTopWidth) >= 1
+          );
+        });
       return valid
         ? { ok: true }
-        : { ok: false, message: "The adjacent case items still need visible top borders." };
+        : {
+            ok: false,
+            message: "The adjacent case items still need visible top borders.",
+          };
     }
 
     if (data.validator === "contained-box") {
@@ -294,7 +309,10 @@ function initializeCase(data) {
       const style = doc.defaultView.getComputedStyle(root);
       return style.boxSizing === "border-box" && Math.abs(width - 320) <= 2
         ? { ok: true }
-        : { ok: false, message: "The ticket still grows beyond its declared 320px width." };
+        : {
+            ok: false,
+            message: "The ticket still grows beyond its declared 320px width.",
+          };
     }
 
     if (data.validator === "wrapped-row") {
@@ -302,11 +320,17 @@ function initializeCase(data) {
       const container = root.getBoundingClientRect();
       const inside = items.every((item) => {
         const rect = item.getBoundingClientRect();
-        return rect.left >= container.left - 2 && rect.right <= container.right + 2;
+        return (
+          rect.left >= container.left - 2 && rect.right <= container.right + 2
+        );
       });
-      return doc.defaultView.getComputedStyle(root).flexWrap === "wrap" && inside
+      return doc.defaultView.getComputedStyle(root).flexWrap === "wrap" &&
+        inside
         ? { ok: true }
-        : { ok: false, message: "The cards still need to wrap inside the panel." };
+        : {
+            ok: false,
+            message: "The cards still need to wrap inside the panel.",
+          };
     }
 
     if (data.validator === "shared-toolbar") {
@@ -314,12 +338,21 @@ function initializeCase(data) {
       const container = root.getBoundingClientRect();
       const inside = buttons.every((button) => {
         const rect = button.getBoundingClientRect();
-        return rect.left >= container.left - 2 && rect.right <= container.right + 2;
+        return (
+          rect.left >= container.left - 2 && rect.right <= container.right + 2
+        );
       });
-      const flexible = buttons.every((button) => parseFloat(doc.defaultView.getComputedStyle(button).flexGrow) > 0);
+      const flexible = buttons.every(
+        (button) =>
+          parseFloat(doc.defaultView.getComputedStyle(button).flexGrow) > 0,
+      );
       return inside && flexible
         ? { ok: true }
-        : { ok: false, message: "The controls still need to share the available toolbar width." };
+        : {
+            ok: false,
+            message:
+              "The controls still need to share the available toolbar width.",
+          };
     }
 
     if (data.validator === "even-gaps") {
@@ -329,17 +362,26 @@ function initializeCase(data) {
         const previous = items[index].getBoundingClientRect();
         return item.getBoundingClientRect().left - previous.right;
       });
-      const even = gaps.length === 2 && gaps.every((gap) => Math.abs(gap - 12) <= 2);
-      const cleanMargins = items.every((item) => parseFloat(doc.defaultView.getComputedStyle(item).marginLeft) === 0);
+      const even =
+        gaps.length === 2 && gaps.every((gap) => Math.abs(gap - 12) <= 2);
+      const cleanMargins = items.every(
+        (item) =>
+          parseFloat(doc.defaultView.getComputedStyle(item).marginLeft) === 0,
+      );
       return style.gap === "12px" && even && cleanMargins
         ? { ok: true }
-        : { ok: false, message: "The filters still have uneven spacing. Use one 12px gap rule." };
+        : {
+            ok: false,
+            message:
+              "The filters still have uneven spacing. Use one 12px gap rule.",
+          };
     }
 
     if (data.validator === "computed-style") {
       const actual = style[data.expectedProperty];
       const expected = data.expectedValue;
-      const normalize = (value) => String(value).replace(/\s+/g, "").toLowerCase();
+      const normalize = (value) =>
+        String(value).replace(/\s+/g, "").toLowerCase();
       const colorMap = {
         "#173d2c": "rgb(23,61,44)",
         "#fffefa": "rgb(255,254,250)",
@@ -348,12 +390,21 @@ function initializeCase(data) {
       };
       const expectedNormalized = colorMap[expected] || expected;
       let matches = normalize(actual) === normalize(expectedNormalized);
-      if (data.expectedProperty === "transform") matches = expected === "none" ? actual === "none" : actual !== "none";
-      if (data.expectedProperty === "boxShadow") matches = expected === "none" ? actual === "none" : actual !== "none";
-      if (data.expectedProperty === "backgroundColor" && expected.startsWith("rgba")) matches = normalize(actual).includes(normalize(expected));
+      if (data.expectedProperty === "transform")
+        matches = expected === "none" ? actual === "none" : actual !== "none";
+      if (data.expectedProperty === "boxShadow")
+        matches = expected === "none" ? actual === "none" : actual !== "none";
+      if (
+        data.expectedProperty === "backgroundColor" &&
+        expected.startsWith("rgba")
+      )
+        matches = normalize(actual).includes(normalize(expected));
       return matches
         ? { ok: true }
-        : { ok: false, message: `The rendered ${data.expectedProperty} is still ${actual || "unset"}.` };
+        : {
+            ok: false,
+            message: `The rendered ${data.expectedProperty} is still ${actual || "unset"}.`,
+          };
     }
 
     return {
@@ -493,20 +544,44 @@ function initializeCase(data) {
     });
     document
       .querySelectorAll(".mobile-panel")
-      .forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === tab.dataset.tab));
+      .forEach((panel) =>
+        panel.classList.toggle(
+          "is-active",
+          panel.dataset.panel === tab.dataset.tab,
+        ),
+      );
     if (moveFocus) tab.focus();
   }
   mobileTabs.forEach((tab, index) => {
     tab.addEventListener("click", () => selectMobileTab(tab));
     tab.addEventListener("keydown", (event) => {
-      if (!["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].includes(event.key)) return;
+      if (
+        ![
+          "ArrowRight",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowUp",
+          "Home",
+          "End",
+        ].includes(event.key)
+      )
+        return;
       event.preventDefault();
-      const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? mobileTabs.length - 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? (index - 1 + mobileTabs.length) % mobileTabs.length : (index + 1) % mobileTabs.length;
+      const nextIndex =
+        event.key === "Home"
+          ? 0
+          : event.key === "End"
+            ? mobileTabs.length - 1
+            : event.key === "ArrowLeft" || event.key === "ArrowUp"
+              ? (index - 1 + mobileTabs.length) % mobileTabs.length
+              : (index + 1) % mobileTabs.length;
       selectMobileTab(mobileTabs[nextIndex], true);
     });
   });
   /* Keep the selected tab and panel relationship explicit after startup. */
-  const activeMobileTab = mobileTabs.find((tab) => tab.classList.contains("is-active")) || mobileTabs[0];
+  const activeMobileTab =
+    mobileTabs.find((tab) => tab.classList.contains("is-active")) ||
+    mobileTabs[0];
   if (activeMobileTab) selectMobileTab(activeMobileTab);
   /*
     The keyboard behavior above follows the WAI-ARIA tabs pattern: arrow keys
@@ -548,7 +623,8 @@ function populateCaseContent(data) {
   guideLink.href = data.guideHref;
   guideLink.textContent = data.guideLabel;
   const chapterCode = data.chapter.slice(2, 4);
-  const chapterAnchor = chapterCode === "09" ? "#flexbox" : `#chapter-${chapterCode}`;
+  const chapterAnchor =
+    chapterCode === "09" ? "#flexbox" : `#chapter-${chapterCode}`;
   const chapterCases = Object.values(window.CASEBOOK_CASES || {})
     .filter((item) => item.chapter === data.chapter)
     .sort((left, right) => Number(left.id) - Number(right.id));
@@ -558,7 +634,8 @@ function populateCaseContent(data) {
   const previousLink = document.querySelector("#previous-case-link");
   const topNextLink = document.querySelector("#top-next-case-link");
   const chapterLink = document.querySelector("#chapter-overview-link");
-  document.querySelector("#case-position").textContent = `Case ${position} of ${chapterCases.length}`;
+  document.querySelector("#case-position").textContent =
+    `Case ${position} of ${chapterCases.length}`;
   chapterLink.href = `field-guide.html${chapterAnchor}`;
   if (previous) {
     previousLink.href = `case.html?id=${previous.id}`;

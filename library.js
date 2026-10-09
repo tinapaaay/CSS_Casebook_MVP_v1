@@ -3,7 +3,11 @@ const collections = [
     "01",
     "CSS Fundamentals",
     "Syntax, sizing, combinators, display, spacing, cascade and specificity",
-    ["The Selector That Wins", "The Sibling That Would Not Match", "The Box That Grew"],
+    [
+      "The Selector That Wins",
+      "The Sibling That Would Not Match",
+      "The Box That Grew",
+    ],
   ],
   [
     "02",
@@ -15,85 +19,141 @@ const collections = [
     "03",
     "Design Fundamentals",
     "Hierarchy, composition, UX patterns, prototypes and testing",
-    ["The Confusing Interface", "The Unclear Checkout", "The Hierarchy That Collapsed"],
+    [
+      "The Confusing Interface",
+      "The Unclear Checkout",
+      "The Hierarchy That Collapsed",
+    ],
   ],
   [
     "04",
     "Relative & Absolute Units",
     "px, rem, em, percentages, viewport units and calc()",
-    ["The Unpredictable Size", "The Overflowing Viewport", "The Formula That Broke"],
+    [
+      "The Unpredictable Size",
+      "The Overflowing Viewport",
+      "The Formula That Broke",
+    ],
   ],
   [
     "05",
     "Pseudo-classes & Pseudo-elements",
     "Interaction states, structural selectors and generated content",
-    ["The Unresponsive Button", "The Miscounted Child", "The Content That Appeared Twice"],
+    [
+      "The Unresponsive Button",
+      "The Miscounted Child",
+      "The Content That Appeared Twice",
+    ],
   ],
   [
     "06",
     "CSS Colors",
     "Color systems, formats, transparency, shadows and gradients",
-    ["The Invisible Text", "The Shadow That Escaped", "The Transparent Overlay"],
+    [
+      "The Invisible Text",
+      "The Shadow That Escaped",
+      "The Transparent Overlay",
+    ],
   ],
   [
     "07",
     "Styling Forms",
     "Labels, focus, checked, disabled and error states",
-    ["The Broken Checkbox", "The Unclear Error State", "The Label That Lost Its Target"],
+    [
+      "The Broken Checkbox",
+      "The Unclear Error State",
+      "The Label That Lost Its Target",
+    ],
   ],
   [
     "08",
     "Layouts & Effects",
     "Overflow, transforms, box model, resets, filters and visibility",
-    ["The Overflowing Card", "The Unexpected Extra Width", "The Transforming Hit Area"],
+    [
+      "The Overflowing Card",
+      "The Unexpected Extra Width",
+      "The Transforming Hit Area",
+    ],
   ],
   [
     "09",
     "CSS Flexbox",
     "Main and cross axes, direction, wrapping and alignment",
-    ["The Cards That Refuse to Wrap", "The Toolbar Won’t Share Space", "The Uneven Gaps"],
+    [
+      "The Cards That Refuse to Wrap",
+      "The Toolbar Won’t Share Space",
+      "The Uneven Gaps",
+    ],
   ],
   [
     "10",
     "CSS Typography",
     "Type anatomy, font stacks, web fonts, spacing and shadows",
-    ["The Misaligned Heading", "The Missing Web Font", "The Line-height That Drifted"],
+    [
+      "The Misaligned Heading",
+      "The Missing Web Font",
+      "The Line-height That Drifted",
+    ],
   ],
   [
     "11",
     "CSS Accessibility",
     "Contrast, focus, hidden content and reduced motion",
-    ["The Invisible Focus", "The Hidden-but-Readable Button", "The Contrast That Failed"],
+    [
+      "The Invisible Focus",
+      "The Hidden-but-Readable Button",
+      "The Contrast That Failed",
+    ],
   ],
   [
     "12",
     "CSS Positioning",
     "Float, positioned elements, z-index and stacking contexts",
-    ["The Stubborn Navbar", "The Badge in the Wrong Corner", "The Layer Behind the Modal"],
+    [
+      "The Stubborn Navbar",
+      "The Badge in the Wrong Corner",
+      "The Layer Behind the Modal",
+    ],
   ],
   [
     "13",
     "Attribute Selectors",
     "Attribute operators, language selectors and data attributes",
-    ["The Selector Mystery", "The Wrong Download Link", "The Language That Was Missed"],
+    [
+      "The Selector Mystery",
+      "The Wrong Download Link",
+      "The Language That Was Missed",
+    ],
   ],
   [
     "14",
     "Responsive Web Design",
     "Fluid layouts, media queries, breakpoints and preferences",
-    ["The Broken Mobile Layout", "The Desktop-only Button", "The Breakpoint That Came Too Early"],
+    [
+      "The Broken Mobile Layout",
+      "The Desktop-only Button",
+      "The Breakpoint That Came Too Early",
+    ],
   ],
   [
     "15",
     "CSS Grid",
     "Tracks, gaps, placement, areas, auto-fit and minmax()",
-    ["The Collapsed Gallery", "The Misplaced Sidebar", "The Track That Would Not Stretch"],
+    [
+      "The Collapsed Gallery",
+      "The Misplaced Sidebar",
+      "The Track That Would Not Stretch",
+    ],
   ],
   [
     "16",
     "CSS Animations",
     "Keyframes, timing, iterations, transforms and reduced motion",
-    ["The Animation That Never Ends", "The Button That Moves Too Much", "The Motion That Ignored Preferences"],
+    [
+      "The Animation That Never Ends",
+      "The Button That Moves Too Much",
+      "The Motion That Ignored Preferences",
+    ],
   ],
 ];
 
@@ -154,20 +214,20 @@ const guideSearch = document.querySelector("#guide-search");
 
 function renderLibrary(filter = "all") {
   if (!library) return;
-  const visibleCollections = collections
-    .filter((item) => {
-      const hasPlayable = item[3].some((name) => playableCases[name]);
-      return (
-        filter === "all" ||
-        (filter === "available" ? hasPlayable : !hasPlayable)
-      );
-    });
+  const visibleCollections = collections.filter((item) => {
+    const hasPlayable = item[3].some((name) => playableCases[name]);
+    return (
+      filter === "all" || (filter === "available" ? hasPlayable : !hasPlayable)
+    );
+  });
   library.innerHTML = visibleCollections
     .map(([number, title, description, cases]) => {
       const playableCount = cases.filter((name) => playableCases[name]).length;
       const completedCount = cases.filter((name) => {
         const caseId = playableCases[name];
-        return caseId && window.CasebookProgress?.readCase(caseId).completed === true;
+        return (
+          caseId && window.CasebookProgress?.readCase(caseId).completed === true
+        );
       }).length;
       const available = playableCount > 0;
       return `<article class="collection-card ${available ? "is-available" : ""}">
@@ -177,7 +237,7 @@ function renderLibrary(filter = "all") {
         .map((name) => {
           const caseId = playableCases[name];
           if (caseId)
-            return `<li class="${window.CasebookProgress?.readCase(caseId).completed === true ? "is-complete" : ""}"><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a>${window.CasebookProgress?.readCase(caseId).completed === true ? '<small>✓ Complete</small>' : ""}</li>`;
+            return `<li class="${window.CasebookProgress?.readCase(caseId).completed === true ? "is-complete" : ""}"><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a>${window.CasebookProgress?.readCase(caseId).completed === true ? "<small>✓ Complete</small>" : ""}</li>`;
           return `<li><span>${name}</span><small>Coming soon</small></li>`;
         })
         .join("")}</ul>
@@ -202,7 +262,11 @@ function renderGuideNav(query = "") {
     .join("");
   const resultStatus = document.querySelector("#library-results");
   if (resultStatus) {
-    const caseCount = visibleCollections.reduce((total, item) => total + item[3].filter((name) => playableCases[name]).length, 0);
+    const caseCount = visibleCollections.reduce(
+      (total, item) =>
+        total + item[3].filter((name) => playableCases[name]).length,
+      0,
+    );
     resultStatus.textContent = `${caseCount} playable case${caseCount === 1 ? "" : "s"} across ${visibleCollections.length} chapter${visibleCollections.length === 1 ? "" : "s"}.`;
   }
 }

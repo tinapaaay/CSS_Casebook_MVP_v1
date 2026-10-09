@@ -869,20 +869,36 @@ dialog h2 {
   color: var(--ink-soft);
   font: 500 12px var(--mono);
 }
-.case-navigation-link { color: var(--green); text-decoration: none; }
+.case-navigation-link {
+  color: var(--green);
+  text-decoration: none;
+}
 .case-navigation-link:hover,
-.case-navigation-link:focus-visible { text-decoration: underline; }
-.case-navigation #case-position { margin-right: auto; color: var(--rust); }
-.case-navigation-link.next { margin-left: auto; }
+.case-navigation-link:focus-visible {
+  text-decoration: underline;
+}
+.case-navigation #case-position {
+  margin-right: auto;
+  color: var(--rust);
+}
+.case-navigation-link.next {
+  margin-left: auto;
+}
 .mini-container i {
   display: none;
 }
 .mini-selector,
 .mini-rule {
-  font: 500 10px/1.2 "JetBrains Mono", monospace;
+  font:
+    500 10px/1.2 "JetBrains Mono",
+    monospace;
 }
-.mini-selector { color: var(--green); }
-.mini-rule { color: var(--rust); }
+.mini-selector {
+  color: var(--green);
+}
+.mini-rule {
+  color: var(--rust);
+}
 .mini-badge {
   align-self: flex-end;
   margin-top: auto;
@@ -1379,16 +1395,55 @@ dialog h2 {
   border: 1px solid var(--line);
   background: var(--cream);
 }
-.resume-card { margin-top: 22px; }
-.resume-card strong { display: block; margin: 5px 0 6px; font: 600 21px/1.15 var(--serif); }
-.resume-card p:not(.eyebrow) { margin: 0 0 14px; color: var(--ink-soft); font-size: 14px; line-height: 1.5; }
-.progress-summary { margin: 20px 0 8px; }
-.progress-summary > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.progress-summary strong { font-size: 14px; }
-.progress-summary span { color: var(--rust); font: 700 12px var(--mono); }
-.progress-bar { position: relative; height: 10px; margin-top: 12px; overflow: hidden; border-radius: 999px; background: #d5d8d1; }
-.progress-bar::before { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--progress, 0%); background: var(--green); border-radius: inherit; }
-.progress-bar i { display: none; }
+.resume-card {
+  margin-top: 22px;
+}
+.resume-card strong {
+  display: block;
+  margin: 5px 0 6px;
+  font: 600 21px/1.15 var(--serif);
+}
+.resume-card p:not(.eyebrow) {
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.progress-summary {
+  margin: 20px 0 8px;
+}
+.progress-summary > div:first-child {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.progress-summary strong {
+  font-size: 14px;
+}
+.progress-summary span {
+  color: var(--rust);
+  font: 700 12px var(--mono);
+}
+.progress-bar {
+  position: relative;
+  height: 10px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #d5d8d1;
+}
+.progress-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--progress, 0%);
+  background: var(--green);
+  border-radius: inherit;
+}
+.progress-bar i {
+  display: none;
+}
 .lesson-practice {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1405,7 +1460,7 @@ dialog h2 {
   margin-bottom: 8px;
   color: var(--rust);
   font: 700 10px/1.2 var(--mono);
-  letter-spacing: .1em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .lesson-practice p {
