@@ -292,6 +292,12 @@ installAuthoredChapterCases("05", "Pseudo-classes & Pseudo-elements", [
   { id: "018", title: "The Content That Appeared Twice", property: "borderStyle", starter: "double", target: "solid", label: "GENERATED PART", prompt: "One generated visual boundary is enough.", objective: "Use one clear generated-content boundary instead of a doubled visual treatment.", expected: "One clear visual boundary", observed: "Double treatment around the note", remember: "Pseudo-elements add a visual part; keep the source content singular.", question: "Which border style removes the doubled treatment?", next: "019" }
 ]);
 
+installAuthoredChapterCases("06", "CSS Colors", [
+  { id: "019", title: "The Invisible Text", property: "color", starter: "#fffefa", target: "#173d2c", label: "COLOR NOTE", prompt: "The status label must remain readable on its light surface.", objective: "Restore enough foreground contrast for the text to remain readable.", expected: "Readable status text", observed: "Foreground blends into background", remember: "Judge the final foreground and background pair, not either color alone.", question: "Which foreground color restores readable contrast?", next: "020" },
+  { id: "020", title: "The Shadow That Escaped", property: "boxShadow", starter: "none", target: "0 4px 12px 0 rgba(0,0,0,.2)", label: "DEPTH", prompt: "The active card needs a quiet separation from the page.", objective: "Bring back the restrained shadow that separates the card from the page.", expected: "Quiet separation from the page", observed: "Card edge visually escapes", remember: "Remember box-shadow as X, Y, blur, spread, color.", question: "Which value restores the card shadow?", next: "021" },
+  { id: "021", title: "The Transparent Overlay", property: "backgroundColor", starter: "rgba(255,255,255,1)", target: "rgba(255,255,255,.72)", label: "LAYER", prompt: "The illustration beneath the panel should remain subtly visible.", objective: "Restore the translucent overlay so the background remains part of the composition.", expected: "Background remains subtly visible", observed: "Overlay blocks the layer beneath", remember: "Transparency changes the color users actually perceive.", question: "Which value lets the layer beneath remain visible?", next: "022" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
