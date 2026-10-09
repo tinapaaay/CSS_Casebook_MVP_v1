@@ -334,6 +334,12 @@ installAuthoredChapterCases("13", "CSS Attribute Selectors", [
   { id: "039", title: "The Language That Was Missed", property: "fontStyle", starter: "normal", target: "italic", label: "LANGUAGE", prompt: "The language-specific note should be visibly signposted.", objective: "Apply the language-specific typographic cue to the matched content.", expected: "Language variant is signposted", observed: "Language variant looks unmarked", remember: "The |= operator matches a language token such as en or en-US.", question: "Which style marks the language-specific note?", next: "040" }
 ]);
 
+installAuthoredChapterCases("14", "Responsive Web Design", [
+  { id: "040", title: "The Broken Mobile Layout", property: "maxWidth", starter: "none", target: "100%", label: "NARROW VIEW", prompt: "The content surface should stay inside a narrow viewport.", objective: "Keep the content surface within the viewport on narrow screens.", expected: "Surface fits viewport", observed: "Horizontal overflow appears", remember: "Fluid foundations come before breakpoint rules.", question: "Which maximum width keeps the surface fluid?", next: "041" },
+  { id: "041", title: "The Desktop-only Button", property: "display", starter: "none", target: "block", label: "ACTION", prompt: "The primary action must remain available on mobile.", objective: "Make the action available when the responsive layout calls for it.", expected: "Primary action remains available", observed: "Button disappears at the wrong state", remember: "A responsive change should preserve access to essential actions.", question: "Which display value keeps the action available?", next: "042" },
+  { id: "042", title: "The Breakpoint That Came Too Early", property: "overflow", starter: "hidden", target: "auto", label: "BREAKPOINT", prompt: "Tight space should preserve access while the layout adapts.", objective: "Preserve access to the layout when its content exceeds the available width.", expected: "Content remains reachable", observed: "Breakpoint state clips the surface", remember: "A breakpoint should mark a content change, not a device label.", question: "Which overflow value preserves the responsive surface?", next: "043" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
