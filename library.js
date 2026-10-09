@@ -214,12 +214,24 @@ const guideSearch = document.querySelector("#guide-search");
 
 function renderLibrary(filter = "all") {
   if (!library) return;
-  const visibleCollections = collections.filter((item) => {
-    const hasPlayable = item[3].some((name) => playableCases[name]);
-    return (
-      filter === "all" || (filter === "available" ? hasPlayable : !hasPlayable)
-    );
-  });
+  const caseState = (caseId) => {
+    if (!caseId) return "unavailable";
+    const state = window.CasebookProgress?.readCase(caseId) || {};
+    if (state.completed === true) return "completed";
+    if (state.attempted === true || state.visited === true) return "in-progress";
+    return "not-started";
+  };
+  const visibleCollections = collections
+    .map(([number, title, description, cases]) => [
+      number,
+      title,
+      description,
+      cases.filter((name) => {
+        const caseId = playableCases[name];
+        return filter === "all" || caseState(caseId) === filter;
+      }),
+    ])
+    .filter((item) => item[3].length > 0);
   library.innerHTML = visibleCollections
     .map(([number, title, description, cases]) => {
       const playableCount = cases.filter((name) => playableCases[name]).length;
@@ -237,8 +249,8 @@ function renderLibrary(filter = "all") {
         .map((name) => {
           const caseId = playableCases[name];
           if (caseId)
-            return `<li class="${window.CasebookProgress?.readCase(caseId).completed === true ? "is-complete" : ""}"><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a>${window.CasebookProgress?.readCase(caseId).completed === true ? "<small>✓ Complete</small>" : ""}</li>`;
-          return `<li><span>${name}</span><small>Coming soon</small></li>`;
+            return `<li class="${caseState(caseId) === "completed" ? "is-complete" : ""}"><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a>${caseState(caseId) === "completed" ? "<small>✓ Complete</small>" : caseState(caseId) === "in-progress" ? "<small>In progress</small>" : ""}</li>`;
+          return "";
         })
         .join("")}</ul>
       ${number === "09" ? `<a class="collection-link" href="field-guide.html#flexbox">Read Flexbox guide →</a>` : ""}
@@ -252,7 +264,15 @@ function renderLibrary(filter = "all") {
         total + item[3].filter((name) => playableCases[name]).length,
       0,
     );
-    resultStatus.textContent = `${caseCount} playable case${caseCount === 1 ? "" : "s"} across ${visibleCollections.length} chapter${visibleCollections.length === 1 ? "" : "s"}.`;
+    const filterLabel =
+      filter === "all"
+        ? "playable"
+        : filter === "in-progress"
+          ? "in-progress"
+          : filter === "completed"
+            ? "completed"
+            : "not-started";
+    resultStatus.textContent = `${caseCount} ${filterLabel} case${caseCount === 1 ? "" : "s"} across ${visibleCollections.length} chapter${visibleCollections.length === 1 ? "" : "s"}.`;
   }
 }
 
