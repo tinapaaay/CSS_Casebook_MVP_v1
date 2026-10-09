@@ -322,6 +322,12 @@ installAuthoredChapterCases("11", "CSS Accessibility", [
   { id: "033", title: "The Contrast That Failed", property: "color", starter: "#fffefa", target: "#173d2c", label: "CONTRAST", prompt: "The status message must pass contrast review on its light surface.", objective: "Restore a darker text color that can be checked against the light surface.", expected: "Text meets contrast target", observed: "Color is too pale", remember: "Do not communicate meaning through color alone.", question: "Which text color restores stronger contrast?", next: "034" }
 ]);
 
+installAuthoredChapterCases("12", "CSS Positioning", [
+  { id: "034", title: "The Stubborn Navbar", property: "position", starter: "static", target: "sticky", label: "POSITION", prompt: "The case navigation should remain available during a long read.", objective: "Keep the navigation available while the user moves through a long case file.", expected: "Navigation stays available", observed: "Navigation disappears above the viewport", remember: "Sticky remains in flow until it reaches its inset threshold.", question: "Which position value keeps the navbar available?", next: "035" },
+  { id: "035", title: "The Badge in the Wrong Corner", property: "position", starter: "static", target: "absolute", label: "ANCHOR", prompt: "The badge should sit in the positioned card corner.", objective: "Anchor the badge to the positioned card instead of the page flow.", expected: "Badge anchors to card corner", observed: "Badge occupies normal flow", remember: "Absolute positioning needs a containing block you can name.", question: "Which position value removes the badge from normal flow?", next: "036" },
+  { id: "036", title: "The Layer Behind the Modal", property: "zIndex", starter: "0", target: "100", label: "STACK", prompt: "The modal layer should sit above the page content.", objective: "Place the modal layer above the page content within its stacking context.", expected: "Modal is above page content", observed: "Page layer covers modal", remember: "A large z-index cannot escape an ancestor stacking context.", question: "Which value raises the modal layer?", next: "037" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
