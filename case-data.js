@@ -346,6 +346,12 @@ installAuthoredChapterCases("15", "CSS Grid", [
   { id: "045", title: "The Track That Would Not Stretch", property: "gridColumn", starter: "auto", target: "1 / -1", label: "PLACEMENT", prompt: "The banner should span the full explicit grid width.", objective: "Make the banner span the full explicit grid width.", expected: "Banner spans the gallery", observed: "Banner stops at one column", remember: "1 / -1 spans from the first grid line to the last.", question: "Which grid-column value spans the full gallery?", next: "046" }
 ]);
 
+installAuthoredChapterCases("16", "CSS Animations", [
+  { id: "046", title: "The Animation That Never Ends", property: "animationIterationCount", starter: "infinite", target: "1", label: "MOTION", prompt: "The entrance animation should settle instead of repeating forever.", objective: "Let the entrance animation finish instead of repeating forever.", expected: "Animation completes once", observed: "Animation loops continuously", remember: "Iteration count controls repeats; essential information should not depend on motion.", question: "Which count lets the animation finish?", next: "047" },
+  { id: "047", title: "The Button That Moves Too Much", property: "animationDuration", starter: "100ms", target: "600ms", label: "TIMING", prompt: "The button movement should be comfortable to follow.", objective: "Slow the movement enough that the action remains comfortable to follow.", expected: "Motion has a comfortable duration", observed: "Motion is too sudden", remember: "Use timing as communication, not as noise.", question: "Which duration makes the motion readable?", next: "048" },
+  { id: "048", title: "The Motion That Ignored Preferences", property: "animationName", starter: "fadeIn", target: "none", label: "PREFERENCE", prompt: "Reduced-motion users should not receive nonessential animation.", objective: "Respect a reduced-motion preference by disabling the nonessential animation.", expected: "Nonessential motion is disabled", observed: "Animation keeps running", remember: "Reduced motion is a user preference, not a design failure.", question: "Which animation name disables the motion?", next: null }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
