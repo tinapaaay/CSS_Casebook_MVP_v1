@@ -155,7 +155,98 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
       "Not quite. column-reverse reverses the vertical main-axis direction.",
     guideHref: "field-guide.html#lesson-2",
     guideLabel: "Review flex-direction →",
-    nextCase: null,
+    nextCase: "003",
     storageKey: "css-casebook-fc002",
+  },
+  "003": {
+    id: "003",
+    fileCode: "CF-003",
+    chapter: "CH01 CSS Fundamentals",
+    topic: "Cascade",
+    level: "Beginner",
+    duration: "5–10 min",
+    title: "Overridden Style",
+    objective:
+      "Restore the approved status color by diagnosing which CSS rule wins—without changing the trusted HTML.",
+    incidentTitle: "The approved badge turned red.",
+    incident:
+      "A profile card contains an Approved status badge. The general badge rule sets the correct forest green, but another declaration overrides it inside the card.",
+    evidence: [
+      ["Expected", "Green Approved badge"],
+      ["Observed", "Red Approved badge"],
+      ["Constraint", "Do not edit the HTML"],
+    ],
+    selector: ".status-badge",
+    starterCSS: `.status-badge {
+  background: #315d4c;
+  color: white;
+}
+
+.profile-card .status-badge {
+  background: #a44d2f;
+}`,
+    targetCSS: "background:#315d4c;color:white",
+    targetPreviewCSS: `.status-badge {
+  background: #315d4c;
+  color: white;
+}
+
+.profile-card .status-badge {
+  background: #315d4c;
+}`,
+    originalCaption: "Original — overridden badge color",
+    targetCaption: "Target — approved forest badge",
+    previewLabel: "status card",
+    previewHTML: `<article class="profile-card"><div class="avatar" aria-hidden="true">CE</div><div><p class="name">Christine Espiritu</p><p class="role">Frontend investigator</p></div><span class="status-badge">Approved</span></article>`,
+    previewBaseCSS: `* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
+.profile-card { width: min(100%, 520px); display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 24px; border: 1px solid #738078; border-radius: 8px; background: #fffefa; box-shadow: 4px 4px 0 rgba(49, 93, 76, .12); }
+.avatar { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; color: white; background: #173d2c; font-weight: 700; }
+.name { margin: 0 0 5px; font-weight: 700; }
+.role { margin: 0; color: #657067; font-size: 12px; }
+.status-badge { padding: 8px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }`,
+    hints: [
+      [
+        "Observation",
+        "The badge has two background declarations. Which one appears later and targets it more specifically?",
+      ],
+      [
+        "Concept",
+        "When declarations conflict, the cascade compares importance, origin, specificity and then source order.",
+      ],
+      [
+        "Targeted clue",
+        "Inspect .profile-card .status-badge. Its selector is more specific than .status-badge.",
+      ],
+    ],
+    checkingTitle: "Tracing the cascade…",
+    checkingText:
+      " Comparing the badge’s computed color with the approved design.",
+    successText: " The Approved badge now uses the required forest green.",
+    validator: "green-status",
+    rootCause:
+      "The descendant selector .profile-card .status-badge has greater specificity than .status-badge, so its red background declaration won the cascade.",
+    remember:
+      "When two declarations target the same property, compare specificity before assuming the nearest-looking rule should win.",
+    recommendedCSS: `.status-badge {
+  background: #315d4c;
+  color: white;
+}
+
+.profile-card .status-badge {
+  background: #315d4c;
+}`,
+    question: "Which selector is more specific?",
+    choices: [
+      [".status-badge", false],
+      [".profile-card .status-badge", true],
+    ],
+    correctFeedback:
+      "Correct. Two class selectors are more specific than one class selector.",
+    incorrectFeedback: "Not quite. Count the class selectors in each selector.",
+    guideHref: "cases.html",
+    guideLabel: "Back to Case Library →",
+    nextCase: null,
+    storageKey: "css-casebook-cf003",
   },
 };

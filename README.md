@@ -20,6 +20,7 @@ Then visit `http://localhost:8000`.
 - `cases.html` — all 16 curriculum collections and proposed cases
 - `case.html?id=001` — The Missing Center through the reusable Case Engine
 - `case.html?id=002` — The Reversed Navigation through the reusable Case Engine
+- `case.html?id=003` — Overridden Style, the first Chapter 01 cascade investigation
 - `case-data.js` — case-specific content, preview markup, hints and validation type
 - `case-engine.js` — shared editor, preview, hints, checking, reset and resolution behavior
 - `field-guide.html` — seven complete Flexbox lessons and interactive Control Room

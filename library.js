@@ -97,6 +97,12 @@ const collections = [
   ],
 ];
 
+const playableCases = {
+  "The Missing Center": "001",
+  "The Reversed Navigation": "002",
+  "Overridden Style": "003",
+};
+
 const library = document.querySelector("#case-library");
 const guideNav = document.querySelector("#guide-nav");
 const guideSearch = document.querySelector("#guide-search");
@@ -104,26 +110,28 @@ const guideSearch = document.querySelector("#guide-search");
 function renderLibrary(filter = "all") {
   if (!library) return;
   library.innerHTML = collections
-    .filter(
-      (item) =>
+    .filter((item) => {
+      const hasPlayable = item[3].some((name) => playableCases[name]);
+      return (
         filter === "all" ||
-        (filter === "available" ? item[0] === "09" : item[0] !== "09"),
-    )
+        (filter === "available" ? hasPlayable : !hasPlayable)
+      );
+    })
     .map(([number, title, description, cases]) => {
-      const available = number === "09";
+      const playableCount = cases.filter((name) => playableCases[name]).length;
+      const available = playableCount > 0;
       return `<article class="collection-card ${available ? "is-available" : ""}">
-      <header><span>${number}</span><small>${available ? "2 playable" : "Planned"}</small></header>
+      <header><span>${number}</span><small>${available ? `${playableCount} playable` : "Planned"}</small></header>
       <h2>${title}</h2><p>${description}</p>
       <ul>${cases
-        .map((name, index) => {
-          if (available && index === 0)
-            return `<li><a href="case.html?id=001">Case #001 · ${name}</a></li>`;
-          if (available && index === 1)
-            return `<li><a href="case.html?id=002">Case #002 · ${name}</a></li>`;
+        .map((name) => {
+          const caseId = playableCases[name];
+          if (caseId)
+            return `<li><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a></li>`;
           return `<li><span>${name}</span><small>Coming soon</small></li>`;
         })
         .join("")}</ul>
-      ${available ? `<a class="collection-link" href="field-guide.html#flexbox">Read Flexbox guide →</a>` : ""}
+      ${number === "09" ? `<a class="collection-link" href="field-guide.html#flexbox">Read Flexbox guide →</a>` : ""}
     </article>`;
     })
     .join("");

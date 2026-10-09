@@ -100,7 +100,8 @@ function initializeCase(data) {
     } else if (mode === "target") {
       caption.textContent = data.targetCaption;
       renderPreview(
-        `${data.starterCSS}\n${data.selector} { ${data.targetCSS} }`,
+        data.targetPreviewCSS ||
+          `${data.starterCSS}\n${data.selector} { ${data.targetCSS} }`,
         mode,
       );
     } else {
@@ -151,13 +152,13 @@ function initializeCase(data) {
       };
     const style = doc.defaultView.getComputedStyle(root);
     const items = [...root.children];
-    if (style.display !== "flex")
-      return {
-        ok: false,
-        message: "The case requires Flexbox to remain in use.",
-      };
 
     if (data.validator === "centered-cards") {
+      if (style.display !== "flex")
+        return {
+          ok: false,
+          message: "The case requires Flexbox to remain in use.",
+        };
       if (items.length !== 3)
         return { ok: false, message: "All three cards must remain visible." };
       const container = root.getBoundingClientRect();
@@ -209,6 +210,11 @@ function initializeCase(data) {
     }
 
     if (data.validator === "logical-navigation") {
+      if (style.display !== "flex")
+        return {
+          ok: false,
+          message: "The case requires Flexbox to remain in use.",
+        };
       if (items.length !== 4)
         return {
           ok: false,
@@ -232,6 +238,25 @@ function initializeCase(data) {
           ok: false,
           message:
             "The links are still displayed in reverse order. Inspect the main-axis direction.",
+        };
+      return { ok: true };
+    }
+
+    if (data.validator === "green-status") {
+      const background = style.backgroundColor.replace(/\s/g, "");
+      const approvedGreen =
+        background === "rgb(49,93,76)" || background === "rgba(49,93,76,1)";
+      const visible =
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        root.getBoundingClientRect().width > 0;
+      if (!visible)
+        return { ok: false, message: "The status badge is no longer visible." };
+      if (!approvedGreen)
+        return {
+          ok: false,
+          message:
+            "The badge is still using the overridden color. Trace the competing background declarations.",
         };
       return { ok: true };
     }
