@@ -214,10 +214,47 @@ function readLessonCompletion(lessonId) {
   return localStorage.getItem(lessonProgressKey(lessonId)) === "complete";
 }
 
+function chapterCaseId(number) {
+  const chapterNumber = Number(number);
+  const caseNumber = chapterNumber === 9 ? 4 : (chapterNumber - 1) * 3 + 1;
+  return String(caseNumber).padStart(3, "0");
+}
+
+function readChapterCaseCompletion(number) {
+  try {
+    return JSON.parse(localStorage.getItem(`css-casebook-c${chapterCaseId(number)}`) || "{}").completed === true;
+  } catch {
+    return false;
+  }
+}
+
+function updateChapterSummary(chapter) {
+  if (chapter.lab) return;
+  const lessonsDone = chapter.lessons.every((_, index) => readLessonCompletion(`${chapter.number}-${index + 1}`));
+  const reviewDone = readChapterReview(chapter.number)?.completed === true;
+  const caseDone = readChapterCaseCompletion(chapter.number);
+  const complete = lessonsDone && reviewDone && caseDone;
+  const stamp = document.querySelector("#summary-stamp");
+  const status = document.querySelector("#chapter-status-text");
+  const reviewProgress = document.querySelector("#review-progress");
+  const caseProgress = document.querySelector("#case-progress");
+  if (stamp) {
+    stamp.textContent = complete ? "Chapter closed" : "In progress";
+    stamp.classList.toggle("is-complete", complete);
+  }
+  if (status) status.textContent = complete
+    ? `Chapter ${chapter.number} is complete. Lessons, review and Case #${chapterCaseId(chapter.number)} are finished.`
+    : `Finish the lessons, chapter review and Case #${chapterCaseId(chapter.number)} to close this chapter.`;
+  if (reviewProgress) reviewProgress.textContent = `${reviewDone ? "✓" : "→"} Chapter review ${reviewDone ? "completed" : "pending"}`;
+  if (caseProgress) caseProgress.textContent = `${caseDone ? "✓" : "→"} Case #${chapterCaseId(chapter.number)} ${caseDone ? "resolved" : "pending"}`;
+  localStorage.setItem(`css-casebook-ch${chapter.number}-status`, complete ? "completed" : "in-progress");
+}
+
 function updateLessonSummary(chapter) {
   const completed = chapter.lessons.filter((_, index) => readLessonCompletion(`${chapter.number}-${index + 1}`)).length;
   const status = document.querySelector("#lessons-status");
   if (status) status.textContent = `${completed === chapter.lessons.length ? "✓" : "→"} ${completed}/${chapter.lessons.length} lessons marked complete`;
+  updateChapterSummary(chapter);
 }
 
 function initializeLessonProgress(chapter) {
@@ -309,6 +346,7 @@ function initializeChapterReview(chapter) {
     const state = { completed: true, score, completedAt: new Date().toISOString() };
     localStorage.setItem(chapterReviewKey(chapter.number), JSON.stringify(state));
     updateChapterReviewSummary(chapter, state);
+    updateChapterSummary(chapter);
     status.textContent = `Review complete: ${score}/${questions.length}. Read the explanations, then continue to the cases.`;
   });
 
@@ -322,6 +360,7 @@ function initializeChapterReview(chapter) {
     });
     localStorage.removeItem(chapterReviewKey(chapter.number));
     updateChapterReviewSummary(chapter, null);
+    updateChapterSummary(chapter);
     status.textContent = "Answer all three questions to complete the review.";
   });
 }
@@ -338,6 +377,7 @@ function renderChapter(number) {
   renderNav(guideSearch.value);
   initializeLessonProgress(chapter);
   initializeChapterReview(chapter);
+  updateChapterSummary(chapter);
   window.initializeFlexboxLab?.();
 }
 
