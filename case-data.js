@@ -1193,7 +1193,7 @@ additionalCases.forEach(
         ],
         [
           "Targeted clue",
-          `Try the documented target value: ${cssProperty}: ${target}.`,
+          `Compare the computed value with the expected behavior, then choose the ${cssProperty} value that restores it.`,
         ],
       ],
       checkingTitle: `Inspecting ${cssProperty}…`,
@@ -1355,7 +1355,7 @@ Object.entries(chapterThreeCases).forEach(([id, item]) => {
       ],
       [
         "Targeted clue",
-        `Try the documented target value: ${cssProperty}: ${item.target}.`,
+        `Compare the computed value with the expected behavior, then choose the ${cssProperty} value that restores it.`,
       ],
     ],
     checkingTitle: `Inspecting ${item.label}…`,
@@ -1507,7 +1507,7 @@ Object.entries(chapterFourCases).forEach(([id, item]) => {
       ],
       [
         "Targeted clue",
-        `Try the documented target value: ${cssProperty}: ${item.target}.`,
+        `Compare the computed value with the expected behavior, then choose the ${cssProperty} value that restores it.`,
       ],
     ],
     checkingTitle: `Inspecting ${item.label}…`,
@@ -1580,7 +1580,7 @@ function installAuthoredChapterCases(chapterCode, chapterName, entries) {
         ],
         [
           "Targeted clue",
-          `Try the documented target value: ${cssProperty}: ${item.target}.`,
+          `Compare the computed value with the expected behavior, then choose the ${cssProperty} value that restores it.`,
         ],
       ],
       checkingTitle: `Inspecting ${label.toLowerCase()}…`,
