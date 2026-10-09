@@ -844,9 +844,11 @@ dialog h2 {
   border: 1px solid #c9d0c8;
 }
 .mini-container {
+  position: relative;
   width: 90%;
   height: 115px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: 8px;
@@ -854,10 +856,22 @@ dialog h2 {
   border: 1px dashed var(--green);
 }
 .mini-container i {
-  width: 54px;
-  height: 44px;
-  border: 1px solid var(--green);
-  background: var(--white);
+  display: none;
+}
+.mini-selector,
+.mini-rule {
+  font: 500 10px/1.2 "JetBrains Mono", monospace;
+}
+.mini-selector { color: var(--green); }
+.mini-rule { color: var(--rust); }
+.mini-badge {
+  align-self: flex-end;
+  margin-top: auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 11px;
 }
 .annotation {
   position: absolute;
