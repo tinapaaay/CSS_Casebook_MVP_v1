@@ -8,6 +8,15 @@ if (!caseData) {
   document.title = "Case Not Found | CSS Casebook";
 } else {
   app.hidden = false;
+  const session = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("css-casebook-session") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+  session.lastVisitedCase = caseId;
+  localStorage.setItem("css-casebook-session", JSON.stringify(session));
   initializeCase(caseData);
 }
 

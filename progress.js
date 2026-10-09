@@ -66,16 +66,18 @@
 
   function getState() {
     const completed = [];
-    for (let id = 1; id <= totalCases; id += 1) {
-      if (readCase(id).completed === true) completed.push(id);
-    }
-    const next =
-      Array.from({ length: totalCases }, (_, index) => index + 1).find(
-        (id) => !completed.includes(id),
-      ) || 1;
+    curriculumOrder.forEach((id) => {
+      if (readCase(id).completed === true) completed.push(Number(id));
+    });
+    const nextId = curriculumOrder.find((id) => !completed.includes(Number(id))) || null;
+    const lastVisited = readStorage("css-casebook-session").lastVisitedCase || null;
+    const lastVisitedIncomplete = lastVisited && !completed.includes(Number(lastVisited)) ? String(lastVisited).padStart(3, "0") : null;
     return {
       completed,
-      next,
+      next: nextId ? Number(nextId) : null,
+      nextId,
+      resumeId: lastVisitedIncomplete,
+      allComplete: completed.length === totalCases,
       total: totalCases,
       percent: Math.round((completed.length / totalCases) * 100),
     };
@@ -94,15 +96,31 @@
       node.setAttribute("aria-valuenow", String(state.percent));
     });
     document.querySelectorAll("[data-continue-link]").forEach((link) => {
-      link.href = `case.html?id=${String(state.next).padStart(3, "0")}`;
-      link.textContent = state.completed.length
-        ? `Continue Case #${String(state.next).padStart(3, "0")} →`
-        : "Start the first case →";
+      if (state.allComplete) {
+        link.href = "cases.html";
+        link.textContent = "All cases resolved · Review library →";
+        return;
+      }
+      const target = state.resumeId || state.nextId || "001";
+      link.href = `case.html?id=${target}`;
+      link.textContent = state.resumeId
+        ? `Resume Case #${target} →`
+        : state.completed.length
+          ? `Recommended Case #${target} →`
+          : "Start the first case →";
     });
     const resume = document.querySelector("#resume-card");
     if (resume) {
       resume.hidden = false;
-      resume.innerHTML = `<p class="eyebrow">Your local progress</p><strong>${state.completed.length ? `Case #${String(state.next).padStart(3, "0")} is next` : "Begin with Case #001"}</strong><p>${state.completed.length ? `${state.completed.length} of ${state.total} cases complete. Pick up where you left off.` : "Solve the first investigation to start building your case history."}</p><a class="secondary-button button-link" href="case.html?id=${String(state.next).padStart(3, "0")}">${state.completed.length ? "Resume investigation →" : "Open Case 001 →"}</a>`;
+      if (state.allComplete) {
+        resume.innerHTML = `<p class="eyebrow">Course complete</p><strong>All ${state.total} cases resolved ✓</strong><p>You have completed the full case sequence. Revisit any case or review the Field Guide.</p><a class="secondary-button button-link" href="cases.html">Review the Case Library →</a>`;
+        return;
+      }
+      const target = state.resumeId || state.nextId || "001";
+      const title = state.resumeId ? `Resume Case #${target}` : state.completed.length ? `Case #${target} is recommended` : "Begin with Case #001";
+      const description = state.resumeId ? `${state.completed.length} of ${state.total} cases complete. Pick up where you left off.` : state.completed.length ? `${state.completed.length} of ${state.total} cases complete. Continue through the curriculum.` : "Solve the first investigation to start building your case history.";
+      const label = state.resumeId ? "Resume investigation →" : state.completed.length ? "Open recommended case →" : "Open Case 001 →";
+      resume.innerHTML = `<p class="eyebrow">Your local progress</p><strong>${title}</strong><p>${description}</p><a class="secondary-button button-link" href="case.html?id=${target}">${label}</a>`;
     }
   }
 
