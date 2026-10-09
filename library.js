@@ -154,14 +154,15 @@ const guideSearch = document.querySelector("#guide-search");
 
 function renderLibrary(filter = "all") {
   if (!library) return;
-  library.innerHTML = collections
+  const visibleCollections = collections
     .filter((item) => {
       const hasPlayable = item[3].some((name) => playableCases[name]);
       return (
         filter === "all" ||
         (filter === "available" ? hasPlayable : !hasPlayable)
       );
-    })
+    });
+  library.innerHTML = visibleCollections
     .map(([number, title, description, cases]) => {
       const playableCount = cases.filter((name) => playableCases[name]).length;
       const available = playableCount > 0;
@@ -195,6 +196,11 @@ function renderGuideNav(query = "") {
       return `<a class="guide-nav-item" href="field-guide.html#${guideHash}"><span>${number}</span>${title}<small>${playableCount} cases · Guide</small></a>`;
     })
     .join("");
+  const resultStatus = document.querySelector("#library-results");
+  if (resultStatus) {
+    const caseCount = visibleCollections.reduce((total, item) => total + item[3].filter((name) => playableCases[name]).length, 0);
+    resultStatus.textContent = `${caseCount} playable case${caseCount === 1 ? "" : "s"} across ${visibleCollections.length} chapter${visibleCollections.length === 1 ? "" : "s"}.`;
+  }
 }
 
 renderLibrary();
