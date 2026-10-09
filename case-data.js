@@ -316,6 +316,12 @@ installAuthoredChapterCases("10", "CSS Typography", [
   { id: "030", title: "The Line-height That Drifted", property: "lineHeight", starter: "1", target: "1.6", label: "READING COPY", prompt: "Paragraph lines should have enough room for comfortable reading.", objective: "Restore enough line spacing for the paragraph to remain readable.", expected: "Comfortable line spacing", observed: "Lines feel compressed", remember: "Leading controls the distance between lines; it is not the same as tracking.", question: "Which line-height restores readable spacing?", next: "031" }
 ]);
 
+installAuthoredChapterCases("11", "CSS Accessibility", [
+  { id: "031", title: "The Invisible Focus", property: "outlineStyle", starter: "none", target: "solid", label: "FOCUS", prompt: "Keyboard users need a reliable location cue.", objective: "Restore the visible focus ring required for keyboard navigation.", expected: "Focus remains obvious", observed: "Focus state cannot be located", remember: "If focus disappears, keyboard users lose their place.", question: "Which outline style restores keyboard focus?", next: "032" },
+  { id: "032", title: "The Hidden-but-Readable Button", property: "maxWidth", starter: "0px", target: "240px", label: "ACCESS", prompt: "The accessible action needs a usable visual box.", objective: "Keep the accessible button text available within a usable visual area.", expected: "Action retains a usable width", observed: "Button collapses to nothing", remember: "Visual hiding and semantic hiding are different jobs.", question: "Which maximum width keeps the action usable?", next: "033" },
+  { id: "033", title: "The Contrast That Failed", property: "color", starter: "#fffefa", target: "#173d2c", label: "CONTRAST", prompt: "The status message must pass contrast review on its light surface.", objective: "Restore a darker text color that can be checked against the light surface.", expected: "Text meets contrast target", observed: "Color is too pale", remember: "Do not communicate meaning through color alone.", question: "Which text color restores stronger contrast?", next: "034" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
