@@ -32,6 +32,20 @@ function initializeCase(data) {
   const guideLink = document.querySelector("#guide-link");
   guideLink.href = data.guideHref;
   guideLink.textContent = data.guideLabel;
+  const nextCaseLink =
+    document.querySelector("#next-case-link");
+
+  if (data.nextCase) {
+    nextCaseLink.href =
+      `case.html?id=${data.nextCase}`;
+
+    nextCaseLink.textContent =
+      `Open Case #${data.nextCase} →`;
+
+    nextCaseLink.hidden = false;
+  } else {
+    nextCaseLink.hidden = true;
+  }
 
   const editor = document.querySelector("#css-editor");
   const demo = document.querySelector("#demo-root");

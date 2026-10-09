@@ -48,6 +48,7 @@ window.CASEBOOK_CASES = {
     incorrectFeedback: "Not quite. justify-content follows the main axis, which becomes vertical in a column.",
     guideHref: "field-guide.html#lesson-7",
     guideLabel: "Review centering →",
+    nextCase: "002",
     storageKey: "css-casebook-fc001"
   },
   "002": {
@@ -97,6 +98,7 @@ window.CASEBOOK_CASES = {
     incorrectFeedback: "Not quite. column-reverse reverses the vertical main-axis direction.",
     guideHref: "field-guide.html#lesson-2",
     guideLabel: "Review flex-direction →",
+    nextCase: null,
     storageKey: "css-casebook-fc002"
   }
 };
