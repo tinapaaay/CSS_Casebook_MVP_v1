@@ -81,6 +81,89 @@ const chapters = [
   ]},
 ];
 
+const lessonExtensions = {
+  "01": [
+    ["Open DevTools and identify the viewport meta tag, the author stylesheet and one browser-default rule before changing any CSS.", "A missing viewport setting can look like a layout bug on mobile; verify the document setup first.", "Can you name which rule supplies the unexpected spacing?"],
+    ["Build two inline-block badges and compare margin outside the border with padding inside it in the box model panel.", "Width and height do not behave the same way on inline elements as they do on block or inline-block elements.", "Can you point to the space that belongs to the element versus its neighbor?"],
+    ["Write one selector using >, one using + and one using ~, then inspect which elements each actually matches.", "Specificity does not automatically mean intent; a selector that is too broad can win while styling the wrong relationship.", "Can you explain why the winning declaration beats the losing one?"],
+  ],
+  "02": [
+    ["Style a link through :link, :hover and :focus, then navigate to it with a keyboard instead of a mouse.", "A hover-only treatment disappears for keyboard and touch users; focus needs its own visible state.", "Can you find the focus rule without inspecting the pointer state?"],
+    ["Toggle a hero between contain and cover at two aspect ratios and record what is preserved versus what is cropped.", "Choosing cover only because it fills the box can crop the subject; pair it with a deliberate position.", "Which part of the image is allowed to disappear?"],
+    ["Build a card with border shorthand and a gradient, then check the text against both the light and dark ends of the gradient.", "A border without a style remains invisible, and a decorative gradient can create a contrast failure.", "Can you state the border shorthand order from memory?"],
+  ],
+  "03": [
+    ["Reduce a dashboard to three regions and rank them: first glance, supporting evidence and next action.", "Hierarchy is not the same as making everything larger; too many competing signals remove the first step.", "What should a new user notice before reading every detail?"],
+    ["Turn a vague screen request into one requirement with a user, task and success condition.", "A polished interface can still fail if it solves a visual preference instead of the actual user requirement.", "Can you test the requirement without asking the user what they think?"],
+    ["Choose one task and observe whether a first-time user finds the next action without explanation.", "Personal preference is not research; record behavior, hesitation and errors instead of defending a favorite pattern.", "What evidence would change your design decision?"],
+  ],
+  "04": [
+    ["Measure a fixed control in px and compare it with a content surface capped by max-width.", "Physical units rarely mean a literal physical measurement on screens; use the CSS reference model.", "Which dimension must stay predictable here?"],
+    ["Set a parent font size, then compare 1em, 1rem, 100% and 50vw while changing the viewport.", "Nested em values compound through ancestors; rem stays tied to the root size.", "What reference does each unit use in this example?"],
+    ["Resize a calc() surface from 320px to a wide desktop and write down its smallest and largest usable result.", "A formula can be mathematically valid and still create unreadable line lengths or overflow.", "What guardrail keeps the formula usable at both extremes?"],
+  ],
+  "05": [
+    ["Tab through a form and compare :focus, :focus-within, :invalid and :disabled states without changing the HTML.", "A state selector describes a condition; it does not create a semantic label or error message.", "Which element receives focus, and which parent reacts to focus-within?"],
+    ["Create a mixed list with headings and rows, then compare nth-child(2) with nth-of-type(2).", "The two selectors count different sibling sets, so a visually similar result can target a different element.", "What exactly is being counted?"],
+    ["Add a required marker with ::after and inspect the generated content while keeping the source label unchanged.", "Generated content should not carry essential information alone because it can be hidden or unavailable in some contexts.", "What remains if the pseudo-element is removed?"],
+  ],
+  "06": [
+    ["Convert one color between hex, rgb and HSL, then change only lightness to preserve the hue.", "A format that is easy to write is not always the format that is easiest to tune.", "Which channel would you change to make the color lighter?"],
+    ["Layer two box-shadows and change X, Y, blur and spread one at a time while watching the card edge.", "Large blur and dark color can flatten a page hierarchy instead of creating quiet separation.", "Which component controls direction and which softens the edge?"],
+    ["Place a translucent panel over a gradient and inspect the final perceived color, not just the declared overlay.", "Transparency changes the combined result; test the text against what users actually see.", "Which layer is contributing to the final contrast?"],
+  ],
+  "07": [
+    ["Style a button's focus state, then reach it with Tab and verify the ring remains visible on both light and dark surfaces.", "Removing outline without replacing it creates a navigation failure, not a visual improvement.", "Can you locate focus with your eyes alone?"],
+    ["Set appearance: none on a checkbox and list the checked, unchecked, disabled and focus states you must rebuild.", "Native styling contains behavior cues you may not notice until you remove it.", "Which state is still missing from your custom control?"],
+    ["Associate a visible label with a datetime-local control and test clicking the label as well as the input.", "A placeholder disappears and cannot replace the persistent explanation supplied by a label.", "Does the label enlarge the usable target and name the control?"],
+  ],
+  "08": [
+    ["Make one child wider than its card and decide whether it should wrap, scroll or clip before writing overflow.", "Hidden overflow can conceal meaningful content and create a false sense that the bug is fixed.", "Is the overflowing content decorative or essential?"],
+    ["Give a card width, padding and border, then toggle content-box and border-box while measuring the outer edge.", "The declared width is not always the rendered width; include padding and border in your reasoning.", "Which box is the design specification describing?"],
+    ["Apply translateY on hover and compare it with margin-top; observe whether neighboring content moves.", "A transform changes pixels while normal flow stays put; that can affect hit testing and overlap decisions.", "Did the layout move, or only the painted surface?"],
+  ],
+  "09": [
+    ["Draw the main and cross axes for row, row-reverse, column and column-reverse before changing alignment values.", "Assuming the main axis is horizontal produces correct-looking answers only for one direction.", "Which axis does justify-content follow in this direction?"],
+    ["Shrink a flex container until items need a second line, then compare nowrap, wrap and wrap-reverse.", "Wrapping changes the cross-axis arrangement and available space; it is not simply a smaller row.", "Where does the next line begin?"],
+    ["Center a row with justify-content and align-items, then remove the container height and see why vertical centering changes.", "Alignment needs available space; a container with no extra space cannot visibly distribute it.", "Where is the free space being distributed?"],
+  ],
+  "10": [
+    ["Create a heading with the same size as its label, then change only weight and compare the reading order.", "Weight is one hierarchy signal; relying on weight alone can fail when the typeface has a narrow range.", "Which signal makes the title lead first?"],
+    ["Break the first font in a stack deliberately and verify that the fallback keeps the same role and readable metrics.", "A fallback with a different category can change wrapping and hierarchy even when the text still loads.", "Does the fallback preserve the intended voice?"],
+    ["Compare line-height and letter-spacing on a paragraph, then load a fallback family and check wrapping again.", "Line-height is vertical rhythm; tracking changes horizontal spacing and neither should be tuned in isolation.", "Which property controls the space between lines?"],
+  ],
+  "11": [
+    ["Navigate a link and button with Tab only, then check whether the focus indicator survives every reset rule.", "A visible focus ring is part of the interaction contract, not optional decoration.", "Can a keyboard user always identify the active control?"],
+    ["Compare hidden, display:none, visibility:hidden and an sr-only pattern with both sighted and assistive-technology intent in mind.", "Visual hiding and semantic hiding solve different problems; aria-hidden must not hide a focusable control.", "Should this content disappear visually, semantically, or both?"],
+    ["Enable reduced motion in the browser and verify that the message, status and action remain available without animation.", "Removing motion must not remove the information the motion used to communicate.", "What meaning remains when the animation is disabled?"],
+  ],
+  "12": [
+    ["Place a float beside text and contain it with flow-root, then compare the same composition using Grid or Flexbox.", "Floats are useful for text wrapping but become fragile when treated as a general page-layout system.", "Which layout model best matches the relationship?"],
+    ["Test static, relative, absolute, fixed and sticky on the same badge and record whether space is preserved.", "Position values differ in both flow participation and containing block, not only in where the pixels appear.", "Who owns the coordinate system?"],
+    ["Create two positioned layers inside separate ancestors and change z-index values while inspecting stacking contexts.", "A huge z-index cannot escape an ancestor stacking context with a lower place in the overall stack.", "Which context is being compared?"],
+  ],
+  "13": [
+    ["Match links by presence, exact value, word, prefix, suffix and substring using a small set of test anchors.", "Substring matching is broad; it can style unintended values when the attribute contract is not precise.", "Which operator expresses the exact relationship you need?"],
+    ["Use lang and data-state attributes to style a note and current navigation item, then change the attribute values.", "Attributes can describe state for styling, but they should not replace semantic structure or behavior.", "Is the attribute describing appearance, meaning or behavior?"],
+    ["Combine an attribute selector with a class and pseudo-class, then remove one condition and inspect the match set.", "A selector that is technically precise can still be too difficult for the next author to maintain.", "Can you explain every part of the selector in plain language?"],
+  ],
+  "14": [
+    ["Start with a fluid image and container, then test at a narrow width before adding any media query.", "A breakpoint cannot rescue a foundation that already overflows because of fixed dimensions.", "What can flex or shrink before a breakpoint is needed?"],
+    ["Resize until the content—not a device name—requires a layout change, then add a min-width query at that point.", "Breakpoints should mark a content failure or opportunity, not imitate a catalog of phones.", "What visibly changes at this threshold?"],
+    ["Test narrow, wide, zoomed, touch, dark-mode and reduced-motion contexts and record the first failure in each.", "Responsive behavior includes capability and preference, not only viewport width.", "Which user condition changes the interface here?"],
+  ],
+  "15": [
+    ["Define two columns and two rows, then add gap and inspect the grid lines before placing any item.", "Grid tracks and gaps are separate decisions; confusing gap with track size makes measurements drift.", "Which lines bound the item?"],
+    ["Place a banner with line numbers, then rewrite the same layout using named grid areas and compare readability.", "Placement is clearer when the layout structure is named before individual items receive overrides.", "Can you describe the layout without looking at the item content?"],
+    ["Resize an auto-fit gallery and lower the minmax minimum until the cards become too narrow to read.", "A responsive gallery still needs a minimum that protects content and prevents horizontal overflow.", "What is the smallest usable track?"],
+  ],
+  "16": [
+    ["Define keyframes, connect them with animation-name and change duration, iteration and fill mode one at a time.", "A keyframe definition does nothing until an element uses it, and an animation can end in an unexpected state without fill mode.", "Which declaration connects the timeline to the element?"],
+    ["Build the same hover response once with transition and once with keyframes, then compare what starts the motion.", "Transitions need a state change; animations can run on their own timeline.", "What event or timeline starts this movement?"],
+    ["Turn on prefers-reduced-motion and confirm that essential information, focus and action labels remain without movement.", "Reduced motion should remove nonessential movement, not remove status, feedback or meaning.", "What does the user still need to understand without animation?"],
+  ],
+};
+
 const guideNav = document.querySelector("#guide-nav");
 const guideSearch = document.querySelector("#guide-search");
 const article = document.querySelector("#guide-article");
@@ -98,9 +181,10 @@ function renderNav(query = "") {
   guideNav.innerHTML = chapters.filter((chapter) => `${chapter.number} ${chapter.title} ${chapter.deck}`.toLowerCase().includes(needle)).map((chapter) => `<a href="#${chapterId(chapter.number)}"><span>${chapter.number}</span>${chapter.title}<small>${chapter.lessons.length} lessons</small></a>`).join("");
 }
 
-function renderLesson(lesson, index) {
+function renderLesson(lesson, index, chapterNumber) {
   const [title, body, code, memory] = lesson;
-  return `<section id="lesson-${index + 1}"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
+  const extension = lessonExtensions[chapterNumber]?.[index] || ["Try the idea in a small isolated example before applying it to a larger interface.", "Watch for a rule that solves the symptom while creating a new layout or access problem.", "Can you explain the result before changing another declaration?"];
+  return `<section id="lesson-${index + 1}"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
 }
 
 function renderFlexboxLab() {
@@ -118,7 +202,7 @@ function renderChapter(number) {
   const labLink = chapter.lab ? `<a href="#control-room">Interactive lab</a>` : "";
   const next = chapters[Number(chapter.number) % chapters.length];
   article.id = id;
-  article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 5}–${chapter.lessons.length * 8} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map(renderLesson).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : ""}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} lessons available</li><li id="review-progress">→ Practice with the chapter cases</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
+  article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 8}–${chapter.lessons.length * 12} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : ""}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, complete the practice prompts, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} detailed lessons available</li><li id="review-progress">→ Complete the Try it and Check yourself prompts</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
   document.title = `Chapter ${chapter.number} ${chapter.title} | CSS Casebook`;
   renderNav(guideSearch.value);
 }
