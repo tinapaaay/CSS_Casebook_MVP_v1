@@ -299,3 +299,29 @@ document
 guideSearch?.addEventListener("input", (event) =>
   renderGuideNav(event.target.value),
 );
+
+const progressFile = document.querySelector("#progress-file");
+document.querySelector("#export-progress")?.addEventListener("click", () =>
+  window.CasebookProgress?.exportProgress(),
+);
+document.querySelector("#import-progress")?.addEventListener("click", () =>
+  progressFile?.click(),
+);
+progressFile?.addEventListener("change", async () => {
+  const file = progressFile.files?.[0];
+  if (!file) return;
+  try {
+    window.CasebookProgress?.importProgress(JSON.parse(await file.text()));
+    renderLibrary(document.querySelector("#collection-filter")?.value || "all");
+  } catch (error) {
+    window.alert(error.message || "Could not import progress.");
+  }
+  progressFile.value = "";
+});
+document.querySelector("#reset-progress")?.addEventListener("click", () => {
+  if (!window.confirm("Reset all local case, lesson, review and resume progress?")) return;
+  window.CasebookProgress?.resetProgress();
+  renderLibrary("all");
+  const filter = document.querySelector("#collection-filter");
+  if (filter) filter.value = "all";
+});

@@ -124,6 +124,66 @@
     }
   }
 
-  window.CasebookProgress = { getState, readCase, render, chapterCaseRegistry, curriculumOrder, chapterCaseIds, readLesson, readReview, getChapterState };
+  function scopedStorage() {
+    const storage = {};
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (key?.startsWith("css-casebook-")) storage[key] = localStorage.getItem(key);
+    }
+    return storage;
+  }
+
+  function notifyProgressChange() {
+    window.dispatchEvent(new CustomEvent("casebook:progress-updated"));
+    render();
+  }
+
+  function exportProgress() {
+    const payload = JSON.stringify(
+      { version: 1, exportedAt: new Date().toISOString(), storage: scopedStorage() },
+      null,
+      2,
+    );
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([payload], { type: "application/json" }));
+    link.download = `css-casebook-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function importProgress(payload) {
+    if (!payload || payload.version !== 1 || !payload.storage || typeof payload.storage !== "object") {
+      throw new Error("This is not a CSS Casebook progress file.");
+    }
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith("css-casebook-"))
+      .forEach((key) => localStorage.removeItem(key));
+    Object.entries(payload.storage).forEach(([key, value]) => {
+      if (key.startsWith("css-casebook-") && typeof value === "string") localStorage.setItem(key, value);
+    });
+    notifyProgressChange();
+  }
+
+  function resetProgress() {
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith("css-casebook-"))
+      .forEach((key) => localStorage.removeItem(key));
+    notifyProgressChange();
+  }
+
+  window.CasebookProgress = {
+    getState,
+    readCase,
+    render,
+    chapterCaseRegistry,
+    curriculumOrder,
+    chapterCaseIds,
+    readLesson,
+    readReview,
+    getChapterState,
+    exportProgress,
+    importProgress,
+    resetProgress,
+  };
   render();
 })();

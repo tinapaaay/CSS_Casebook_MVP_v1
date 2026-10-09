@@ -1444,6 +1444,16 @@ dialog h2 {
 .progress-bar i {
   display: none;
 }
+.progress-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 28px;
+}
+.progress-actions .text-button {
+  color: var(--muted);
+}
 .lesson-practice {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

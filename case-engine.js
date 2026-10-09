@@ -604,8 +604,10 @@ function populateCaseContent(data) {
     `Case file ${data.fileCode}`;
   document.querySelector("#case-title").textContent = data.title;
   document.querySelector("#case-tags").innerHTML =
-    `<span>${data.topic}</span><span>${data.level}</span><span>${data.duration}</span>`;
-  document.querySelector("#case-objective").textContent = data.objective;
+    `<span>${data.topic}</span><span>${data.level}</span><span>${data.duration}</span>${data.isTransferCase ? "<span>TRANSFER CHALLENGE</span>" : ""}`;
+  document.querySelector("#case-objective").textContent = data.isTransferCase
+    ? `${data.objective} ${data.transferPrompt}`
+    : data.objective;
   document.querySelector("#incident-title").textContent = data.incidentTitle;
   document.querySelector("#incident-text").textContent = data.incident;
   document.querySelector("#evidence-list").innerHTML = data.evidence

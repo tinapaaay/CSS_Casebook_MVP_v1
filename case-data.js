@@ -1204,7 +1204,7 @@ additionalCases.forEach(
       expectedProperty: property,
       expectedValue: target,
       requiredStyles:
-        id === "044" || id === "045" ? [["display", "grid"]] : undefined,
+        ["043", "044", "045"].includes(id) ? [["display", "grid"]] : undefined,
       rootCause: `The starter rule set ${cssProperty} to ${starter}, which caused the rendered result to diverge from the intended behavior.`,
       remember,
       recommendedCSS: `${selector} {\n  ${layoutPrefix}${cssProperty}: ${target};\n}`,
@@ -2385,6 +2385,8 @@ Object.assign(window.CASEBOOK_CASES, {
     storageKey: "css-casebook-c024",
   }),
 });
+
+
 
 Object.assign(window.CASEBOOK_CASES, {
   "016": makeCase({
@@ -4537,4 +4539,30 @@ Object.assign(window.CASEBOOK_CASES, {
     nextCase: "010",
     storageKey: "css-casebook-c009",
   }),
+});
+
+const transferCaseIds = new Set([
+  "003",
+  "006",
+  "009",
+  "012",
+  "015",
+  "018",
+  "021",
+  "024",
+  "027",
+  "030",
+  "033",
+  "036",
+  "039",
+  "042",
+  "045",
+  "048",
+]);
+transferCaseIds.forEach((id) => {
+  const item = window.CASEBOOK_CASES[id];
+  if (!item) return;
+  item.isTransferCase = true;
+  item.transferPrompt =
+    "Transfer challenge: apply the same diagnosis to a different interface surface, then make the smallest rule change that preserves the surrounding design.";
 });
