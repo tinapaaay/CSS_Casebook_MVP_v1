@@ -1,5 +1,23 @@
 (function () {
   const totalCases = 48;
+  const chapterCaseRegistry = {
+    "01": ["001", "002", "003"],
+    "02": ["007", "008", "009"],
+    "03": ["010", "011", "012"],
+    "04": ["013", "014", "015"],
+    "05": ["016", "017", "018"],
+    "06": ["019", "020", "021"],
+    "07": ["022", "023", "024"],
+    "08": ["025", "026", "027"],
+    "09": ["004", "005", "006"],
+    "10": ["028", "029", "030"],
+    "11": ["031", "032", "033"],
+    "12": ["034", "035", "036"],
+    "13": ["037", "038", "039"],
+    "14": ["040", "041", "042"],
+    "15": ["043", "044", "045"],
+    "16": ["046", "047", "048"],
+  };
 
   function readStorage(key) {
     try {
@@ -14,9 +32,7 @@
   }
 
   function chapterCaseIds(number) {
-    const chapterNumber = Number(number);
-    const first = chapterNumber === 9 ? 4 : (chapterNumber - 1) * 3 + 1;
-    return [0, 1, 2].map((offset) => String(first + offset).padStart(3, "0"));
+    return chapterCaseRegistry[String(number).padStart(2, "0")] || [];
   }
 
   function readLesson(number, index) {
@@ -87,6 +103,6 @@
     }
   }
 
-  window.CasebookProgress = { getState, readCase, render, chapterCaseIds, readLesson, readReview, getChapterState };
+  window.CasebookProgress = { getState, readCase, render, chapterCaseRegistry, chapterCaseIds, readLesson, readReview, getChapterState };
   render();
 })();

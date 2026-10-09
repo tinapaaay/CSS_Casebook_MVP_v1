@@ -1154,15 +1154,11 @@ function readLessonCompletion(lessonId) {
 }
 
 function chapterCaseId(number) {
-  const chapterNumber = Number(number);
-  const caseNumber = chapterNumber === 9 ? 4 : (chapterNumber - 1) * 3 + 1;
-  return String(caseNumber).padStart(3, "0");
+  return window.CasebookProgress?.chapterCaseIds?.(number)?.[0] || "";
 }
 
 function chapterCaseIds(number) {
-  if (window.CasebookProgress?.chapterCaseIds) return window.CasebookProgress.chapterCaseIds(number);
-  const first = Number(chapterCaseId(number));
-  return [0, 1, 2].map((offset) => String(first + offset).padStart(3, "0"));
+  return window.CasebookProgress?.chapterCaseIds?.(number) || [];
 }
 
 function readChapterCaseCount(number) {
