@@ -151,6 +151,18 @@ function initializeCase(data) {
         message: "The required preview element could not be rendered.",
       };
     const style = doc.defaultView.getComputedStyle(root);
+    const bounds = root.getBoundingClientRect();
+    const hasVisibleSurface = style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0" && bounds.width > 0 && bounds.height > 0;
+    if (!hasVisibleSurface)
+      return {
+        ok: false,
+        message: "The target rule matches, but the required preview surface is hidden or has no usable size.",
+      };
+    if (!root.textContent.trim())
+      return {
+        ok: false,
+        message: "The preview surface has no readable content. Keep the case evidence visible.",
+      };
     const items = [...root.children];
 
     if (data.validator === "centered-cards") {
