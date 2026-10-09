@@ -518,6 +518,33 @@ function populateCaseContent(data) {
   const guideLink = document.querySelector("#guide-link");
   guideLink.href = data.guideHref;
   guideLink.textContent = data.guideLabel;
+  const chapterCode = data.chapter.slice(2, 4);
+  const chapterAnchor = chapterCode === "09" ? "#flexbox" : `#chapter-${chapterCode}`;
+  const chapterCases = Object.values(window.CASEBOOK_CASES || {})
+    .filter((item) => item.chapter === data.chapter)
+    .sort((left, right) => Number(left.id) - Number(right.id));
+  const position = chapterCases.findIndex((item) => item.id === data.id) + 1;
+  const previous = chapterCases[position - 2];
+  const next = chapterCases[position];
+  const previousLink = document.querySelector("#previous-case-link");
+  const topNextLink = document.querySelector("#top-next-case-link");
+  const chapterLink = document.querySelector("#chapter-overview-link");
+  document.querySelector("#case-position").textContent = `Case ${position} of ${chapterCases.length}`;
+  chapterLink.href = `field-guide.html${chapterAnchor}`;
+  if (previous) {
+    previousLink.href = `case.html?id=${previous.id}`;
+    previousLink.textContent = `← Case #${previous.id}`;
+    previousLink.hidden = false;
+  } else {
+    previousLink.hidden = true;
+  }
+  if (next) {
+    topNextLink.href = `case.html?id=${next.id}`;
+    topNextLink.textContent = `Case #${next.id} →`;
+    topNextLink.hidden = false;
+  } else {
+    topNextLink.hidden = true;
+  }
   const nextCaseLink = document.querySelector("#next-case-link");
   if (data.nextCase) {
     nextCaseLink.href = `case.html?id=${data.nextCase}`;

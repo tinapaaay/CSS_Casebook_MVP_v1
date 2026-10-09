@@ -855,6 +855,22 @@ dialog h2 {
   padding: 8px;
   border: 1px dashed var(--green);
 }
+.case-navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 18px 0 24px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font: 500 12px var(--mono);
+}
+.case-navigation-link { color: var(--green); text-decoration: none; }
+.case-navigation-link:hover,
+.case-navigation-link:focus-visible { text-decoration: underline; }
+.case-navigation #case-position { margin-right: auto; color: var(--rust); }
+.case-navigation-link.next { margin-left: auto; }
 .mini-container i {
   display: none;
 }
