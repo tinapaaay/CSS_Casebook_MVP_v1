@@ -26,9 +26,13 @@ function renderLibrary(filter = "all") {
   library.innerHTML = collections.filter(item => filter === "all" || (filter === "available" ? item[0] === "09" : item[0] !== "09")).map(([number, title, description, cases]) => {
     const available = number === "09";
     return `<article class="collection-card ${available ? "is-available" : ""}">
-      <header><span>${number}</span><small>${available ? "1 playable" : "Planned"}</small></header>
+      <header><span>${number}</span><small>${available ? "2 playable" : "Planned"}</small></header>
       <h2>${title}</h2><p>${description}</p>
-      <ul>${cases.map((name, index) => `<li>${available && index === 0 ? `<a href="case-001.html">Case #001 · ${name}</a>` : `<span>${name}</span><small>Coming soon</small>`}</li>`).join("")}</ul>
+      <ul>${cases.map((name, index) => {
+        if (available && index === 0) return `<li><a href="case.html?id=001">Case #001 · ${name}</a></li>`;
+        if (available && index === 1) return `<li><a href="case.html?id=002">Case #002 · ${name}</a></li>`;
+        return `<li><span>${name}</span><small>Coming soon</small></li>`;
+      }).join("")}</ul>
       ${available ? `<a class="collection-link" href="field-guide.html#flexbox">Read Flexbox guide →</a>` : ""}
     </article>`;
   }).join("");

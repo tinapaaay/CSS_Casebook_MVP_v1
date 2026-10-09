@@ -5,18 +5,11 @@ const explanation = document.querySelector("#lab-explanation");
 const mainLabel = document.querySelector("#lab-main-axis");
 const crossLabel = document.querySelector("#lab-cross-axis");
 
-const defaults = {
-  direction: "row",
-  wrap: "nowrap",
-  justify: "flex-start",
-  align: "stretch"
-};
+const defaults = { direction: "row", wrap: "nowrap", justify: "flex-start", align: "stretch" };
 
 function updateLab() {
   if (!controls) return;
-
   const data = Object.fromEntries(new FormData(controls));
-
   preview.style.flexDirection = data.direction;
   preview.style.flexWrap = data.wrap;
   preview.style.justifyContent = data.justify;
@@ -24,220 +17,90 @@ function updateLab() {
 
   const vertical = data.direction.startsWith("column");
   const reversed = data.direction.endsWith("reverse");
-
-  mainLabel.textContent = vertical
-    ? `Main axis ${reversed ? "↑" : "↓"}`
-    : `Main axis ${reversed ? "←" : "→"}`;
-
-  crossLabel.textContent = vertical
-    ? "Cross axis →"
-    : "Cross axis ↓";
-
+  mainLabel.textContent = vertical ? `Main axis ${reversed ? "↑" : "↓"}` : `Main axis ${reversed ? "←" : "→"}`;
+  crossLabel.textContent = vertical ? "Cross axis →" : "Cross axis ↓";
   mainLabel.classList.toggle("is-vertical", vertical);
   crossLabel.classList.toggle("is-horizontal", vertical);
 
-  generated.textContent = `.container {
-  display: flex;
-  flex-direction: ${data.direction};
-  flex-wrap: ${data.wrap};
-  justify-content: ${data.justify};
-  align-items: ${data.align};
-}`;
-
-  explanation.textContent =
-    `${data.justify} positions items on the ` +
-    `${vertical ? "vertical" : "horizontal"} main axis. ` +
-    `${data.align} controls the ` +
-    `${vertical ? "horizontal" : "vertical"} cross axis.`;
+  generated.textContent = `.container {\n  display: flex;\n  flex-direction: ${data.direction};\n  flex-wrap: ${data.wrap};\n  justify-content: ${data.justify};\n  align-items: ${data.align};\n}`;
+  explanation.textContent = `${data.justify} positions items on the ${vertical ? "vertical" : "horizontal"} main axis. ${data.align} controls the ${vertical ? "horizontal" : "vertical"} cross axis.`;
 }
 
 controls?.addEventListener("change", updateLab);
-
 document.querySelector("#lab-reset")?.addEventListener("click", () => {
-  Object.entries(defaults).forEach(([name, value]) => {
-    controls.elements[name].value = value;
-  });
-
+  Object.entries(defaults).forEach(([name, value]) => { controls.elements[name].value = value; });
   updateLab();
 });
-
 updateLab();
 
 const review = document.querySelector("#flexbox-review");
-
 const answers = {
-  q1: [
-    "b",
-    "display: flex creates the flex container and makes its direct children flex items."
-  ],
-
-  q2: [
-    "a",
-    "In a row, the cross axis is vertical, so align-items controls vertical alignment."
-  ],
-
-  q3: [
-    "b",
-    "A column turns the main axis vertical; justify-content then moves items vertically."
-  ],
-
-  q4: [
-    "a",
-    "flex-wrap: wrap permits additional flex lines when the items need more space."
-  ],
-
-  q5: [
-    "b",
-    "flex-flow combines flex-direction and flex-wrap in that order."
-  ]
+  q1: ["b", "display: flex creates the flex container and makes its direct children flex items."],
+  q2: ["a", "In a row, the cross axis is vertical, so align-items controls vertical alignment."],
+  q3: ["b", "A column turns the main axis vertical; justify-content then moves items vertically."],
+  q4: ["a", "flex-wrap: wrap permits additional flex lines when the items need more space."],
+  q5: ["b", "flex-flow combines flex-direction and flex-wrap in that order."]
 };
 
 function readCaseCompletion() {
-  try {
-    const savedCase = JSON.parse(
-      localStorage.getItem("css-casebook-fc001") || "{}"
-    );
-
-    return savedCase.completed === true;
-  } catch {
-    return false;
-  }
+  try { return JSON.parse(localStorage.getItem("css-casebook-fc001") || "{}").completed === true; }
+  catch { return false; }
 }
 
 function readReviewCompletion() {
-  try {
-    const savedReview = JSON.parse(
-      localStorage.getItem("css-casebook-ch09") || "{}"
-    );
-
-    return savedReview.reviewCompleted === true;
-  } catch {
-    return false;
-  }
+  try { return JSON.parse(localStorage.getItem("css-casebook-ch09") || "{}").reviewCompleted === true; }
+  catch { return false; }
 }
 
 function updateChapterProgress() {
   const reviewDone = readReviewCompletion();
   const caseDone = readCaseCompletion();
   const completed = reviewDone && caseDone;
-
   const stamp = document.querySelector("#summary-stamp");
   const status = document.querySelector("#chapter-status-text");
   const reviewProgress = document.querySelector("#review-progress");
   const caseProgress = document.querySelector("#case-progress");
-
   if (!stamp) return;
-
-  stamp.textContent = completed
-    ? "Chapter closed"
-    : "In progress";
-
+  stamp.textContent = completed ? "Chapter closed" : "In progress";
   stamp.classList.toggle("is-complete", completed);
-
-  status.textContent = completed
-    ? "Chapter 09 is complete. You finished the reference lessons, review and first investigation."
-    : "Complete the review and resolve Case #001 to close this chapter.";
-
-  reviewProgress.textContent =
-    `${reviewDone ? "✓" : "○"} Five-question review ` +
-    `${reviewDone ? "completed" : "pending"}`;
-
-  caseProgress.textContent =
-    `${caseDone ? "✓" : "○"} Case #001 ` +
-    `${caseDone ? "resolved" : "pending"}`;
-
-  localStorage.setItem(
-    "css-casebook-ch09-status",
-    completed ? "completed" : "in-progress"
-  );
+  status.textContent = completed ? "Chapter 09 is complete. You finished the reference lessons, review and first investigation." : "Complete the review and resolve Case #001 to close this chapter.";
+  reviewProgress.textContent = `${reviewDone ? "✓" : "○"} Five-question review ${reviewDone ? "completed" : "pending"}`;
+  caseProgress.textContent = `${caseDone ? "✓" : "○"} Case #001 ${caseDone ? "resolved" : "pending"}`;
+  localStorage.setItem("css-casebook-ch09-status", completed ? "completed" : "in-progress");
 }
 
 review?.addEventListener("submit", event => {
   event.preventDefault();
-
   const formData = new FormData(review);
-
-  const unanswered = Object.keys(answers).filter(
-    name => !formData.get(name)
-  );
-
+  const unanswered = Object.keys(answers).filter(name => !formData.get(name));
   const reviewStatus = document.querySelector("#review-status");
-
   if (unanswered.length) {
-    reviewStatus.textContent =
-      `Answer ${unanswered.length} remaining question` +
-      `${unanswered.length === 1 ? "" : "s"} before checking.`;
-
-    review
-      .querySelector(`[name="${unanswered[0]}"]`)
-      ?.focus();
-
+    reviewStatus.textContent = `Answer ${unanswered.length} remaining question${unanswered.length === 1 ? "" : "s"} before checking.`;
+    review.querySelector(`[name="${unanswered[0]}"]`)?.focus();
     return;
   }
-
   let score = 0;
-
-  Object.entries(answers).forEach(
-    ([name, [correct, answerExplanation]], index) => {
-      const fieldset = review.querySelector(
-        `[data-question="${index + 1}"]`
-      );
-
-      const chosen = formData.get(name);
-      const isCorrect = chosen === correct;
-
-      if (isCorrect) {
-        score += 1;
-      }
-
-      fieldset.classList.toggle("is-correct", isCorrect);
-      fieldset.classList.toggle("is-incorrect", !isCorrect);
-
-      const note = fieldset.querySelector(".answer-explanation");
-
-      note.hidden = false;
-
-      note.innerHTML =
-        `<strong>${isCorrect ? "Correct." : "Review this one."}</strong> ` +
-        answerExplanation;
-    }
-  );
-
-  reviewStatus.innerHTML =
-    `<strong>Review complete: ${score}/5.</strong> ` +
-    `Read the explanations above, then retry anytime ` +
-    `if you want a higher score.`;
-
-  localStorage.setItem(
-    "css-casebook-ch09",
-    JSON.stringify({
-      reviewCompleted: true,
-      score,
-      completedAt: new Date().toISOString()
-    })
-  );
-
+  Object.entries(answers).forEach(([name, [correct, explanation]], index) => {
+    const fieldset = review.querySelector(`[data-question="${index + 1}"]`);
+    const chosen = formData.get(name);
+    const isCorrect = chosen === correct;
+    if (isCorrect) score += 1;
+    fieldset.classList.toggle("is-correct", isCorrect);
+    fieldset.classList.toggle("is-incorrect", !isCorrect);
+    const note = fieldset.querySelector(".answer-explanation");
+    note.hidden = false;
+    note.innerHTML = `<strong>${isCorrect ? "Correct." : "Review this one."}</strong> ${explanation}`;
+  });
+  reviewStatus.innerHTML = `<strong>Review complete: ${score}/5.</strong> Read the explanations above, then retry anytime if you want a higher score.`;
+  localStorage.setItem("css-casebook-ch09", JSON.stringify({ reviewCompleted: true, score, completedAt: new Date().toISOString() }));
   updateChapterProgress();
 });
 
-document
-  .querySelector("#review-reset")
-  ?.addEventListener("click", () => {
-    review.reset();
-
-    review.querySelectorAll("fieldset").forEach(fieldset => {
-      fieldset.classList.remove("is-correct", "is-incorrect");
-    });
-
-    review
-      .querySelectorAll(".answer-explanation")
-      .forEach(note => {
-        note.hidden = true;
-        note.textContent = "";
-      });
-
-    document.querySelector("#review-status").textContent =
-      "Answers cleared. Your recorded completion remains saved.";
-  });
+document.querySelector("#review-reset")?.addEventListener("click", () => {
+  review.reset();
+  review.querySelectorAll("fieldset").forEach(fieldset => fieldset.classList.remove("is-correct", "is-incorrect"));
+  review.querySelectorAll(".answer-explanation").forEach(note => { note.hidden = true; note.textContent = ""; });
+  document.querySelector("#review-status").textContent = "Answers cleared. Your recorded completion remains saved.";
+});
 
 updateChapterProgress();
