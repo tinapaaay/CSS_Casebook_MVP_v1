@@ -185,7 +185,40 @@ function renderLesson(lesson, index, chapterNumber) {
   const [title, body, code, memory] = lesson;
   const extension = lessonExtensions[chapterNumber]?.[index] || ["Try the idea in a small isolated example before applying it to a larger interface.", "Watch for a rule that solves the symptom while creating a new layout or access problem.", "Can you explain the result before changing another declaration?"];
   const sectionId = `${chapterId(chapterNumber)}-lesson-${index + 1}`;
-  return `<section id="${sectionId}"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
+  return `<section id="${sectionId}"><div class="lesson-heading"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><button class="lesson-complete-toggle" type="button" data-lesson-id="${chapterNumber}-${index + 1}" aria-pressed="false">Mark lesson complete</button></div><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
+}
+
+function lessonProgressKey(lessonId) {
+  return `css-casebook-lesson-${lessonId}`;
+}
+
+function readLessonCompletion(lessonId) {
+  return localStorage.getItem(lessonProgressKey(lessonId)) === "complete";
+}
+
+function updateLessonSummary(chapter) {
+  const completed = chapter.lessons.filter((_, index) => readLessonCompletion(`${chapter.number}-${index + 1}`)).length;
+  const status = document.querySelector("#lessons-status");
+  if (status) status.textContent = `${completed === chapter.lessons.length ? "✓" : "→"} ${completed}/${chapter.lessons.length} lessons marked complete`;
+}
+
+function initializeLessonProgress(chapter) {
+  document.querySelectorAll(".lesson-complete-toggle").forEach((button) => {
+    const lessonId = button.dataset.lessonId;
+    const completed = readLessonCompletion(lessonId);
+    button.setAttribute("aria-pressed", String(completed));
+    button.classList.toggle("is-complete", completed);
+    button.textContent = completed ? "Lesson complete ✓" : "Mark lesson complete";
+    button.addEventListener("click", () => {
+      const next = button.getAttribute("aria-pressed") !== "true";
+      localStorage.setItem(lessonProgressKey(lessonId), next ? "complete" : "in-progress");
+      button.setAttribute("aria-pressed", String(next));
+      button.classList.toggle("is-complete", next);
+      button.textContent = next ? "Lesson complete ✓" : "Mark lesson complete";
+      updateLessonSummary(chapter);
+    });
+  });
+  updateLessonSummary(chapter);
 }
 
 function renderFlexboxLab() {
@@ -206,6 +239,7 @@ function renderChapter(number) {
   article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 8}–${chapter.lessons.length * 12} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : ""}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, complete the practice prompts, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} detailed lessons available</li><li id="review-progress">→ Complete the Try it and Check yourself prompts</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
   document.title = `Chapter ${chapter.number} ${chapter.title} | CSS Casebook`;
   renderNav(guideSearch.value);
+  initializeLessonProgress(chapter);
   window.initializeFlexboxLab?.();
 }
 

@@ -1355,6 +1355,24 @@ dialog h2 {
   padding-left: 16px;
   border-left: 3px solid var(--green);
 }
+.lesson-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.lesson-complete-toggle {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--green);
+  font: 700 11px var(--mono);
+}
+.lesson-complete-toggle.is-complete {
+  border-color: var(--green);
+  background: var(--green-pale);
+}
 .resume-card,
 .progress-summary {
   padding: 18px;
