@@ -98,6 +98,7 @@ function readReviewCompletion() {
 }
 
 function updateChapterProgress() {
+  if (!document.querySelector("#control-room")) return;
   const reviewDone = readReviewCompletion();
   const lessonCount = readLessonCompletionCount();
   const caseCount = readCaseCompletionCount();
