@@ -164,6 +164,24 @@ const lessonExtensions = {
   ],
 };
 
+const chapterReviews = {
+  "01": [["Which selector targets a direct child?", ["A space descendant selector", ">", "+ immediate sibling"], 1, "The > combinator matches only direct children."], ["Which property adds space inside a border?", ["margin", "padding", "outline"], 1, "Padding protects content inside the border."], ["What should you compare when rules conflict?", ["Only the last line", "Specificity and source order", "Only the class name"], 1, "After importance and origin, compare specificity and then source order."]],
+  "02": [["Which background size fills the box?", ["contain", "cover", "repeat"], 1, "cover fills the box and may crop the image."], ["Which state must complement hover?", ["focus", "visited only", "loading"], 0, "Keyboard users need a visible focus state."], ["What completes a visible border?", ["width only", "style", "radius only"], 1, "A border needs width, style and color."]],
+  "03": [["What does hierarchy establish?", ["Attention order", "Only font size", "HTML validity"], 0, "Hierarchy tells users what to notice first."], ["What should a design requirement include?", ["A user task and success condition", "Only a color", "A favorite pattern"], 0, "Requirements connect the interface to a user outcome."], ["What is stronger than personal preference?", ["Observed behavior", "More decoration", "A longer title"], 0, "Research and testing provide evidence for design decisions."]],
+  "04": [["What does rem reference?", ["The root font size", "The nearest parent", "The viewport height"], 0, "rem is relative to the root html font size."], ["What does em depend on?", ["Local font context", "Only the viewport", "The border width"], 0, "em can compound through local font-size contexts."], ["Why use max-width with calc()?", ["To add a usable guardrail", "To disable fluid sizing", "To change HTML"], 0, "A fluid formula still needs usable limits."]],
+  "05": [["What does :focus describe?", ["An interaction state", "Generated content", "A file type"], 0, ":focus matches a focused element."], ["What does :nth-of-type count?", ["Matching element types", "All attributes", "Only classes"], 0, "It counts siblings of the same element type."], ["What do ::before and ::after create?", ["Generated parts", "New semantic controls", "A new document"], 0, "Pseudo-elements create visual generated content."]],
+  "06": [["What does alpha control?", ["Transparency", "Font weight", "Grid tracks"], 0, "Alpha controls how much of a layer shows through."], ["Which box-shadow value moves down?", ["Positive Y", "Negative X", "Blur only"], 0, "Positive Y moves the shadow downward."], ["What should contrast testing inspect?", ["The final color pair", "The hex string alone", "Only the gradient angle"], 0, "Users perceive the combined foreground and background."]],
+  "07": [["What should replace a removed outline?", ["An equally visible focus state", "Nothing", "A placeholder"], 0, "Removing native focus requires an obvious replacement."], ["What does appearance:none do?", ["Removes native styling", "Creates every state", "Adds a label"], 0, "It removes browser styling but does not build the control."], ["What should name an input?", ["A visible associated label", "Only a placeholder", "A border"], 0, "Labels provide persistent context and a larger target."]],
+  "08": [["What should happen before hiding overflow?", ["Decide whether content is essential", "Always clip it", "Remove the parent"], 0, "Clipping meaningful content can hide the actual solution."], ["What does border-box include?", ["Content, padding and border", "Only content", "Only margin"], 0, "border-box keeps padding and border inside the declared size."], ["Do transforms change normal flow?", ["No", "Always", "Only with filters"], 0, "Transforms move painted pixels without rewriting flow."]],
+  "10": [["What does line-height control?", ["Vertical rhythm", "File loading", "Selector specificity"], 0, "Line-height controls distance between lines."], ["What should a font stack include last?", ["A generic family", "A color", "A media query"], 0, "A generic fallback keeps the role predictable."], ["What does font-display:swap support?", ["Readable text while a font loads", "Grid placement", "Focus management"], 0, "swap allows fallback text to appear during loading."]],
+  "11": [["What does display:none usually do?", ["Remove layout and accessibility exposure", "Only change color", "Add focus"], 0, "display:none normally removes the content from layout and the accessibility tree."], ["What must survive color removal?", ["Meaning", "Only decoration", "The gradient"], 0, "Meaning should not depend on color alone."], ["What does reduced motion remove?", ["Nonessential movement", "Essential labels", "Keyboard access"], 0, "Respect the preference without reducing meaning."]],
+  "12": [["Which position stays in normal flow with offsets?", ["relative", "absolute", "fixed"], 0, "relative keeps its space while accepting offsets."], ["What does absolute positioning need?", ["A containing block", "A new HTML file", "A flex direction"], 0, "The nearest positioned ancestor supplies the containing block."], ["What limits z-index?", ["Stacking contexts", "Font family", "Line-height"], 0, "z-index comparisons happen inside stacking contexts."]],
+  "13": [["What does ^= match?", ["The beginning of a value", "The end", "A whole word"], 0, "^= matches an attribute value prefix."], ["What does $= help identify?", ["File endings", "Parent elements", "Focus state"], 0, "$= matches the end of an attribute value."], ["What does lang communicate?", ["Content language", "Animation speed", "Grid size"], 0, "lang describes the language variant of content."]],
+  "14": [["What should come before a breakpoint?", ["A fluid foundation", "A device list", "A fixed width",], 0, "Make the content fluid before adding breakpoint rules."], ["What should choose a breakpoint?", ["A content change", "A phone brand", "A random round number"], 0, "Breakpoints should respond to the layout's needs."], ["Which preference can CSS respect?", ["prefers-reduced-motion", "prefers-more-clicks", "prefers-fixed-width"], 0, "The reduced-motion preference should disable nonessential movement."]],
+  "15": [["What is Grid primarily?", ["Two-dimensional", "Only inline", "Only typographic"], 0, "Grid controls rows and columns together."], ["What does gap add?", ["Space between tracks", "Space outside every card", "A new selector"], 0, "gap creates consistent space between grid tracks."], ["What does 1 / -1 span?", ["First grid line to last", "Only the first cell", "The viewport"], 0, "1 / -1 spans the explicit grid width."]],
+  "16": [["What connects keyframes to an element?", ["animation-name", "font-family", "grid-area"], 0, "animation-name connects the element to a keyframe definition."], ["What starts a transition?", ["A state change", "A grid line", "A label"], 0, "Transitions interpolate when a property changes."], ["What should reduced motion preserve?", ["Meaning and controls", "Infinite movement", "Only decoration"], 0, "Disable nonessential motion while preserving meaning and access."]],
+};
+
 const guideNav = document.querySelector("#guide-nav");
 const guideSearch = document.querySelector("#guide-search");
 const article = document.querySelector("#guide-article");
@@ -229,6 +247,85 @@ function renderReview() {
   return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Close the Flexbox file</h2><p>Answer five questions to check whether the axis model is ready for the investigation cases.</p><form id="flexbox-review"><fieldset data-question="1"><legend><span>01</span> Which property establishes a flex formatting context?</legend><label><input type="radio" name="q1" value="a"> <code>position: flex</code></label><label><input type="radio" name="q1" value="b"> <code>display: flex</code></label><label><input type="radio" name="q1" value="c"> <code>layout: flex</code></label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="2"><legend><span>02</span> With <code>flex-direction: row</code>, which property controls vertical alignment?</legend><label><input type="radio" name="q2" value="a"> <code>align-items</code></label><label><input type="radio" name="q2" value="b"> <code>justify-content</code></label><label><input type="radio" name="q2" value="c"> <code>flex-wrap</code></label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="3"><legend><span>03</span> What changes when <code>flex-direction</code> becomes <code>column</code>?</legend><label><input type="radio" name="q3" value="a"> Flexbox becomes two-dimensional</label><label><input type="radio" name="q3" value="b"> The main axis becomes vertical</label><label><input type="radio" name="q3" value="c"> The cross axis disappears</label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="4"><legend><span>04</span> Which value allows items to move onto another flex line?</legend><label><input type="radio" name="q4" value="a"> <code>flex-wrap: wrap</code></label><label><input type="radio" name="q4" value="b"> <code>flex-flow: nowrap</code></label><label><input type="radio" name="q4" value="c"> <code>align-items: stretch</code></label><p class="answer-explanation" hidden></p></fieldset><fieldset data-question="5"><legend><span>05</span> Which shorthand combines direction and wrapping?</legend><label><input type="radio" name="q5" value="a"> <code>flex: row wrap</code></label><label><input type="radio" name="q5" value="b"> <code>flex-flow: row wrap</code></label><label><input type="radio" name="q5" value="c"> <code>flex-direction: row wrap</code></label><p class="answer-explanation" hidden></p></fieldset><div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="review-reset" type="button">Reset answers</button></div><p class="review-status" id="review-status" role="status" aria-live="polite">Answer all five questions to complete the review.</p></form></section>`;
 }
 
+function chapterReviewKey(number) {
+  return `css-casebook-review-${number}`;
+}
+
+function readChapterReview(number) {
+  try {
+    return JSON.parse(localStorage.getItem(chapterReviewKey(number)) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function renderChapterReview(chapter) {
+  const questions = chapterReviews[chapter.number] || [];
+  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions to confirm the chapter's core ideas and get a short explanation for each answer.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${options.map((option, optionIndex) => `<label><input type="radio" name="q${questionIndex + 1}" value="${optionIndex}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
+}
+
+function updateChapterReviewSummary(chapter, state) {
+  const progress = document.querySelector("#review-progress");
+  if (!progress) return;
+  progress.textContent = state?.completed ? `✓ Review completed · ${state.score}/${chapterReviews[chapter.number].length}` : "→ Chapter review pending";
+}
+
+function initializeChapterReview(chapter) {
+  if (chapter.lab) return;
+  const form = document.querySelector("#chapter-review-form");
+  if (!form || form.dataset.initialized === "true") return;
+  form.dataset.initialized = "true";
+  const questions = chapterReviews[chapter.number] || [];
+  const status = document.querySelector("#chapter-review-status");
+  const stored = readChapterReview(chapter.number);
+  updateChapterReviewSummary(chapter, stored);
+  if (stored?.completed && status) status.textContent = `Review completed: ${stored.score}/${questions.length}. Retake it any time to improve your understanding.`;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    let firstMissing;
+    let score = 0;
+    questions.forEach(([question, options, correctIndex, explanation], questionIndex) => {
+      const fieldset = form.querySelector(`[data-question="${questionIndex + 1}"]`);
+      const selected = form.querySelector(`input[name="q${questionIndex + 1}"]:checked`);
+      const explanationNode = fieldset.querySelector(".answer-explanation");
+      fieldset.classList.remove("is-correct", "is-incorrect");
+      explanationNode.hidden = true;
+      if (!selected) {
+        firstMissing ||= fieldset;
+        return;
+      }
+      const correct = Number(selected.value) === correctIndex;
+      if (correct) score += 1;
+      fieldset.classList.add(correct ? "is-correct" : "is-incorrect");
+      explanationNode.textContent = explanation;
+      explanationNode.hidden = false;
+    });
+    if (firstMissing) {
+      status.textContent = "Answer all three questions before checking the review.";
+      firstMissing.querySelector("input")?.focus();
+      return;
+    }
+    const state = { completed: true, score, completedAt: new Date().toISOString() };
+    localStorage.setItem(chapterReviewKey(chapter.number), JSON.stringify(state));
+    updateChapterReviewSummary(chapter, state);
+    status.textContent = `Review complete: ${score}/${questions.length}. Read the explanations, then continue to the cases.`;
+  });
+
+  document.querySelector("#chapter-review-reset")?.addEventListener("click", () => {
+    form.reset();
+    form.querySelectorAll("fieldset").forEach((fieldset) => {
+      fieldset.classList.remove("is-correct", "is-incorrect");
+      const explanation = fieldset.querySelector(".answer-explanation");
+      explanation.hidden = true;
+      explanation.textContent = "";
+    });
+    localStorage.removeItem(chapterReviewKey(chapter.number));
+    updateChapterReviewSummary(chapter, null);
+    status.textContent = "Answer all three questions to complete the review.";
+  });
+}
+
 function renderChapter(number) {
   const chapter = chapters.find((item) => item.number === number) || chapters[0];
   const id = chapterId(chapter.number);
@@ -236,10 +333,11 @@ function renderChapter(number) {
   const labLink = chapter.lab ? `<a href="#control-room">Interactive lab</a>` : "";
   const next = chapters[Number(chapter.number) % chapters.length];
   article.id = id;
-  article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 8}–${chapter.lessons.length * 12} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : ""}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, complete the practice prompts, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} detailed lessons available</li><li id="review-progress">→ Complete the Try it and Check yourself prompts</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
+  article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 8}–${chapter.lessons.length * 12} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : renderChapterReview(chapter)}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, complete the practice prompts, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} detailed lessons available</li><li id="review-progress">→ Chapter review pending</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
   document.title = `Chapter ${chapter.number} ${chapter.title} | CSS Casebook`;
   renderNav(guideSearch.value);
   initializeLessonProgress(chapter);
+  initializeChapterReview(chapter);
   window.initializeFlexboxLab?.();
 }
 
