@@ -1203,6 +1203,8 @@ additionalCases.forEach(
       validator: "computed-style",
       expectedProperty: property,
       expectedValue: target,
+      requiredStyles:
+        id === "044" || id === "045" ? [["display", "grid"]] : undefined,
       rootCause: `The starter rule set ${cssProperty} to ${starter}, which caused the rendered result to diverge from the intended behavior.`,
       remember,
       recommendedCSS: `${selector} {\n  ${layoutPrefix}${cssProperty}: ${target};\n}`,

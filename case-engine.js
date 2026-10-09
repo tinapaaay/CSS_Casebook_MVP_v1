@@ -408,6 +408,16 @@ function initializeCase(data) {
         expected.startsWith("rgba")
       )
         matches = normalize(actual).includes(normalize(expected));
+      const missingRequirement = (data.requiredStyles || []).find(
+        ([property, requiredValue]) =>
+          normalize(style[property]) !== normalize(requiredValue),
+      );
+      if (matches && missingRequirement) {
+        return {
+          ok: false,
+          message: `The rendered ${missingRequirement[0]} is still ${style[missingRequirement[0]] || "unset"}.`,
+        };
+      }
       return matches
         ? { ok: true }
         : {
