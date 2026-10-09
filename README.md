@@ -39,4 +39,4 @@ Then visit `http://localhost:8000`.
 - Five-question Flexbox review with answer explanations
 - Chapter 09 completion summary linked to Case #004 progress
 
-The remaining chapters are mapped with three planned cases each. Their case-specific bugs, trusted HTML, hints, validation rules, and resolution content can be added in the next content pass.
+All 16 chapters now contain three playable cases each. The cases share the reusable editor, rendered preview, progressive hints, validation and resolution flow while keeping chapter-specific objectives and CSS concepts.

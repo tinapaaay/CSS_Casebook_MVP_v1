@@ -319,6 +319,26 @@ function initializeCase(data) {
         : { ok: false, message: "The filters still have uneven spacing. Use one 12px gap rule." };
     }
 
+    if (data.validator === "computed-style") {
+      const actual = style[data.expectedProperty];
+      const expected = data.expectedValue;
+      const normalize = (value) => String(value).replace(/\s+/g, "").toLowerCase();
+      const colorMap = {
+        "#173d2c": "rgb(23,61,44)",
+        "#fffefa": "rgb(255,254,250)",
+        "#a44d2f": "rgb(164,77,47)",
+        "#738078": "rgb(115,128,120)",
+      };
+      const expectedNormalized = colorMap[expected] || expected;
+      let matches = normalize(actual) === normalize(expectedNormalized);
+      if (data.expectedProperty === "transform") matches = expected === "none" ? actual === "none" : actual !== "none";
+      if (data.expectedProperty === "boxShadow") matches = expected === "none" ? actual === "none" : actual !== "none";
+      if (data.expectedProperty === "backgroundColor" && expected.startsWith("rgba")) matches = normalize(actual).includes(normalize(expected));
+      return matches
+        ? { ok: true }
+        : { ok: false, message: `The rendered ${data.expectedProperty} is still ${actual || "unset"}.` };
+    }
+
     return {
       ok: false,
       message: "This case does not have a registered validator.",
