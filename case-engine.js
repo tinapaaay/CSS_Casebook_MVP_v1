@@ -144,7 +144,12 @@ function initializeCase(data) {
 
   function validateRenderedResult() {
     const doc = previewFrame.contentDocument;
-    const root = doc?.querySelector(data.selector);
+    const statefulSelector = data.selector.includes(":focus");
+    let root = doc?.querySelector(data.selector);
+    if (!root && statefulSelector) {
+      root = doc?.querySelector(data.selector.replaceAll(":focus", ""));
+    }
+    if (root && statefulSelector) root.focus();
     if (!doc || !root)
       return {
         ok: false,
