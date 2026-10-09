@@ -1160,11 +1160,13 @@ function chapterCaseId(number) {
 }
 
 function chapterCaseIds(number) {
+  if (window.CasebookProgress?.chapterCaseIds) return window.CasebookProgress.chapterCaseIds(number);
   const first = Number(chapterCaseId(number));
   return [0, 1, 2].map((offset) => String(first + offset).padStart(3, "0"));
 }
 
 function readChapterCaseCount(number) {
+  if (window.CasebookProgress?.getChapterState) return window.CasebookProgress.getChapterState(number).casesCompleted;
   return chapterCaseIds(number).filter((caseId) => {
     try {
       return JSON.parse(localStorage.getItem(`css-casebook-c${caseId}`) || "{}").completed === true;
@@ -1176,12 +1178,12 @@ function readChapterCaseCount(number) {
 
 function updateChapterSummary(chapter) {
   if (chapter.lab) return;
-  const lessonsDone = chapter.lessons.every((_, index) =>
-    readLessonCompletion(`${chapter.number}-${index + 1}`),
-  );
-  const reviewDone = readChapterReview(chapter.number)?.completed === true;
-  const completedCases = readChapterCaseCount(chapter.number);
-  const caseDone = completedCases === chapterCaseIds(chapter.number).length;
+  const progress = window.CasebookProgress?.getChapterState?.(chapter.number) || {};
+  const lessonsDone = progress.lessonsCompleted === chapter.lessons.length || chapter.lessons.every((_, index) => readLessonCompletion(`${chapter.number}-${index + 1}`));
+  const reviewDone = progress.reviewCompleted ?? (readChapterReview(chapter.number)?.completed === true);
+  const completedCases = progress.casesCompleted ?? readChapterCaseCount(chapter.number);
+  const caseTotal = progress.casesTotal || chapterCaseIds(chapter.number).length;
+  const caseDone = completedCases === caseTotal;
   const complete = lessonsDone && reviewDone && caseDone;
   const stamp = document.querySelector("#summary-stamp");
   const status = document.querySelector("#chapter-status-text");
@@ -1198,7 +1200,7 @@ function updateChapterSummary(chapter) {
   if (reviewProgress)
     reviewProgress.textContent = `${reviewDone ? "✓" : "→"} Chapter review ${reviewDone ? "completed" : "pending"}`;
   if (caseProgress)
-    caseProgress.textContent = `${caseDone ? "✓" : "→"} Cases ${completedCases}/${chapterCaseIds(chapter.number).length} complete`;
+    caseProgress.textContent = `${caseDone ? "✓" : "→"} Cases ${completedCases}/${caseTotal} complete`;
   localStorage.setItem(
     `css-casebook-ch${chapter.number}-status`,
     complete ? "completed" : "in-progress",

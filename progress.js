@@ -1,15 +1,48 @@
 (function () {
   const totalCases = 48;
 
-  function readCase(id) {
+  function readStorage(key) {
     try {
-      return JSON.parse(
-        localStorage.getItem(`css-casebook-c${String(id).padStart(3, "0")}`) ||
-          "{}",
-      );
+      return JSON.parse(localStorage.getItem(key) || "{}");
     } catch {
       return {};
     }
+  }
+
+  function readCase(id) {
+    return readStorage(`css-casebook-c${String(id).padStart(3, "0")}`);
+  }
+
+  function chapterCaseIds(number) {
+    const chapterNumber = Number(number);
+    const first = chapterNumber === 9 ? 4 : (chapterNumber - 1) * 3 + 1;
+    return [0, 1, 2].map((offset) => String(first + offset).padStart(3, "0"));
+  }
+
+  function readLesson(number, index) {
+    return localStorage.getItem(`css-casebook-lesson-${number}-${index}`) === "complete";
+  }
+
+  function readReview(number) {
+    const state = readStorage(`css-casebook-review-${number}`);
+    if (state.completed === true) return state;
+    return number === "09" ? readStorage("css-casebook-ch09") : state;
+  }
+
+  function getChapterState(number) {
+    const chapterNumber = String(number).padStart(2, "0");
+    const lessonsCompleted = [1, 2, 3].filter((index) => readLesson(chapterNumber, index)).length;
+    const casesCompleted = chapterCaseIds(chapterNumber).filter((id) => readCase(id).completed === true).length;
+    const review = readReview(chapterNumber);
+    const reviewCompleted = chapterNumber === "09" ? review.reviewCompleted === true : review.completed === true;
+    return {
+      lessonsCompleted,
+      lessonsTotal: 3,
+      casesCompleted,
+      casesTotal: 3,
+      reviewCompleted,
+      complete: lessonsCompleted === 3 && casesCompleted === 3 && reviewCompleted,
+    };
   }
 
   function getState() {
@@ -54,6 +87,6 @@
     }
   }
 
-  window.CasebookProgress = { getState, readCase, render };
+  window.CasebookProgress = { getState, readCase, render, chapterCaseIds, readLesson, readReview, getChapterState };
   render();
 })();

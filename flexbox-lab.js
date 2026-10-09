@@ -70,6 +70,7 @@ const answers = {
 };
 
 function readCaseCompletionCount() {
+  if (window.CasebookProgress?.getChapterState) return window.CasebookProgress.getChapterState("09").casesCompleted;
   return ["004", "005", "006"].filter((id) => {
     try {
       return JSON.parse(localStorage.getItem(`css-casebook-c${id}`) || "{}").completed === true;
@@ -80,10 +81,12 @@ function readCaseCompletionCount() {
 }
 
 function readLessonCompletionCount() {
+  if (window.CasebookProgress?.getChapterState) return window.CasebookProgress.getChapterState("09").lessonsCompleted;
   return [1, 2, 3].filter((index) => localStorage.getItem(`css-casebook-lesson-09-${index}`) === "complete").length;
 }
 
 function readReviewCompletion() {
+  if (window.CasebookProgress?.getChapterState) return window.CasebookProgress.getChapterState("09").reviewCompleted;
   try {
     return (
       JSON.parse(localStorage.getItem("css-casebook-ch09") || "{}")
