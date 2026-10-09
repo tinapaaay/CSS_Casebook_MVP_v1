@@ -340,6 +340,12 @@ installAuthoredChapterCases("14", "Responsive Web Design", [
   { id: "042", title: "The Breakpoint That Came Too Early", property: "overflow", starter: "hidden", target: "auto", label: "BREAKPOINT", prompt: "Tight space should preserve access while the layout adapts.", objective: "Preserve access to the layout when its content exceeds the available width.", expected: "Content remains reachable", observed: "Breakpoint state clips the surface", remember: "A breakpoint should mark a content change, not a device label.", question: "Which overflow value preserves the responsive surface?", next: "043" }
 ]);
 
+installAuthoredChapterCases("15", "CSS Grid", [
+  { id: "043", title: "The Collapsed Gallery", property: "display", starter: "block", target: "grid", label: "GRID", prompt: "The cards should form a two-dimensional gallery.", objective: "Restore the two-dimensional gallery layout.", expected: "Cards form a gallery", observed: "Cards become a long stack", remember: "Grid is the right model when rows and columns matter together.", question: "Which display value restores the gallery?", next: "044" },
+  { id: "044", title: "The Misplaced Sidebar", property: "gridTemplateColumns", starter: "1fr", target: "200px 1fr", label: "TRACKS", prompt: "The sidebar needs its own track beside flexible content.", objective: "Give the sidebar its track and let the main content use the remaining space.", expected: "Sidebar and main have separate tracks", observed: "Sidebar steals the content track", remember: "Define the track structure before placing items.", question: "Which track definition creates sidebar plus main?", next: "045" },
+  { id: "045", title: "The Track That Would Not Stretch", property: "gridColumn", starter: "auto", target: "1 / -1", label: "PLACEMENT", prompt: "The banner should span the full explicit grid width.", objective: "Make the banner span the full explicit grid width.", expected: "Banner spans the gallery", observed: "Banner stops at one column", remember: "1 / -1 spans from the first grid line to the last.", question: "Which grid-column value spans the full gallery?", next: "046" }
+]);
+
 Object.assign(window.CASEBOOK_CASES, {
   "007": makeCase({
     id: "007", fileCode: "LB-001", chapter: "CH02 Lists, Links, Backgrounds & Borders", topic: "Backgrounds", title: "The Cropped Hero",
