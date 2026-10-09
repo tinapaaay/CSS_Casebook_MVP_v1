@@ -16,7 +16,6 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="CSS Casebook home"
@@ -150,8 +149,15 @@
               <p class="preview-caption" id="preview-caption">
                 Current — your live result
               </p>
-              <div class="preview-stage" id="preview-stage">
-                <div id="demo-root"></div>
+              <div
+                class="preview-stage iframe-preview-stage"
+                id="preview-stage"
+              >
+                <iframe
+                  id="case-preview"
+                  title="Current rendered case preview"
+                  sandbox="allow-same-origin"
+                ></iframe>
               </div>
             </div>
           </section>
@@ -217,13 +223,11 @@
           <button class="secondary-button" id="replay-button" type="button">
             Replay case
           </button>
-
           <div class="resolution-next-actions">
-            <a class="secondary-button button-link" id="guide-link"></a>
-
-            <a class="primary-button button-link" id="next-case-link" hidden>
-              Next case →
-            </a>
+            <a class="secondary-button button-link" id="guide-link"></a
+            ><a class="primary-button button-link" id="next-case-link" hidden
+              >Next case →</a
+            >
           </div>
         </footer>
       </section>

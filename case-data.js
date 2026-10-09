@@ -31,8 +31,15 @@ window.CASEBOOK_CASES = {
     originalCaption: "Original — immutable starter layout",
     targetCaption: "Target — intended centered layout",
     previewLabel: "layout",
-    previewClass: "demo-container",
-    previewHTML: `<article class="demo-card"><span>01</span><strong>Profile</strong><small>Case subject</small></article><article class="demo-card"><span>02</span><strong>Archive</strong><small>Filed notes</small></article><article class="demo-card"><span>03</span><strong>Settings</strong><small>Preferences</small></article>`,
+    previewHTML: `<div class="container"><article class="card"><span>01</span><strong>Profile</strong><small>Case subject</small></article><article class="card"><span>02</span><strong>Archive</strong><small>Filed notes</small></article><article class="card"><span>03</span><strong>Settings</strong><small>Preferences</small></article></div>`,
+    previewBaseCSS: `* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
+.container { width: min(100%, 510px); min-height: 180px; border: 1px dashed #738078; background: rgba(255, 253, 247, .9); }
+.card { width: 112px; min-height: 92px; padding: 13px; border: 1px solid #5c6d62; background: #fdfbf4; box-shadow: 3px 3px 0 rgba(49, 91, 71, .14); }
+.card span { color: #a44d2f; font: 700 9px/1 monospace; }
+.card strong, .card small { display: block; }
+.card strong { margin: 15px 0 4px; font: 700 18px/1 Georgia, serif; }
+.card small { color: #657067; font-size: 10px; }`,
     hints: [
       [
         "Observation",
@@ -104,8 +111,11 @@ window.CASEBOOK_CASES = {
     originalCaption: "Original — reversed starter layout",
     targetCaption: "Target — logical HTML order",
     previewLabel: "navigation",
-    previewClass: "nav-demo-container",
-    previewHTML: `<a class="demo-nav-link" href="#">Home</a><a class="demo-nav-link" href="#">Cases</a><a class="demo-nav-link" href="#">Field Guide</a><a class="demo-nav-link" href="#">Contact</a>`,
+    previewHTML: `<nav class="nav-links" aria-label="Demonstration navigation"><a href="#">Home</a><a href="#">Cases</a><a href="#">Field Guide</a><a href="#">Contact</a></nav>`,
+    previewBaseCSS: `* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; color: #18221c; background: #ebe7dc; font-family: Arial, sans-serif; }
+.nav-links { width: min(100%, 570px); min-height: 96px; align-items: center; padding: 20px; border: 1px dashed #738078; background: rgba(255, 253, 247, .9); }
+.nav-links a { flex: 0 0 auto; padding: 10px 12px; color: #173d2c; border-bottom: 2px solid transparent; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }`,
     hints: [
       [
         "Observation",

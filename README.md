@@ -35,6 +35,7 @@ Then visit `http://localhost:8000`.
 - Reset confirmation, replay, keyboard support, responsive mobile tabs, and reduced-motion support
 - Responsive navigation, collection filtering, and Field Guide search
 - Flexbox controls for direction, wrapping, justification and alignment with synchronized generated CSS
+- Sandboxed iframe previews that support complete multi-selector CSS without affecting the Casebook interface
 - Five-question Flexbox review with answer explanations
 - Chapter 09 completion summary linked to Case #001 progress
 

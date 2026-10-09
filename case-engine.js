@@ -12,52 +12,9 @@ if (!caseData) {
 }
 
 function initializeCase(data) {
-  document.title = `Case ${data.id} — ${data.title} | CSS Casebook`;
-  document.querySelector('meta[name="description"]').content =
-    `CSS Casebook Case ${data.id}: ${data.title}.`;
-  document.querySelector("#header-case-id").textContent = `Case ${data.id}`;
-  document.querySelector("#header-chapter").textContent = `/ ${data.chapter}`;
-  document.querySelector("#file-code").textContent =
-    `Case file ${data.fileCode}`;
-  document.querySelector("#case-title").textContent = data.title;
-  document.querySelector("#case-tags").innerHTML =
-    `<span>${data.topic}</span><span>${data.level}</span><span>${data.duration}</span>`;
-  document.querySelector("#case-objective").textContent = data.objective;
-  document.querySelector("#incident-title").textContent = data.incidentTitle;
-  document.querySelector("#incident-text").textContent = data.incident;
-  document.querySelector("#evidence-list").innerHTML = data.evidence
-    .map(([term, detail]) => `<div><dt>${term}</dt><dd>${detail}</dd></div>`)
-    .join("");
-  document.querySelector("#closed-label").textContent =
-    `Case #${data.id} — Closed`;
-  document.querySelector("#root-cause").textContent = data.rootCause;
-  document.querySelector("#remember").textContent = data.remember;
-  document.querySelector("#recommended-solution").textContent =
-    data.recommendedCSS;
-  document.querySelector("#concept-question").textContent = data.question;
-  document.querySelector("#concept-choices").innerHTML = data.choices
-    .map(
-      ([label, correct]) =>
-        `<button type="button" data-correct="${correct}">${label}</button>`,
-    )
-    .join("");
-  const guideLink = document.querySelector("#guide-link");
-  guideLink.href = data.guideHref;
-  guideLink.textContent = data.guideLabel;
-  const nextCaseLink = document.querySelector("#next-case-link");
-
-  if (data.nextCase) {
-    nextCaseLink.href = `case.html?id=${data.nextCase}`;
-
-    nextCaseLink.textContent = `Open Case #${data.nextCase} →`;
-
-    nextCaseLink.hidden = false;
-  } else {
-    nextCaseLink.hidden = true;
-  }
-
+  populateCaseContent(data);
   const editor = document.querySelector("#css-editor");
-  const demo = document.querySelector("#demo-root");
+  const previewFrame = document.querySelector("#case-preview");
   const syntaxMessage = document.querySelector("#syntax-message");
   const draftStatus = document.querySelector("#draft-status");
   const validation = document.querySelector("#validation-message");
@@ -67,23 +24,18 @@ function initializeCase(data) {
   const hintButton = document.querySelector("#hint-button");
   const hideHintsButton = document.querySelector("#hide-hints");
   const resetDialog = document.querySelector("#reset-dialog");
-  let saved = safeRead(data.storageKey);
-  let hintCount = Math.min(saved.hintCount || 0, data.hints.length);
+  let hintCount = Math.min(
+    safeRead(data.storageKey).hintCount || 0,
+    data.hints.length,
+  );
   let previewMode = "current";
   let checking = false;
 
-  demo.className = data.previewClass;
-  demo.innerHTML = data.previewHTML;
-  document
-    .querySelector("#preview-stage")
-    .setAttribute("aria-label", `Current ${data.previewLabel} preview`);
+  const saved = safeRead(data.storageKey);
   editor.value = typeof saved.css === "string" ? saved.css : data.starterCSS;
-  document.querySelector("#line-numbers").innerHTML = data.starterCSS
-    .split("\n")
-    .map((_, index) => index + 1)
-    .join("<br>");
+  updateLineNumbers();
   renderHints();
-  applyEditorCSS();
+  renderPreview(editor.value, "current");
 
   function safeRead(key) {
     try {
@@ -106,42 +58,32 @@ function initializeCase(data) {
     );
   }
 
-  function parseRule(css) {
-    if (!css.trim())
-      return {
-        declarations: "",
-        error:
-          "The stylesheet is empty. The preview has no layout instructions.",
-      };
+  function buildPreviewDocument(css) {
+    const safeCSS = css.replace(/<\/style/gi, "<\\/style");
+    const safeBaseCSS = (data.previewBaseCSS || "").replace(
+      /<\/style/gi,
+      "<\\/style",
+    );
+    return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${safeBaseCSS}</style><style id="learner-css">${safeCSS}</style></head><body>${data.previewHTML}</body></html>`;
+  }
+
+  function validateSyntax(css) {
+    if (!css.trim()) return { error: "" };
     try {
       const sheet = new CSSStyleSheet();
       sheet.replaceSync(css);
-      const rule = [...sheet.cssRules].find(
-        (item) =>
-          item instanceof CSSStyleRule &&
-          item.selectorText
-            .split(",")
-            .some((selector) => selector.trim() === data.selector),
-      );
-      if (!rule)
-        return {
-          declarations: "",
-          error: `Add a ${data.selector} rule so the evidence can be rendered.`,
-        };
-      return { declarations: rule.style.cssText, error: "" };
+      return { error: "" };
     } catch {
-      return {
-        declarations: "",
-        error: "There is a CSS syntax issue near your latest edit.",
-      };
+      return { error: "There is a CSS syntax issue near your latest edit." };
     }
   }
 
-  function applyEditorCSS() {
-    const result = parseRule(editor.value);
-    syntaxMessage.textContent = result.error;
-    if (previewMode === "current") demo.style.cssText = result.declarations;
-    return result;
+  function renderPreview(css, mode = "current") {
+    const syntax = validateSyntax(css);
+    syntaxMessage.textContent = mode === "current" ? syntax.error : "";
+    previewFrame.title = `${capitalize(mode)} rendered ${data.previewLabel} preview`;
+    previewFrame.srcdoc = buildPreviewDocument(css);
+    return syntax;
   }
 
   function renderMode(mode) {
@@ -152,21 +94,26 @@ function initializeCase(data) {
         button.classList.toggle("is-active", button.dataset.view === mode),
       );
     const caption = document.querySelector("#preview-caption");
-    const stage = document.querySelector("#preview-stage");
-    stage.setAttribute(
-      "aria-label",
-      `${mode[0].toUpperCase() + mode.slice(1)} ${data.previewLabel} preview`,
-    );
     if (mode === "original") {
-      demo.style.cssText = data.originalCSS;
       caption.textContent = data.originalCaption;
+      renderPreview(data.starterCSS, mode);
     } else if (mode === "target") {
-      demo.style.cssText = data.targetCSS;
       caption.textContent = data.targetCaption;
+      renderPreview(
+        `${data.starterCSS}\n${data.selector} { ${data.targetCSS} }`,
+        mode,
+      );
     } else {
       caption.textContent = "Current — your live result";
-      applyEditorCSS();
+      renderPreview(editor.value, mode);
     }
+  }
+
+  function updateLineNumbers() {
+    document.querySelector("#line-numbers").innerHTML = editor.value
+      .split("\n")
+      .map((_, index) => index + 1)
+      .join("<br>");
   }
 
   function renderHints() {
@@ -195,23 +142,31 @@ function initializeCase(data) {
   }
 
   function validateRenderedResult() {
-    const style = getComputedStyle(demo);
-    const items = [...demo.children];
+    const doc = previewFrame.contentDocument;
+    const root = doc?.querySelector(data.selector);
+    if (!doc || !root)
+      return {
+        ok: false,
+        message: "The required preview element could not be rendered.",
+      };
+    const style = doc.defaultView.getComputedStyle(root);
+    const items = [...root.children];
     if (style.display !== "flex")
       return {
         ok: false,
         message: "The case requires Flexbox to remain in use.",
       };
+
     if (data.validator === "centered-cards") {
       if (items.length !== 3)
         return { ok: false, message: "All three cards must remain visible." };
-      const container = demo.getBoundingClientRect();
+      const container = root.getBoundingClientRect();
       const rects = items.map((item) => item.getBoundingClientRect());
       const group = {
-        left: Math.min(...rects.map((r) => r.left)),
-        right: Math.max(...rects.map((r) => r.right)),
-        top: Math.min(...rects.map((r) => r.top)),
-        bottom: Math.max(...rects.map((r) => r.bottom)),
+        left: Math.min(...rects.map((rect) => rect.left)),
+        right: Math.max(...rects.map((rect) => rect.right)),
+        top: Math.min(...rects.map((rect) => rect.top)),
+        bottom: Math.max(...rects.map((rect) => rect.bottom)),
       };
       const horizontalDelta = Math.abs(
         (group.left + group.right) / 2 - (container.left + container.right) / 2,
@@ -220,14 +175,14 @@ function initializeCase(data) {
         (group.top + group.bottom) / 2 - (container.top + container.bottom) / 2,
       );
       const inside = rects.every(
-        (r) =>
-          r.left >= container.left - 2 &&
-          r.right <= container.right + 2 &&
-          r.top >= container.top - 2 &&
-          r.bottom <= container.bottom + 2,
+        (rect) =>
+          rect.left >= container.left - 2 &&
+          rect.right <= container.right + 2 &&
+          rect.top >= container.top - 2 &&
+          rect.bottom <= container.bottom + 2,
       );
       const ordered = rects.every(
-        (r, i) => i === 0 || r.left >= rects[i - 1].left,
+        (rect, index) => index === 0 || rect.left >= rects[index - 1].left,
       );
       if (!inside)
         return {
@@ -252,6 +207,7 @@ function initializeCase(data) {
         };
       return { ok: true };
     }
+
     if (data.validator === "logical-navigation") {
       if (items.length !== 4)
         return {
@@ -279,6 +235,7 @@ function initializeCase(data) {
         };
       return { ok: true };
     }
+
     return {
       ok: false,
       message: "This case does not have a registered validator.",
@@ -296,7 +253,8 @@ function initializeCase(data) {
       "Current — your live result";
     draftStatus.textContent =
       editor.value === data.starterCSS ? "Starter file" : "Draft saved";
-    applyEditorCSS();
+    updateLineNumbers();
+    renderPreview(editor.value, "current");
     saveState();
   });
 
@@ -333,12 +291,11 @@ function initializeCase(data) {
     if (checking) return;
     checking = true;
     checkButton.disabled = true;
-    renderMode("current");
     setFeedback("", data.checkingTitle, data.checkingText);
-    setTimeout(() => {
-      const parsed = applyEditorCSS();
-      const result = parsed.error
-        ? { ok: false, message: parsed.error }
+    const onLoad = () => {
+      const syntax = validateSyntax(editor.value);
+      const result = syntax.error
+        ? { ok: false, message: syntax.error }
         : validateRenderedResult();
       if (result.ok) {
         setFeedback("success", "Case resolved.", data.successText);
@@ -352,15 +309,18 @@ function initializeCase(data) {
             : "smooth",
           block: "start",
         });
-      } else
+      } else {
         setFeedback(
           "error",
           "Case remains unresolved.",
           ` ${result.message} Your edits have been preserved.`,
         );
+      }
       checking = false;
       checkButton.disabled = false;
-    }, 650);
+    };
+    previewFrame.addEventListener("load", onLoad, { once: true });
+    renderMode("current");
   });
 
   document
@@ -376,6 +336,7 @@ function initializeCase(data) {
     editor.value = data.starterCSS;
     draftStatus.textContent = "Starter file";
     resolution.hidden = true;
+    updateLineNumbers();
     renderMode("current");
     setFeedback(
       "",
@@ -416,4 +377,51 @@ function initializeCase(data) {
         );
     }),
   );
+}
+
+function populateCaseContent(data) {
+  document.title = `Case ${data.id} — ${data.title} | CSS Casebook`;
+  document.querySelector('meta[name="description"]').content =
+    `CSS Casebook Case ${data.id}: ${data.title}.`;
+  document.querySelector("#header-case-id").textContent = `Case ${data.id}`;
+  document.querySelector("#header-chapter").textContent = `/ ${data.chapter}`;
+  document.querySelector("#file-code").textContent =
+    `Case file ${data.fileCode}`;
+  document.querySelector("#case-title").textContent = data.title;
+  document.querySelector("#case-tags").innerHTML =
+    `<span>${data.topic}</span><span>${data.level}</span><span>${data.duration}</span>`;
+  document.querySelector("#case-objective").textContent = data.objective;
+  document.querySelector("#incident-title").textContent = data.incidentTitle;
+  document.querySelector("#incident-text").textContent = data.incident;
+  document.querySelector("#evidence-list").innerHTML = data.evidence
+    .map(([term, detail]) => `<div><dt>${term}</dt><dd>${detail}</dd></div>`)
+    .join("");
+  document.querySelector("#closed-label").textContent =
+    `Case #${data.id} — Closed`;
+  document.querySelector("#root-cause").textContent = data.rootCause;
+  document.querySelector("#remember").textContent = data.remember;
+  document.querySelector("#recommended-solution").textContent =
+    data.recommendedCSS;
+  document.querySelector("#concept-question").textContent = data.question;
+  document.querySelector("#concept-choices").innerHTML = data.choices
+    .map(
+      ([label, correct]) =>
+        `<button type="button" data-correct="${correct}">${label}</button>`,
+    )
+    .join("");
+  const guideLink = document.querySelector("#guide-link");
+  guideLink.href = data.guideHref;
+  guideLink.textContent = data.guideLabel;
+  const nextCaseLink = document.querySelector("#next-case-link");
+  if (data.nextCase) {
+    nextCaseLink.href = `case.html?id=${data.nextCase}`;
+    nextCaseLink.textContent = `Open Case #${data.nextCase} →`;
+    nextCaseLink.hidden = false;
+  } else {
+    nextCaseLink.hidden = true;
+  }
+}
+
+function capitalize(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
