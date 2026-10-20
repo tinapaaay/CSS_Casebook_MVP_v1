@@ -26,15 +26,15 @@ Every checkbox includes the expected result. Mark a test only after observing th
 
 ## Fresh-state testing
 
-- [ ] Open `index.html` with no Casebook storage keys. Expected: The home page loads, progress reports 0 of 48 cases complete, and the primary continuation action starts Case #001.
-- [ ] Confirm the fresh home page has no false resume state. Expected: No old case, lesson, review, or course-complete message appears.
-- [ ] Open `cases.html` with no Casebook storage keys. Expected: All 16 chapters and 48 playable cases are listed.
-- [ ] Select `Not started` in the Case Library filter. Expected: All 48 cases remain visible and the result count reports 48 not-started cases across 16 chapters.
-- [ ] Select `In progress` in the Case Library filter. Expected: A helpful zero-result message appears and no case cards are shown.
-- [ ] Select `Completed` in the Case Library filter. Expected: A helpful zero-result message appears and no case cards are shown.
-- [ ] Select `All 16 chapters`. Expected: The complete library returns without losing case links.
-- [ ] Open `field-guide.html` with no guide progress. Expected: Chapter 01 renders first, all 16 chapter links are available, and no lessons are marked complete.
-- [ ] Open `case.html?id=001` with no case progress. Expected: Case #001 loads with its starter CSS, unresolved status, and no revealed hints.
+- [x] Open `index.html` with no Casebook storage keys. Expected: The home page loads, progress reports 0 of 48 cases complete, and the primary continuation action starts Case #001.
+- [x] Confirm the fresh home page has no false resume state. Expected: No old case, lesson, review, or course-complete message appears.
+- [x] Open `cases.html` with no Casebook storage keys. Expected: All 16 chapters and 48 playable cases are listed.
+- [x] Select `Not started` in the Case Library filter. Expected: All 48 cases remain visible and the result count reports 48 not-started cases across 16 chapters.
+- [x] Select `In progress` in the Case Library filter. Expected: A helpful zero-result message appears and no case cards are shown.
+- [x] Select `Completed` in the Case Library filter. Expected: A helpful zero-result message appears and no case cards are shown.
+- [x] Select `All 16 chapters`. Expected: The complete library returns without losing case links.
+- [x] Open `field-guide.html` with no guide progress. Expected: Chapter 01 renders first, all 16 chapter links are available, and no lessons are marked complete.
+- [x] Open `case.html?id=001` with no case progress. Expected: Case #001 loads with its starter CSS, unresolved status, and no revealed hints.
 
 ## Existing-progress testing
 
