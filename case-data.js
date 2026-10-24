@@ -1375,7 +1375,7 @@ Object.entries(chapterThreeCases).forEach(([id, item]) => {
     expectedValue: item.target,
     rootCause: `${cssProperty}: ${item.starter} caused the rendered result to diverge from the intended design decision.`,
     remember: item.remember,
-    recommendedCSS: `${item.selector} {\n  ${cssProperty}: ${item.target};\n}`,
+    recommendedCSS: item.targetCSS,
     question: item.question,
     choices: item.choices,
     correctFeedback: `Correct. ${cssProperty}: ${item.target} restores the documented design behavior.`,
@@ -2222,7 +2222,7 @@ Object.assign(window.CASEBOOK_CASES, {
     previewHTML: `<label class="check-field"><input class="review-check" type="checkbox" checked><span>Keep me on the review list</span></label>`,
     previewBaseCSS:
       sharedPreviewCSS +
-      `.check-field { display: flex; align-items: center; gap: 12px; width: min(100%, 430px); padding: 22px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .review-check { width: 22px; height: 22px; accent-color: #1f5b43; } .check-field span { font-weight: 600; }`,
+      `.check-field { display: flex; align-items: center; gap: 12px; width: min(100%, 430px); padding: 22px; border: 1px solid #c6cbc2; background: #fffefa; color: #18221c; } .review-check { flex-shrink: 0; width: 22px; height: 22px; border: 2px solid #1f5b43; border-radius: 4px; background: #fffefa; accent-color: #1f5b43; } .review-check:checked { background: #1f5b43; box-shadow: inset 0 0 0 3px #fffefa; } .review-check:focus-visible { outline: 3px solid #a44d2f; outline-offset: 3px; } .review-check:disabled { opacity: .5; } .check-field span { font-weight: 600; }`,
     hints: [
       [
         "Observation",
@@ -4377,17 +4377,17 @@ Object.assign(window.CASEBOOK_CASES, {
       ["Constraint", "Keep the focal subject centered"],
     ],
     selector: ".hero-banner",
-    starterCSS: `.hero-banner {\n  background-image: url("hero.jpg");\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}`,
+    starterCSS: `.hero-banner {\n  background-image: url("hero.svg");\n  background-size: contain;\n  background-position: center;\n  background-repeat: no-repeat;\n}`,
     originalCSS: "background-size:contain",
     targetCSS: "background-size:cover",
-    targetPreviewCSS: `.hero-banner { background-image: linear-gradient(120deg, #173d2c, #9fc5ad); background-size: cover; background-position: center; background-repeat: no-repeat; }`,
+    targetPreviewCSS: `.hero-banner { background-size: cover; background-position: center; background-repeat: no-repeat; }`,
     originalCaption: "Original — contained hero",
     targetCaption: "Target — covered hero",
     previewLabel: "hero banner",
     previewHTML: `<article class="hero-banner"><span>FIELD NOTE 07</span><h2>Read the evidence</h2><p>Backgrounds should support the story, not expose the empty canvas.</p></article>`,
     previewBaseCSS:
       sharedPreviewCSS +
-      `.hero-banner { width: min(100%, 560px); min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 28px; color: #fffefa; background-color: #173d2c; border: 1px dashed #738078; } .hero-banner span { font: 700 10px monospace; letter-spacing: .12em; } .hero-banner h2 { margin: 0; font: 600 34px/1 Georgia, serif; } .hero-banner p { max-width: 330px; margin: 0; line-height: 1.5; }`,
+      `.hero-banner { width: min(100%, 560px); min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 28px; color: #fffefa; background-color: #173d2c; background-image: url("hero.svg"); background-repeat: no-repeat; background-position: center; border: 1px dashed #738078; } .hero-banner span { font: 700 10px monospace; letter-spacing: .12em; } .hero-banner h2 { margin: 0; font: 600 34px/1 Georgia, serif; } .hero-banner p { max-width: 330px; margin: 0; line-height: 1.5; }`,
     hints: [
       [
         "Observation",

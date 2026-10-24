@@ -42,9 +42,12 @@ function initializeCase(data) {
 
   const saved = safeRead(data.storageKey);
   editor.value = typeof saved.css === "string" ? saved.css : data.starterCSS;
+  draftStatus.textContent = editor.value === data.starterCSS ? "Starter file" : "Draft saved";
   updateLineNumbers();
   renderHints();
   renderPreview(editor.value, "current");
+  document.querySelectorAll(".view-switcher button").forEach((button) =>
+    button.setAttribute("aria-pressed", String(button.dataset.view === "current")));
 
   function safeRead(key) {
     try {
@@ -104,7 +107,10 @@ function initializeCase(data) {
     document
       .querySelectorAll(".view-switcher button")
       .forEach((button) =>
-        button.classList.toggle("is-active", button.dataset.view === mode),
+        {
+          button.classList.toggle("is-active", button.dataset.view === mode);
+          button.setAttribute("aria-pressed", String(button.dataset.view === mode));
+        },
       );
     const caption = document.querySelector("#preview-caption");
     if (mode === "original") {
@@ -157,7 +163,7 @@ function initializeCase(data) {
 
   function validateRenderedResult() {
     const doc = previewFrame.contentDocument;
-    const statefulSelector = data.selector.includes(":focus");
+    const statefulSelector = data.selector.includes(":focus") || data.expectedProperty === "outlineStyle";
     let root = doc?.querySelector(data.selector);
     if (!root && statefulSelector) {
       root = doc?.querySelector(data.selector.replaceAll(":focus", ""));
@@ -168,6 +174,9 @@ function initializeCase(data) {
         ok: false,
         message: "The required preview element could not be rendered.",
       };
+    if (statefulSelector && doc.activeElement !== root) {
+      return { ok: false, message: "Keep the action keyboard-focusable so its focus ring can be checked." };
+    }
     const style = doc.defaultView.getComputedStyle(root);
     const bounds = root.getBoundingClientRect();
     const hasVisibleSurface =
@@ -176,13 +185,19 @@ function initializeCase(data) {
       style.opacity !== "0" &&
       bounds.width > 0 &&
       bounds.height > 0;
-    if (!hasVisibleSurface)
+    const hiddenAncestor = [...(function* () {
+      for (let node = root; node; node = node.parentElement) yield node;
+    })()].some((node) => {
+      const computed = doc.defaultView.getComputedStyle(node);
+      return computed.display === "none" || computed.visibility === "hidden" || Number(computed.opacity) === 0;
+    });
+    if (!hasVisibleSurface || hiddenAncestor)
       return {
         ok: false,
         message:
           "The target rule matches, but the required preview surface is hidden or has no usable size.",
       };
-    if (!root.textContent.trim())
+    if (!root.textContent.trim() && !root.matches("input, select, textarea"))
       return {
         ok: false,
         message:
@@ -522,10 +537,19 @@ function initializeCase(data) {
       };
       const expectedNormalized = colorMap[expected] || expected;
       let matches = normalize(actual) === normalize(expectedNormalized);
+      if (data.expectedProperty === "fontFamily")
+        matches = normalize(actual.split(",")[0].replace(/["']/g, "")) === normalize(expected);
+      if (data.expectedProperty === "gridTemplateColumns") {
+        const tracks = actual.split(/\s+/).map(parseFloat);
+        const children = [...root.children];
+        matches = style.display === "grid" && tracks.length === 2 && Math.abs(tracks[0] - 200) < 2 &&
+          tracks[1] > 0 && children.length === 2 && children.every(boxIsUsable) &&
+          Math.abs(children[0].getBoundingClientRect().top - children[1].getBoundingClientRect().top) < 2 &&
+          children[1].getBoundingClientRect().left > children[0].getBoundingClientRect().left;
+      }
       if (data.expectedProperty === "transform")
-        matches = expected === "none" ? actual === "none" : actual !== "none";
-      if (data.expectedProperty === "boxShadow")
-        matches = expected === "none" ? actual === "none" : actual !== "none";
+        matches = normalize(actual) === normalize(expected);
+
       if (
         data.expectedProperty === "backgroundColor" &&
         expected.startsWith("rgba")
@@ -540,6 +564,14 @@ function initializeCase(data) {
           ok: false,
           message: `The rendered ${missingRequirement[0]} is still ${style[missingRequirement[0]] || "unset"}.`,
         };
+      }
+      if (matches && data.expectedProperty === "outlineStyle" &&
+          (parseFloat(style.outlineWidth) < 2 || style.outlineColor === "rgba(0, 0, 0, 0)")) {
+        return { ok: false, message: "Keep a visible focus ring at least two pixels wide." };
+      }
+      if (matches && root.matches("input, button, select, textarea") &&
+          (root.disabled || root.tabIndex < 0 || style.pointerEvents === "none")) {
+        return { ok: false, message: "Keep the form control enabled and reachable with the keyboard and pointer." };
       }
       return matches
         ? { ok: true }
@@ -560,7 +592,10 @@ function initializeCase(data) {
     document
       .querySelectorAll(".view-switcher button")
       .forEach((button) =>
-        button.classList.toggle("is-active", button.dataset.view === "current"),
+        {
+          button.classList.toggle("is-active", button.dataset.view === "current");
+          button.setAttribute("aria-pressed", String(button.dataset.view === "current"));
+        },
       );
     document.querySelector("#preview-caption").textContent =
       "Current — your live result";
@@ -579,6 +614,7 @@ function initializeCase(data) {
   hintButton.addEventListener("click", () => {
     if (hintCount < data.hints.length) hintCount += 1;
     renderHints();
+    hideHintsButton.textContent = "Hide hints";
     saveState({ attempted: true });
   });
   hideHintsButton.addEventListener("click", () => {
@@ -591,6 +627,10 @@ function initializeCase(data) {
   checkButton.addEventListener("click", () => {
     if (checking) return;
     checking = true;
+    if (matchMedia("(max-width: 760px)").matches) {
+      const previewTab = mobileTabs.find((tab) => tab.dataset.tab === "preview");
+      if (previewTab) selectMobileTab(previewTab);
+    }
     saveState({ attempted: true });
     checkButton.disabled = true;
     setFeedback("", data.checkingTitle, data.checkingText);
@@ -652,7 +692,7 @@ function initializeCase(data) {
     resetCase();
     document
       .querySelector("#case-title")
-      .scrollIntoView({ behavior: "smooth" });
+      .scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   });
   document.querySelectorAll("#concept-choices button").forEach((button) =>
     button.addEventListener("click", () => {

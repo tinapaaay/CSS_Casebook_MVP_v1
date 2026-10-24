@@ -49,3 +49,33 @@ Progress is intentionally local to the browser. Case completion uses keys such a
 The project has no build step. Before handoff, run `node --check` on the JavaScript files and `git diff --check`. For visual QA, inspect Original, Current and Target views on the case pages and verify the mobile layout at phone and tablet widths.
 
 All 16 chapters now contain three playable cases each. The cases share the reusable editor, rendered preview, progressive hints, validation and resolution flow while keeping chapter-specific objectives and CSS concepts.
+
+## Neumorphic edition — 24 October 2026
+
+The four interface pages share `neumorphism.css`: sage surfaces, raised controls,
+recessed inputs and progress tracks, visible focus states, reduced-motion support,
+and DM Sans throughout. Case previews remain isolated so their CSS exercises retain
+the typography and layout being investigated.
+
+This edition also corrects seven rejected recommended solutions (007, 010, 016,
+022, 023, 029, 044), shows the preview when checking a fix on mobile, preserves
+checkbox states, and includes the missing hero illustration as a local SVG.
+Chapter completion is shown separately from case completion. Progress imports are
+validated before replacement and failed writes restore previous records.
+
+Run the dependency-free progress regression tests:
+
+```bash
+node --test tests/progress.cjs
+```
+
+For browser regression tests, install Playwright in your development environment,
+start the local server, and run:
+
+```bash
+CASEBOOK_URL=http://127.0.0.1:8000 node tests/browser.cjs
+```
+
+Set `CHROME_PATH` to your Chrome executable if necessary. Browser tests cover all
+48 starter/recommended solution pairs and the four routes at five viewport widths.
+The site itself still requires no dependencies or build step.

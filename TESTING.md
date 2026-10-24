@@ -229,3 +229,17 @@ Run these tests on at least Cases #001, #007, #044, and #048.
 - [ ] Confirm progress after the full checklist. Expected: The test profile contains only the progress intentionally created during testing.
 - [ ] Record each failure separately. Expected: Every defect includes route, case ID if relevant, browser/device, steps, expected result, actual result, and severity.
 - [ ] Confirm no website code was changed as part of documentation-only QA. Expected: This checklist update modifies only `TESTING.md`.
+
+## Neumorphic edition verification — 24 October 2026
+
+- Desktop: all 48 starter solutions fail and all 48 recommended solutions pass.
+- Mobile at 390px: all 48 starter solutions fail and all 48 recommended solutions pass
+  after automatically revealing the preview for Check fix.
+- Home, library, guide and workbench fit 320, 390, 768, 1024 and 1440px widths.
+- Nine automated progress tests cover sequence, resume, chapter requirements,
+  legacy Flexbox review state, import validation, export compatibility, quota rollback
+  and scoped reset.
+- Typography updated to DM Sans throughout the interface after the layout pass.
+
+These checks establish the playable MVP flow; they are not an exhaustive audit of
+all possible learner CSS or all browser/assistive technology combinations.
