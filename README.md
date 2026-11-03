@@ -79,3 +79,7 @@ CASEBOOK_URL=http://127.0.0.1:8000 node tests/browser.cjs
 Set `CHROME_PATH` to your Chrome executable if necessary. Browser tests cover all
 48 starter/recommended solution pairs and the four routes at five viewport widths.
 The site itself still requires no dependencies or build step.
+
+## Development guide
+
+See [Development and maintenance](docs/DEVELOPMENT.md) for setup, source files, implementation limits, editing instructions, verification, and deployment.
