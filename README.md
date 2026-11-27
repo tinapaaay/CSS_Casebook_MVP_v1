@@ -1,6 +1,10 @@
-# CSS Casebook — First Playable MVP
+# CSS Casebook
 
-A responsive multi-page product prototype for learning CSS through debugging investigations.
+Learn CSS by fixing it: 48 small broken layouts in 16 chapters, each with a live
+CSS editor, Original/Current/Target previews, hints and a check that inspects the
+rendered result. Every chapter also has short Field Guide lessons and a review.
+
+Live site: <https://tinapaaay.github.io/CSS_Casebook_MVP_v1/>
 
 ## Run locally
 
@@ -16,12 +20,19 @@ Then visit `http://localhost:8000`.
 
 ## Pages
 
-- `index.html` — product home and featured investigation
-- `cases.html` — all 16 curriculum collections and proposed cases
-- `case.html?id=001` through `case.html?id=048` — three investigations for each of the 16 chapters
-- `case-data.js` — case-specific content, preview markup, hints and validation type
+- `index.html` — home: the 16 chapters as books on a shelf. Choosing a spine opens that chapter's three cases below it.
+- `cases.html` — all 48 cases as a stack of chapter rows, with progress, a filter, and export/import/reset tools
+- `case.html?id=001` through `case.html?id=048` — one case each: brief, CSS editor, previews, hints and check
+- `field-guide.html` — three lessons per chapter, chapter reviews, progress summaries and the Chapter 09 Flexbox lab
+
+## Main files
+
+- `case-data.js` — case content, preview markup, hints and validation type
 - `case-engine.js` — shared editor, preview, hints, checking, reset and resolution behavior
-- `field-guide.html` — three detailed lessons per chapter, chapter reviews, progress summaries and the Chapter 09 interactive Control Room
+- `curriculum-data.js` — the 16 chapters and which cases belong to each
+- `progress.js` — local progress, resume, export and import
+- `shelf.js` — the home page shelf
+- `shelf.css` — the theme, built from `DESIGN.md`; `styles.css` provides the underlying layout
 
 ## Included behavior
 
@@ -32,7 +43,9 @@ Then visit `http://localhost:8000`.
 - Specific unresolved feedback and a complete resolution report
 - Local draft, hint, and completion persistence
 - Reset confirmation, replay, keyboard support, responsive mobile tabs, and reduced-motion support
-- Responsive navigation, collection filtering, and Field Guide search
+- Home page shelf that opens a chapter in place, and lies down into a stack on phones
+- Chapter colors that follow you from the shelf onto case and Field Guide pages
+- Responsive navigation, case filtering, and Field Guide search
 - Flexbox controls for direction, wrapping, justification and alignment with synchronized generated CSS
 - Sandboxed iframe previews that support complete multi-selector CSS without affecting the Casebook interface
 - Three-question chapter reviews with answer explanations and saved completion state
@@ -93,4 +106,10 @@ The site itself still requires no dependencies or build step.
 
 ## Development guide
 
-See [Development and maintenance](docs/DEVELOPMENT.md) for setup, source files, implementation limits, editing instructions, verification, and deployment.
+See [Development and maintenance](docs/DEVELOPMENT.md) for setup, source files, editing instructions, verification, and deployment. The manual QA checklist is [TESTING.md](TESTING.md).
+
+## Decisions
+
+Architecture decisions are recorded in [`docs/adr/`](docs/adr/):
+
+- [ADR-0001: How the theme stylesheet overrides the legacy stylesheet](docs/adr/0001-theme-stylesheet-layering.md) — proposed; tracked in [issue #1](https://github.com/tinapaaay/CSS_Casebook_MVP_v1/issues/1)

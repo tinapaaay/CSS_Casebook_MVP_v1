@@ -2,7 +2,7 @@
 
 ## Run locally
 
-From the repository root, run `python3 -m http.server 5500`, then open [localhost:5500](http://localhost:5500). Python 3 is only a development-server option; VS Code Live Server also works. Stop the server with Ctrl+C. No package installation or build is required to serve this checkout.
+From the repository root, run `python3 -m http.server 8000`, then open [localhost:8000](http://localhost:8000). Python 3 is only a development-server option; VS Code Live Server also works. Stop the server with Ctrl+C. No package installation or build is required to serve this checkout.
 
 ## Implementation and boundaries
 
@@ -10,11 +10,34 @@ Four HTML routes share curriculum data, a reusable case engine, and local progre
 
 ## Make changes
 
-Edit exercises in `case-data.js`, curriculum in `curriculum-data.js`, editor/check behavior in `case-engine.js`, progress import/export in `progress.js`, guide behavior in `field-guide.js`, and Flexbox controls in `flexbox-lab.js`.
+Edit exercises in `case-data.js`, curriculum in `curriculum-data.js`, editor/check behavior in `case-engine.js`, progress import/export in `progress.js`, guide behavior in `field-guide.js`, Flexbox controls in `flexbox-lab.js`, and the home shelf in `shelf.js`.
+
+### Changing the design
+
+[`DESIGN.md`](../DESIGN.md) is the source of truth for colors, type, radii and components. `shelf.css` implements it as CSS custom properties and loads after `styles.css`, which still provides structural layout. When a change adds or alters a color, type level, shape or component, update `DESIGN.md` in the same change and lint it:
+
+```bash
+npx -y @google/design.md@0.4.0 lint --format json DESIGN.md
+```
+
+Aim for 0 errors and 0 warnings.
+
+`shelf.css` currently uses `!important` in its type reset layer to beat fonts and uppercase that `styles.css` hard-codes. [ADR-0001](adr/0001-theme-stylesheet-layering.md) and [issue #1](https://github.com/tinapaaay/CSS_Casebook_MVP_v1/issues/1) describe the plan to remove that. Until then, if `styles.css` wins somewhere, override it in `shelf.css` rather than editing the old rule's font or color.
+
+### Adding a chapter
+
+A new chapter needs all four of these, or the shelf and colors break:
+
+1. An entry in `curriculum-data.js` with three case IDs, and those cases in `case-data.js`.
+2. A `chapter-NN` color and a `spine-NN` component in `DESIGN.md`. Choose a color that keeps its text at 7:1 or better; the lint checks this.
+3. A `[data-chapter="NN"] { --tint: …; }` rule in `shelf.css` (add `--on-tint` for a dark color).
+4. A spine `<button>` in the `#shelf` group in `index.html`, plus a height in the `.spine:nth-child()` pattern in `shelf.css`.
 
 ## Source map
 
-- [`TESTING.md`](../TESTING.md)
+- [`DESIGN.md`](../DESIGN.md) — design system
+- [`TESTING.md`](../TESTING.md) — manual QA checklist
+- [`docs/adr/`](adr/) — architecture decisions
 - [`case-data.js`](../case-data.js)
 - [`case-engine.js`](../case-engine.js)
 - [`case.html`](../case.html)
@@ -33,16 +56,22 @@ Edit exercises in `case-data.js`, curriculum in `curriculum-data.js`, editor/che
 
 ## Verification
 
-Run `node --test tests/progress.cjs` for the dependency-free progress suite. The [README](../README.md) and [TESTING.md](../TESTING.md) explain optional Playwright browser regressions.
+Run `node --test tests/progress.cjs` for the dependency-free progress suite, and lint `DESIGN.md` after any design change. The [README](../README.md) and [TESTING.md](../TESTING.md) explain optional Playwright browser regressions.
 
-1. Open the library, apply filters, and launch a case. Change CSS, compare Original/Current/Target, use hints, check, and reset.
+Run `tests/browser.cjs` in a browser window that has focus. Cases 016 and 031 check `:focus` outlines, and they fail in a background or unfocused window even when the fix is correct.
+
+1. On the home page, choose a few spines and confirm each opens its chapter. Open the Cases page, apply filters, and launch a case. Change CSS, compare Original/Current/Target, use hints, check, and reset.
 2. Refresh a draft/completed case, finish a lesson/review, and inspect progress. Test imports only after exporting a backup.
 3. Check the Flexbox Control Room and keyboard/mobile workspace tabs. Follow existing TESTING.md for full coverage.
 4. Inspect the browser console and Network panel for missing assets or script errors; check keyboard access, phone width, and 200% zoom.
 
 ## Deployment
 
-Serve the tracked HTML, CSS, JavaScript, and required assets from a static host, preserving relative paths and filename case. There is no application server or environment-variable configuration in this checkout. Verify the actual deployment URL, external resources, and the checks below after publishing. A repository existing on GitHub does not by itself prove Pages is enabled.
+The site is published with GitHub Pages from the root of the `main` branch: <https://tinapaaay.github.io/CSS_Casebook_MVP_v1/>. Merging to `main` triggers a rebuild, usually live within a couple of minutes. There is no build step, application server or environment configuration.
+
+Scripts and stylesheets are linked with `?v=N` query strings. When you change one, bump its number in every HTML page that links it so returning visitors don't get a cached old copy.
+
+Paths are relative and the site lives under `/CSS_Casebook_MVP_v1/`, so never start a link or asset path with `/`. After publishing, open the live URL and check the home page, one case and the Field Guide.
 
 ## Keep documentation current
 
