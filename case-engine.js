@@ -124,7 +124,7 @@ function initializeCase(data) {
         mode,
       );
     } else {
-      caption.textContent = "Current — your live result";
+      caption.textContent = "Your CSS, live";
       renderPreview(editor.value, mode);
     }
   }
@@ -141,13 +141,13 @@ function initializeCase(data) {
       .slice(0, hintCount)
       .map(
         ([title, text], index) =>
-          `<article class="hint"><strong>Hint ${index + 1} — ${title}</strong><p>${text}</p></article>`,
+          `<article class="hint"><strong>${title}</strong><p>${text}</p></article>`,
       )
       .join("");
     hintButton.textContent =
       hintCount < data.hints.length
-        ? `Request hint ${hintCount + 1} →`
-        : "All hints revealed";
+        ? `Show hint ${hintCount + 1}`
+        : "No more hints";
     hintButton.disabled = hintCount >= data.hints.length;
     hideHintsButton.hidden = hintCount === 0;
     hintList.hidden = false;
@@ -598,7 +598,7 @@ function initializeCase(data) {
         },
       );
     document.querySelector("#preview-caption").textContent =
-      "Current — your live result";
+      "Your CSS, live";
     draftStatus.textContent =
       editor.value === data.starterCSS ? "Starter file" : "Draft saved";
     updateLineNumbers();
@@ -640,7 +640,7 @@ function initializeCase(data) {
         ? { ok: false, message: syntax.error }
         : validateRenderedResult();
       if (result.ok) {
-        setFeedback("success", "Case resolved.", data.successText);
+        setFeedback("success", "Fixed.", data.successText);
         document.querySelector("#submitted-solution").textContent =
           editor.value;
         resolution.hidden = false;
@@ -654,8 +654,8 @@ function initializeCase(data) {
       } else {
         setFeedback(
           "error",
-          "Case remains unresolved.",
-          ` ${result.message} Your edits have been preserved.`,
+          "Not fixed yet.",
+          ` ${result.message}`,
         );
       }
       checking = false;
@@ -682,8 +682,8 @@ function initializeCase(data) {
     renderMode("current");
     setFeedback(
       "",
-      "Awaiting inspection.",
-      " Edit the CSS, then check your fix.",
+      "Not checked yet.",
+      " Edit the CSS, then check it.",
     );
     saveState();
   }
@@ -762,28 +762,23 @@ function populateCaseContent(data) {
   document.querySelector('meta[name="description"]').content =
     `CSS Casebook Case ${data.id}: ${data.title}.`;
   document.querySelector("#header-case-id").textContent = `Case ${data.id}`;
-  document.querySelector("#header-chapter").textContent = `/ ${data.chapter}`;
-  document.querySelector("#file-code").textContent =
-    `Case file ${data.fileCode}`;
+  const chapterName = data.chapter.replace(/^CH\d+\s*/, "");
+  document.body.dataset.chapter = data.chapter.slice(2, 4);
+  document.querySelector("#header-chapter").textContent = chapterName;
+  document.querySelector("#band-chapter").textContent =
+    `Chapter ${data.chapter.slice(2, 4)}, ${chapterName}`;
   document.querySelector("#case-title").textContent = data.title;
   document.querySelector("#case-tags").innerHTML =
-    `<span>${data.topic}</span><span>${data.level}</span><span>${data.duration}</span>${data.isTransferCase ? "<span>TRANSFER CHALLENGE</span>" : ""}`;
+    `<span>${data.level}</span><span>${data.duration}</span>${data.isTransferCase ? "<span>Transfer challenge</span>" : ""}`;
   document.querySelector("#case-objective").textContent = data.isTransferCase
     ? `${data.objective} ${data.transferPrompt}`
     : data.objective;
-  const method = document.querySelector("#investigation-method");
-  if (method) {
-    const property = String(data.expectedProperty || "the relevant CSS rule")
-      .replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
-    method.innerHTML = `<strong>Debug method</strong><span>1. Observe the failure</span><span>2. Inspect <code>${property}</code></span><span>3. Recheck the constraint after editing</span>`;
-  }
   document.querySelector("#incident-title").textContent = data.incidentTitle;
   document.querySelector("#incident-text").textContent = data.incident;
   document.querySelector("#evidence-list").innerHTML = data.evidence
     .map(([term, detail]) => `<div><dt>${term}</dt><dd>${detail}</dd></div>`)
     .join("");
-  document.querySelector("#closed-label").textContent =
-    `Case #${data.id} — Closed`;
+  document.querySelector("#closed-label").textContent = `Case ${data.id}`;
   document.querySelector("#root-cause").textContent = data.rootCause;
   document.querySelector("#remember").textContent = data.remember;
   document.querySelector("#recommended-solution").textContent =
@@ -797,7 +792,7 @@ function populateCaseContent(data) {
     .join("");
   const guideLink = document.querySelector("#guide-link");
   guideLink.href = data.guideHref;
-  guideLink.textContent = data.guideLabel;
+  guideLink.textContent = data.guideLabel.replace(/\s*[→←]\s*/g, "").trim();
   const chapterCode = data.chapter.slice(2, 4);
   const chapterAnchor =
     chapterCode === "09" ? "#flexbox" : `#chapter-${chapterCode}`;
@@ -819,14 +814,14 @@ function populateCaseContent(data) {
   chapterLink.href = `field-guide.html${chapterAnchor}`;
   if (previous) {
     previousLink.href = `case.html?id=${previous.id}`;
-    previousLink.textContent = `← Case #${previous.id}`;
+    previousLink.textContent = `Case ${previous.id}`;
     previousLink.hidden = false;
   } else {
     previousLink.hidden = true;
   }
   if (next) {
     topNextLink.href = `case.html?id=${next.id}`;
-    topNextLink.textContent = `Case #${next.id} →`;
+    topNextLink.textContent = `Case ${next.id}`;
     topNextLink.hidden = false;
   } else {
     topNextLink.hidden = true;
@@ -834,7 +829,7 @@ function populateCaseContent(data) {
   const nextCaseLink = document.querySelector("#next-case-link");
   if (next) {
     nextCaseLink.href = `case.html?id=${next.id}`;
-    nextCaseLink.textContent = `Open Case #${next.id} →`;
+    nextCaseLink.textContent = `Next: case ${next.id}`;
     nextCaseLink.hidden = false;
   } else {
     nextCaseLink.hidden = true;

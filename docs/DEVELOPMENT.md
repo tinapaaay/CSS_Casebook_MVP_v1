@@ -23,11 +23,12 @@ Edit exercises in `case-data.js`, curriculum in `curriculum-data.js`, editor/che
 - [`field-guide.html`](../field-guide.html)
 - [`field-guide.js`](../field-guide.js)
 - [`flexbox-lab.js`](../flexbox-lab.js)
-- [`hero.svg`](../hero.svg)
+- [`hero.svg`](../hero.svg) — image used inside a case preview
 - [`index.html`](../index.html)
 - [`library.js`](../library.js)
-- [`neumorphism.css`](../neumorphism.css)
 - [`progress.js`](../progress.js)
+- [`shelf.css`](../shelf.css) — theme from [`DESIGN.md`](../DESIGN.md)
+- [`shelf.js`](../shelf.js) — home page shelf
 - [`styles.css`](../styles.css)
 
 ## Verification

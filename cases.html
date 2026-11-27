@@ -5,103 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Browse CSS Casebook investigations across sixteen CSS collections."
+      content="All 48 CSS Casebook cases, grouped into 16 chapters."
     />
-    <title>Case Library | CSS Casebook</title>
+    <title>Cases | CSS Casebook</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Fragment+Mono&family=Instrument+Sans:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="neumorphism.css?v=2" />
+    <link rel="stylesheet" href="shelf.css?v=1" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="public-header">
-      <a class="brand" href="index.html"
-        ><span class="brand-mark">CC</span><span>CSS Casebook</span></a
-      >
+      <a class="brand" href="index.html">CSS Casebook</a>
       <nav aria-label="Primary navigation">
-        <a href="index.html">Home</a
-        ><a class="is-current" aria-current="page" href="cases.html"
-          >Case Library</a
-        ><a href="field-guide.html">Field Guide</a>
+        <a class="is-current" aria-current="page" href="cases.html">Cases</a
+        ><a href="field-guide.html">Field guide</a>
       </nav>
-      <a class="header-cta" data-continue-link href="case.html?id=001"
-        >Continue case</a
-      >
     </header>
     <main id="main-content" class="public-main library-page">
-      <header class="page-heading">
-        <p class="eyebrow">Investigation archive</p>
-        <h1>Case Library</h1>
-        <p>
-          Explore CSS through focused debugging cases across the complete
-          curriculum. Every chapter now has three playable investigations.
-        </p>
+      <header class="library-head">
+        <h1>Cases</h1>
+        <div class="library-progress" aria-label="Your progress">
+          <strong data-progress-count>0 of 48 fixed</strong>
+          <div
+            class="progress-bar"
+            data-progress-bar
+            role="progressbar"
+            aria-label="Cases fixed"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <i></i>
+          </div>
+          <span data-chapter-progress>0 of 16 chapters finished</span>
+        </div>
       </header>
       <div class="library-tools">
-          <label
-          >Filter cases
+        <label
+          >Show
           <select id="collection-filter">
-            <option value="all">All 16 chapters</option>
-            <option value="in-progress">In progress</option>
-            <option value="completed">Completed</option>
+            <option value="all">All cases</option>
+            <option value="in-progress">Started</option>
+            <option value="completed">Fixed</option>
             <option value="not-started">Not started</option>
           </select></label
         >
-        <p>
-          <strong>48</strong> playable cases · <strong>16</strong> collections
-          mapped
-        </p>
-      </div>
-      <div class="progress-summary" aria-label="Case progress">
-        <div>
-          <strong data-progress-count>0 of 48 cases complete</strong
-          ><span data-progress-percent>0%</span>
-        </div>
-        <div
-          class="progress-bar"
-          data-progress-bar
-          role="progressbar"
-          aria-label="Case completion"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-        >
-          <i></i>
+        <div class="progress-actions" aria-label="Progress file">
+          <button class="text-button" id="export-progress" type="button">
+            Export progress
+          </button>
+          <button class="text-button" id="import-progress" type="button">
+            Import progress
+          </button>
+          <button class="text-button is-danger" id="reset-progress" type="button">
+            Reset progress
+          </button>
+          <input id="progress-file" type="file" accept="application/json" hidden />
         </div>
       </div>
-      <p class="chapter-progress" data-chapter-progress>0 of 16 chapters complete</p>
-      <div class="progress-actions" aria-label="Progress tools">
-        <button class="secondary-button" id="export-progress" type="button">
-          Export progress
-        </button>
-        <button class="secondary-button" id="import-progress" type="button">
-          Import progress
-        </button>
-        <button class="text-button" id="reset-progress" type="button">
-          Reset all progress
-        </button>
-        <input id="progress-file" type="file" accept="application/json" hidden />
-      </div>
-      <section class="case-library-grid" id="case-library"></section>
       <p
-        class="library-results"
+        class="library-results visually-hidden"
         id="library-results"
         role="status"
         aria-live="polite"
       ></p>
+      <section class="book-stack" id="case-library" aria-label="Chapters"></section>
     </main>
     <footer class="public-footer">
-      <span>CSS Casebook · Case Library</span
-      ><a href="field-guide.html">Open Field Guide →</a>
+      <span>CSS Casebook</span><a href="field-guide.html">Field guide</a>
     </footer>
     <script src="curriculum-data.js?v=1"></script>
     <script src="case-data.js?v=7"></script>
-    <script src="progress.js?v=5"></script>
-    <script src="library.js?v=6"></script>
+    <script src="progress.js?v=6"></script>
+    <script src="library.js?v=7"></script>
   </body>
 </html>

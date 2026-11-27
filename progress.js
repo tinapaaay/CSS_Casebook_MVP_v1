@@ -71,10 +71,10 @@
   function render() {
     const state = getState();
     document.querySelectorAll("[data-progress-count]").forEach((node) => {
-      node.textContent = `${state.completed.length} of ${state.total} cases complete`;
+      node.textContent = `${state.completed.length} of ${state.total} fixed`;
     });
     document.querySelectorAll("[data-chapter-progress]").forEach((node) => {
-      node.textContent = `${state.chaptersCompleted} of ${state.chaptersTotal} chapters complete`;
+      node.textContent = `${state.chaptersCompleted} of ${state.chaptersTotal} chapters finished`;
     });
     document.querySelectorAll("[data-progress-percent]").forEach((node) => {
       node.textContent = `${state.percent}%`;
@@ -86,30 +86,17 @@
     document.querySelectorAll("[data-continue-link]").forEach((link) => {
       if (state.allComplete) {
         link.href = "cases.html";
-        link.textContent = "All cases resolved · Review library →";
+        link.textContent = "Review your cases";
         return;
       }
       const target = state.resumeId || state.nextId || "001";
       link.href = `case.html?id=${target}`;
       link.textContent = state.resumeId
-        ? `Resume Case #${target} →`
+        ? `Resume case ${target}`
         : state.completed.length
-          ? `Recommended Case #${target} →`
-          : "Start the first case →";
+          ? `Next: case ${target}`
+          : "Start case 001";
     });
-    const resume = document.querySelector("#resume-card");
-    if (resume) {
-      resume.hidden = false;
-      if (state.allComplete) {
-        resume.innerHTML = `<p class="eyebrow">All investigations resolved</p><strong>All ${state.total} cases resolved ✓</strong><p>${state.chaptersCompleted} of ${state.chaptersTotal} chapters complete. Finish lessons and reviews in the Field Guide to complete each chapter.</p><a class="secondary-button button-link" href="cases.html">Review the Case Library →</a>`;
-        return;
-      }
-      const target = state.resumeId || state.nextId || "001";
-      const title = state.resumeId ? `Resume Case #${target}` : state.completed.length ? `Case #${target} is recommended` : "Begin with Case #001";
-      const description = state.resumeId ? `${state.completed.length} of ${state.total} cases complete. Pick up where you left off.` : state.completed.length ? `${state.completed.length} of ${state.total} cases complete. Continue through the curriculum.` : "Solve the first investigation to start building your case history.";
-      const label = state.resumeId ? "Resume investigation →" : state.completed.length ? "Open recommended case →" : "Open Case 001 →";
-      resume.innerHTML = `<p class="eyebrow">Your local progress</p><strong>${title}</strong><p>${description}</p><p class="chapter-progress">${state.chaptersCompleted} of ${state.chaptersTotal} chapters complete · Lessons, review &amp; cases</p><a class="secondary-button button-link" href="case.html?id=${target}">${label}</a>`;
-    }
   }
 
   function scopedStorage() {
