@@ -11,29 +11,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Fragment+Mono&family=Instrument+Sans:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="neumorphism.css?v=2" />
+    <link rel="stylesheet" href="shelf.css?v=1" />
   </head>
   <body>
     <a class="skip-link" href="#case-app">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="index.html" aria-label="CSS Casebook home"
-        ><span class="brand-mark" aria-hidden="true">CC</span
-        ><span>CSS Casebook</span></a
-      ><a class="back-link" href="cases.html">← Back to cases</a>
+      <a class="brand" href="index.html">CSS Casebook</a
+      ><a class="back-link" href="cases.html">All cases</a>
       <p class="case-count">
         <strong id="header-case-id">Case</strong>
         <span id="header-chapter"></span>
       </p>
     </header>
     <main id="case-app" hidden>
-      <section class="case-heading" aria-labelledby="case-title">
+      <section class="case-heading chapter-band" aria-labelledby="case-title">
         <div>
-          <p class="eyebrow" id="file-code"></p>
+          <p class="band-chapter" id="band-chapter"></p>
           <h1 id="case-title"></h1>
+          <p class="case-objective" id="case-objective"></p>
         </div>
         <div class="case-tags" id="case-tags" aria-label="Case details"></div>
       </section>
@@ -46,27 +45,22 @@
           class="case-navigation-link"
           id="previous-case-link"
           href="cases.html"
-          >← Previous case</a
+          >Previous case</a
         >
         <span id="case-position">Case 1 of 3</span>
         <a
           class="case-navigation-link"
           id="chapter-overview-link"
           href="field-guide.html"
-          >Chapter overview</a
+          >Chapter guide</a
         >
         <a
           class="case-navigation-link next"
           id="top-next-case-link"
           href="cases.html"
-          >Next case →</a
+          >Next case</a
         >
       </nav>
-      <section class="objective-strip" aria-label="Case objective">
-        <span>Objective</span>
-        <p id="case-objective"></p>
-      </section>
-      <p class="investigation-method" id="investigation-method"></p>
       <nav class="mobile-tabs" aria-label="Workspace panels" role="tablist">
         <button
           class="mobile-tab is-active"
@@ -97,7 +91,7 @@
           tabindex="-1"
           data-tab="clues"
         >
-          Clues
+          Brief
         </button>
       </nav>
       <div class="workspace">
@@ -111,15 +105,14 @@
           tabindex="0"
         >
           <section class="paper-section">
-            <div class="section-kicker"><span>01</span> Incident report</div>
             <h2 id="incident-title"></h2>
             <p id="incident-text"></p>
             <dl class="evidence-list" id="evidence-list"></dl>
           </section>
           <section class="paper-section evidence-section">
-            <div class="section-kicker"><span>02</span> Evidence</div>
+            <h3 class="notes-heading">Hints</h3>
             <button class="text-button" id="hint-button" type="button">
-              Request hint <span>→</span>
+              Show a hint
             </button>
             <div id="hints" class="hints" aria-live="polite"></div>
             <button
@@ -143,10 +136,7 @@
             tabindex="0"
           >
             <header class="panel-header">
-              <div>
-                <p class="panel-label">Evidence item A</p>
-                <h2 id="editor-title">CSS editor</h2>
-              </div>
+              <h2 id="editor-title">CSS</h2>
               <span class="draft-status" id="draft-status">Starter file</span>
             </header>
             <div class="code-shell">
@@ -163,9 +153,8 @@
                 autocomplete="off"
               ></textarea>
             </div>
-            <p class="editor-help" id="editor-help">
-              Tab follows normal keyboard navigation. Use two spaces for CSS
-              indentation, then move to the next control when ready.
+            <p class="editor-help visually-hidden" id="editor-help">
+              Tab moves to the next control. Type two spaces to indent.
             </p>
             <p class="syntax-message" id="syntax-message" role="status"></p>
           </section>
@@ -179,10 +168,7 @@
             tabindex="0"
           >
             <header class="panel-header preview-header">
-              <div>
-                <p class="panel-label">Evidence item B</p>
-                <h2 id="preview-title">Rendered preview</h2>
-              </div>
+              <h2 id="preview-title">Preview</h2>
               <div
                 class="view-switcher"
                 role="group"
@@ -196,7 +182,7 @@
             </header>
             <div class="preview-wrap">
               <p class="preview-caption" id="preview-caption">
-                Current — your live result
+                Your CSS, live
               </p>
               <div
                 class="preview-stage iframe-preview-stage"
@@ -223,13 +209,10 @@
           aria-live="polite"
         >
           <span class="status-mark" aria-hidden="true">?</span>
-          <p>
-            <strong>Awaiting inspection.</strong> Edit the CSS, then check your
-            fix.
-          </p>
+          <p><strong>Not checked yet.</strong> Edit the CSS, then check it.</p>
         </div>
         <button class="primary-button" id="check-button" type="button">
-          Check fix <span>→</span>
+          Check fix
         </button>
       </section>
       <section
@@ -240,30 +223,29 @@
       >
         <header class="resolution-header">
           <p id="closed-label"></p>
-          <h2 id="resolution-title">Investigation complete</h2>
+          <h2 id="resolution-title">Fixed</h2>
         </header>
         <div class="resolution-grid">
           <div>
-            <p class="section-kicker"><span>01</span> Root cause</p>
+            <h3>Why it broke</h3>
             <p id="root-cause"></p>
           </div>
           <div>
-            <p class="section-kicker"><span>02</span> Remember</p>
+            <h3>Remember</h3>
             <p id="remember"></p>
           </div>
         </div>
         <div class="solution-compare">
           <div>
-            <h3>Your submitted solution</h3>
+            <h3>Your CSS</h3>
             <pre id="submitted-solution"></pre>
           </div>
           <div>
-            <h3>Recommended solution</h3>
+            <h3>Suggested CSS</h3>
             <pre id="recommended-solution"></pre>
           </div>
         </div>
         <div class="concept-check">
-          <p class="section-kicker"><span>03</span> Quick deduction</p>
           <h3 id="concept-question"></h3>
           <div class="choice-row" id="concept-choices"></div>
           <p id="concept-feedback" aria-live="polite"></p>
@@ -275,28 +257,20 @@
           <div class="resolution-next-actions">
             <a class="secondary-button button-link" id="guide-link"></a
             ><a class="primary-button button-link" id="next-case-link" hidden
-              >Next case →</a
+              >Next case</a
             >
           </div>
         </footer>
       </section>
     </main>
     <section class="case-error" id="case-error" hidden>
-      <p class="eyebrow">Case file unavailable</p>
-      <h1>Investigation not found</h1>
-      <p>Choose an available investigation from the Case Library.</p>
-      <a class="primary-button button-link" href="cases.html"
-        >Open Case Library</a
-      >
+      <h1>There's no case with that number</h1>
+      <a class="primary-button button-link" href="cases.html">See all cases</a>
     </section>
     <dialog id="reset-dialog">
       <form method="dialog">
-        <p class="eyebrow">Reset investigation</p>
-        <h2>Discard your edited CSS?</h2>
-        <p>
-          This restores the starter code. Revealed hints and recorded completion
-          will remain.
-        </p>
+        <h2>Discard your edits?</h2>
+        <p>The starter CSS comes back. Hints and progress stay.</p>
         <div class="dialog-actions">
           <button value="cancel" class="secondary-button">Keep editing</button
           ><button value="confirm" class="danger-button">Discard edits</button>
@@ -304,8 +278,8 @@
       </form>
     </dialog>
     <script src="curriculum-data.js?v=1"></script>
-    <script src="progress.js?v=5"></script>
+    <script src="progress.js?v=6"></script>
     <script src="case-data.js?v=7"></script>
-    <script src="case-engine.js?v=12"></script>
+    <script src="case-engine.js?v=14"></script>
   </body>
 </html>

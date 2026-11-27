@@ -50,14 +50,25 @@ The project has no build step. Before handoff, run `node --check` on the JavaScr
 
 All 16 chapters now contain three playable cases each. The cases share the reusable editor, rendered preview, progressive hints, validation and resolution flow while keeping chapter-specific objectives and CSS concepts.
 
-## Neumorphic edition — 24 October 2026
+## Design system
 
-The four interface pages share `neumorphism.css`: sage surfaces, raised controls,
-recessed inputs and progress tracks, visible focus states, reduced-motion support,
-and DM Sans throughout. Case previews remain isolated so their CSS exercises retain
-the typography and layout being investigated.
+The visual design is documented in [`DESIGN.md`](DESIGN.md): "Casebook Shelf",
+where the 16 chapters are clothbound books on a shelf and each chapter's cloth
+color follows you onto its case and Field Guide pages. `shelf.css` applies those
+tokens on top of the structural layout in `styles.css`, and `shelf.js` runs the
+home page shelf. Case previews stay isolated in sandboxed iframes, so their CSS
+exercises keep the typography and layout being investigated.
 
-This edition also corrects seven rejected recommended solutions (007, 010, 016,
+Read `DESIGN.md` before changing any color, font, radius or component, and update
+it in the same change. Lint it with:
+
+```bash
+npx -y @google/design.md@0.4.0 lint --format json DESIGN.md
+```
+
+## Earlier fixes — 24 October 2026
+
+The October edition corrects seven rejected recommended solutions (007, 010, 016,
 022, 023, 029, 044), shows the preview when checking a fix on mobile, preserves
 checkbox states, and includes the missing hero illustration as a local SVG.
 Chapter completion is shown separately from case completion. Progress imports are

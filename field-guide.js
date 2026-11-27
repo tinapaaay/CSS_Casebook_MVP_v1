@@ -1136,6 +1136,7 @@ function chapterId(number) {
 }
 
 function renderNav(query = "") {
+  const currentNumber = document.body.dataset.chapter;
   const needle = query.trim().toLowerCase();
   guideNav.innerHTML = chapters
     .filter((chapter) =>
@@ -1145,7 +1146,7 @@ function renderNav(query = "") {
     )
     .map(
       (chapter) =>
-        `<a href="#${chapterId(chapter.number)}"><span>${chapter.number}</span>${chapter.title}<small>${chapter.lessons.length} lessons</small></a>`,
+        `<a href="#${chapterId(chapter.number)}" data-chapter="${chapter.number}"${chapter.number === currentNumber ? ' class="is-current" aria-current="page"' : ""}><span>${chapter.number}</span>${chapter.title}</a>`,
     )
     .join("");
 }
@@ -1158,7 +1159,7 @@ function renderLesson(lesson, index, chapterNumber) {
     "Can you explain the result before changing another declaration?",
   ];
   const sectionId = `${chapterId(chapterNumber)}-lesson-${index + 1}`;
-  return `<section id="${sectionId}"><div class="lesson-heading"><p class="lesson-number">Lesson ${String(index + 1).padStart(2, "0")}</p><button class="lesson-complete-toggle" type="button" data-lesson-id="${chapterNumber}-${index + 1}" aria-pressed="false">Mark lesson complete</button></div><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note"><strong>Remember:</strong> ${memory}</p></section>`;
+  return `<section id="${sectionId}"><div class="lesson-heading"><p class="lesson-number">Lesson ${index + 1}</p><button class="lesson-complete-toggle" type="button" data-lesson-id="${chapterNumber}-${index + 1}" aria-pressed="false">Mark lesson complete</button></div><h2>${title}</h2><p>${body}</p>${code ? `<pre>${escapeHTML(code)}</pre>` : ""}<div class="lesson-practice"><div><strong>Try it</strong><p>${extension[0]}</p></div><div><strong>Watch for</strong><p>${extension[1]}</p></div><div><strong>Check yourself</strong><p>${extension[2]}</p></div></div><p class="memory-note">${memory}</p></section>`;
 }
 
 function lessonProgressKey(lessonId) {
@@ -1202,17 +1203,17 @@ function updateChapterSummary(chapter) {
   const reviewProgress = document.querySelector("#review-progress");
   const caseProgress = document.querySelector("#case-progress");
   if (stamp) {
-    stamp.textContent = complete ? "Chapter closed" : "In progress";
+    stamp.textContent = complete ? "Finished" : "In progress";
     stamp.classList.toggle("is-complete", complete);
   }
   if (status)
     status.textContent = complete
-      ? `Chapter ${chapter.number} is complete. Lessons, review and all three chapter cases are finished.`
-      : `Finish the lessons, chapter review and all three chapter cases to close this chapter.`;
+      ? `You've finished the lessons, the review and all three cases.`
+      : `Finish the lessons, the review and the three cases to finish this chapter.`;
   if (reviewProgress)
-    reviewProgress.textContent = `${reviewDone ? "✓" : "→"} Chapter review ${reviewDone ? "completed" : "pending"}`;
+    reviewProgress.textContent = `Review: ${reviewDone ? "passed" : "not yet"}`;
   if (caseProgress)
-    caseProgress.textContent = `${caseDone ? "✓" : "→"} Cases ${completedCases}/${caseTotal} complete`;
+    caseProgress.textContent = `Cases: ${completedCases} of ${caseTotal} fixed`;
   localStorage.setItem(
     `css-casebook-ch${chapter.number}-status`,
     complete ? "completed" : "in-progress",
@@ -1225,7 +1226,7 @@ function updateLessonSummary(chapter) {
   ).length;
   const status = document.querySelector("#lessons-status");
   if (status)
-    status.textContent = `${completed === chapter.lessons.length ? "✓" : "→"} ${completed}/${chapter.lessons.length} lessons marked complete`;
+    status.textContent = `Lessons: ${completed} of ${chapter.lessons.length} done`;
   updateChapterSummary(chapter);
   window.updateFlexboxChapterProgress?.();
 }
@@ -1264,7 +1265,7 @@ function renderReview() {
     .sort((left, right) => left.sort - right.sort)
     .map(({ label, value }) => `<label><input type="radio" name="${value.name}" value="${value.answer}"> ${label}</label>`)
     .join("");
-  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Close the Flexbox file</h2><p>Answer five questions. Score at least 4/5 to complete the review; explanations remain available after every attempt.</p><form id="flexbox-review"><fieldset data-question="1"><legend><span>01</span> Which property establishes a flex formatting context?</legend>${options([["<code>position: flex</code>", { name: "q1", answer: "a" }], ["<code>display: flex</code>", { name: "q1", answer: "b" }], ["<code>layout: flex</code>", { name: "q1", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="2"><legend><span>02</span> With <code>flex-direction: row</code>, which property controls vertical alignment?</legend>${options([["<code>align-items</code>", { name: "q2", answer: "a" }], ["<code>justify-content</code>", { name: "q2", answer: "b" }], ["<code>flex-wrap</code>", { name: "q2", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="3"><legend><span>03</span> What changes when <code>flex-direction</code> becomes <code>column</code>?</legend>${options([["Flexbox becomes two-dimensional", { name: "q3", answer: "a" }], ["The main axis becomes vertical", { name: "q3", answer: "b" }], ["The cross axis disappears", { name: "q3", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="4"><legend><span>04</span> Which value allows items to move onto another flex line?</legend>${options([["<code>flex-wrap: wrap</code>", { name: "q4", answer: "a" }], ["<code>flex-flow: nowrap</code>", { name: "q4", answer: "b" }], ["<code>align-items: stretch</code>", { name: "q4", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="5"><legend><span>05</span> Which shorthand combines direction and wrapping?</legend>${options([["<code>flex: row wrap</code>", { name: "q5", answer: "a" }], ["<code>flex-flow: row wrap</code>", { name: "q5", answer: "b" }], ["<code>flex-direction: row wrap</code>", { name: "q5", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="review-reset" type="button">Reset answers</button></div><p class="review-status" id="review-status" role="status" aria-live="polite">Answer all five questions to complete the review.</p></form></section>`;
+  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Close the Flexbox file</h2><p>Answer five questions. Score at least 4/5 to complete the review; explanations remain available after every attempt.</p><form id="flexbox-review"><fieldset data-question="1"><legend><span>01</span> Which property establishes a flex formatting context?</legend>${options([["<code>position: flex</code>", { name: "q1", answer: "a" }], ["<code>display: flex</code>", { name: "q1", answer: "b" }], ["<code>layout: flex</code>", { name: "q1", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="2"><legend><span>02</span> With <code>flex-direction: row</code>, which property controls vertical alignment?</legend>${options([["<code>align-items</code>", { name: "q2", answer: "a" }], ["<code>justify-content</code>", { name: "q2", answer: "b" }], ["<code>flex-wrap</code>", { name: "q2", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="3"><legend><span>03</span> What changes when <code>flex-direction</code> becomes <code>column</code>?</legend>${options([["Flexbox becomes two-dimensional", { name: "q3", answer: "a" }], ["The main axis becomes vertical", { name: "q3", answer: "b" }], ["The cross axis disappears", { name: "q3", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="4"><legend><span>04</span> Which value allows items to move onto another flex line?</legend>${options([["<code>flex-wrap: wrap</code>", { name: "q4", answer: "a" }], ["<code>flex-flow: nowrap</code>", { name: "q4", answer: "b" }], ["<code>align-items: stretch</code>", { name: "q4", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><fieldset data-question="5"><legend><span>05</span> Which shorthand combines direction and wrapping?</legend>${options([["<code>flex: row wrap</code>", { name: "q5", answer: "a" }], ["<code>flex-flow: row wrap</code>", { name: "q5", answer: "b" }], ["<code>flex-direction: row wrap</code>", { name: "q5", answer: "c" }]])}<p class="answer-explanation" hidden></p></fieldset><div class="review-actions"><button class="primary-button" type="submit">Check answers</button><button class="secondary-button" id="review-reset" type="button">Reset answers</button></div><p class="review-status" id="review-status" role="status" aria-live="polite">Answer all five questions to complete the review.</p></form></section>`;
 }
 
 function chapterReviewKey(number) {
@@ -1289,7 +1290,7 @@ function shuffleOptions(options) {
 function renderChapterReview(chapter) {
   const questions = chapterReviews[chapter.number] || [];
   const passingScore = chapter.reviewPassingScore;
-  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions. Score at least ${passingScore}/${questions.length} to complete the review; explanations remain available after every attempt.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${shuffleOptions(options).map(({ option, index }) => `<label><input type="radio" name="q${questionIndex + 1}" value="${index}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check review →</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
+  return `<section class="chapter-review" id="chapter-review"><p class="lesson-number">Chapter review</p><h2>Check the model before the cases</h2><p>Answer these three questions. Score at least ${passingScore}/${questions.length} to complete the review; explanations remain available after every attempt.</p><form id="chapter-review-form">${questions.map(([question, options], questionIndex) => `<fieldset data-question="${questionIndex + 1}"><legend><span>${String(questionIndex + 1).padStart(2, "0")}</span> ${escapeHTML(question)}</legend>${shuffleOptions(options).map(({ option, index }) => `<label><input type="radio" name="q${questionIndex + 1}" value="${index}"> ${escapeHTML(option)}</label>`).join("")}<p class="answer-explanation" hidden></p></fieldset>`).join("")}<div class="review-actions"><button class="primary-button" type="submit">Check answers</button><button class="secondary-button" id="chapter-review-reset" type="button">Reset answers</button></div><p class="review-status" id="chapter-review-status" role="status" aria-live="polite">Answer all three questions to complete the review.</p></form></section>`;
 }
 
 function updateChapterReviewSummary(chapter, state) {
@@ -1297,10 +1298,10 @@ function updateChapterReviewSummary(chapter, state) {
   if (!progress) return;
   const bestScore = state?.bestScore ?? state?.score ?? 0;
   progress.textContent = state?.completed
-    ? `✓ Review completed · ${bestScore}/${chapterReviews[chapter.number].length}`
+    ? `Review: passed, ${bestScore} of ${chapterReviews[chapter.number].length}`
     : state?.attempted
-      ? `→ Review in progress · best ${bestScore}/${chapterReviews[chapter.number].length}`
-      : "→ Chapter review pending";
+      ? `Review: best so far ${bestScore} of ${chapterReviews[chapter.number].length}`
+      : "Review: not yet";
 }
 
 function initializeChapterReview(chapter) {
@@ -1400,7 +1401,7 @@ function renderChapter(number) {
   const jumpLinks = chapter.lessons
     .map(
       (lesson, index) =>
-        `<a href="#${id}-lesson-${index + 1}">L${String(index + 1).padStart(2, "0")} ${lesson[0]}</a>`,
+        `<a href="#${id}-lesson-${index + 1}">${lesson[0]}</a>`,
     )
     .join("");
   const labLink = chapter.lab
@@ -1408,7 +1409,9 @@ function renderChapter(number) {
     : "";
   const next = chapters[Number(chapter.number) % chapters.length];
   article.id = id;
-  article.innerHTML = `<p class="eyebrow">Chapter ${chapter.number} · ${chapter.title}</p><h1>${chapter.title} field guide</h1><p class="guide-deck">${chapter.deck}</p><div class="chapter-brief"><div><p class="lesson-number">Learning objectives</p><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><p class="lesson-number">Before you begin</p><p>${chapter.before}</p><p><strong>Estimated chapter time:</strong> ${chapter.lessons.length * 8}–${chapter.lessons.length * 12} minutes</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : renderChapterReview(chapter)}<section class="chapter-summary" id="chapter-summary"><div class="summary-stamp" id="summary-stamp">Reference ready</div><div><p class="lesson-number">Chapter ${chapter.number} summary</p><h2>Use the model in a case</h2><p id="chapter-status-text">Review the lessons, complete the practice prompts, then test the idea against a focused debugging investigation in the Case Library.</p><ul><li id="lessons-status">✓ ${chapter.lessons.length} detailed lessons available</li><li id="review-progress">→ Chapter review pending</li><li id="case-progress">→ Practice with the chapter cases</li></ul><p class="next-chapter"><strong>Next suggested chapter:</strong> CH${next.number} ${next.title}</p></div></section><footer class="guide-case-link"><div><p class="eyebrow">Related investigation</p><h2>Continue in the Case Library</h2><p>Apply this chapter's ideas to a concrete CSS failure.</p></div><a class="primary-button button-link" href="cases.html">Browse cases →</a></footer>`;
+  document.body.dataset.chapter = chapter.number;
+  const firstCase = chapterCaseIds(chapter.number)[0] || "001";
+  article.innerHTML = `<header class="chapter-band guide-band"><p class="band-chapter">Chapter ${chapter.number}</p><h1>${chapter.title}</h1><p class="guide-deck">${chapter.deck}</p></header><div class="chapter-brief"><div><h2>You'll learn to</h2><ul>${chapter.objectives.map((item) => `<li>${item}</li>`).join("")}</ul></div><div><h2>Before you start</h2><p>${chapter.before}</p></div></div><nav class="lesson-jump" aria-label="${chapter.title} lessons">${jumpLinks}${labLink}</nav>${chapter.lessons.map((lesson, index) => renderLesson(lesson, index, chapter.number)).join("")}${chapter.lab ? renderFlexboxLab() + renderReview() : renderChapterReview(chapter)}<section class="chapter-summary" id="chapter-summary"><div><h2>Your progress <span class="summary-stamp" id="summary-stamp">In progress</span></h2><p id="chapter-status-text"></p><ul><li id="lessons-status"></li><li id="review-progress"></li><li id="case-progress"></li></ul></div><div class="summary-actions"><a class="primary-button button-link" href="case.html?id=${firstCase}">Start case ${firstCase}</a><a class="text-link" href="#${chapterId(next.number)}">Next chapter: ${next.title}</a></div></section>`;
   document.title = `Chapter ${chapter.number} ${chapter.title} | CSS Casebook`;
   renderNav(guideSearch.value);
   initializeLessonProgress(chapter);

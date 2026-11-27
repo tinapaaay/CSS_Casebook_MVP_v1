@@ -5,136 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Learn CSS by investigating realistic interface bugs."
+      content="48 broken layouts in 16 chapters. Learn CSS by fixing each one in a live editor."
     />
-    <title>CSS Casebook — Learn CSS Through Debugging</title>
+    <title>CSS Casebook</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Fragment+Mono&family=Instrument+Sans:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="neumorphism.css?v=2" />
+    <link rel="stylesheet" href="shelf.css?v=1" />
   </head>
-  <body>
+  <body class="home-page">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="public-header">
-      <a class="brand" href="index.html"
-        ><span class="brand-mark">CC</span><span>CSS Casebook</span></a
-      >
+      <a class="brand" href="index.html">CSS Casebook</a>
       <nav aria-label="Primary navigation">
-        <a class="is-current" aria-current="page" href="index.html">Home</a
-        ><a href="cases.html">Case Library</a
-        ><a href="field-guide.html">Field Guide</a>
+        <a href="cases.html">Cases</a><a href="field-guide.html">Field guide</a>
       </nav>
-      <a class="header-cta" href="case.html?id=001">Open Case 001</a>
     </header>
 
     <main id="main-content" class="public-main">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">A debugging-first CSS laboratory</p>
-          <h1>Every bug has<br />a story.</h1>
-          <p class="hero-lead">
-            Learn CSS by investigating broken interfaces, testing your theory,
-            and understanding exactly why the fix works.
+      <section class="shelf-hero" aria-labelledby="home-title">
+        <div class="shelf-intro">
+          <h1 id="home-title">CSS, one case at a time.</h1>
+          <p class="lead">
+            48 broken layouts in 16 chapters. Fix each one in a live editor.
           </p>
-          <div class="hero-actions">
-            <a
-              class="primary-button button-link"
-              data-continue-link
-              href="case.html?id=001"
-              >Start the first case →</a
-            ><a class="secondary-button button-link" href="cases.html"
-              >Browse case files</a
-            >
-          </div>
-          <p class="no-account">
-            No account required. Your progress saves on this device.
-          </p>
-          <aside class="resume-card" id="resume-card" hidden></aside>
+          <a
+            class="primary-button button-link"
+            data-continue-link
+            href="case.html?id=001"
+            >Start case 001</a
+          >
+          <p class="quiet-note">Progress saves in this browser.</p>
         </div>
-        <article class="featured-file" aria-label="Featured case">
-          <div class="file-tab">Featured investigation</div>
-          <div class="file-number">Case file <strong>001</strong></div>
-          <div class="file-art" aria-hidden="true">
-            <div class="mini-container">
-              <span class="mini-selector">.status</span
-              ><span class="mini-rule">color: #a44d2f;</span
-              ><b class="mini-badge">Approved</b>
-            </div>
-            <span class="annotation">Which rule wins?</span>
+
+        <div class="shelf-wrap">
+          <div class="shelf" id="shelf" role="group" aria-label="Chapters">
+            <button class="spine" type="button" data-chapter="01" aria-pressed="false"><span class="spine-no">01</span><span class="spine-title">CSS Fundamentals</span></button>
+            <button class="spine" type="button" data-chapter="02" aria-pressed="false"><span class="spine-no">02</span><span class="spine-title">Lists, links and borders</span></button>
+            <button class="spine" type="button" data-chapter="03" aria-pressed="false"><span class="spine-no">03</span><span class="spine-title">Design fundamentals</span></button>
+            <button class="spine" type="button" data-chapter="04" aria-pressed="false"><span class="spine-no">04</span><span class="spine-title">Units</span></button>
+            <button class="spine" type="button" data-chapter="05" aria-pressed="false"><span class="spine-no">05</span><span class="spine-title">Pseudo-classes</span></button>
+            <button class="spine" type="button" data-chapter="06" aria-pressed="false"><span class="spine-no">06</span><span class="spine-title">Color</span></button>
+            <button class="spine" type="button" data-chapter="07" aria-pressed="false"><span class="spine-no">07</span><span class="spine-title">Forms</span></button>
+            <button class="spine" type="button" data-chapter="08" aria-pressed="false"><span class="spine-no">08</span><span class="spine-title">Layouts and effects</span></button>
+            <button class="spine" type="button" data-chapter="09" aria-pressed="false"><span class="spine-no">09</span><span class="spine-title">Flexbox</span></button>
+            <button class="spine" type="button" data-chapter="10" aria-pressed="false"><span class="spine-no">10</span><span class="spine-title">Typography</span></button>
+            <button class="spine" type="button" data-chapter="11" aria-pressed="false"><span class="spine-no">11</span><span class="spine-title">Accessibility</span></button>
+            <button class="spine" type="button" data-chapter="12" aria-pressed="false"><span class="spine-no">12</span><span class="spine-title">Positioning</span></button>
+            <button class="spine" type="button" data-chapter="13" aria-pressed="false"><span class="spine-no">13</span><span class="spine-title">Attribute selectors</span></button>
+            <button class="spine" type="button" data-chapter="14" aria-pressed="false"><span class="spine-no">14</span><span class="spine-title">Responsive design</span></button>
+            <button class="spine" type="button" data-chapter="15" aria-pressed="false"><span class="spine-no">15</span><span class="spine-title">Grid</span></button>
+            <button class="spine" type="button" data-chapter="16" aria-pressed="false"><span class="spine-no">16</span><span class="spine-title">Animations</span></button>
           </div>
-          <p class="eyebrow">Collection 01 · CSS Fundamentals</p>
-          <h2>The Selector That Wins</h2>
-          <p>
-            An approved badge turned red. Trace the rule that wins the cascade
-            and restore the intended status color.
-          </p>
-          <div class="file-meta">
-            <span>Beginner</span><span>5–10 min</span><span>Playable</span>
-          </div>
-          <a href="case.html?id=001">Investigate case →</a>
-        </article>
+          <div class="shelf-plank" aria-hidden="true"></div>
+        </div>
       </section>
 
-      <section class="method-section">
-        <div class="section-intro">
-          <p class="eyebrow">How an investigation works</p>
-          <h2>Don’t memorize a fix.<br />Follow the evidence.</h2>
-        </div>
-        <ol class="method-grid">
-          <li>
-            <span>01</span>
-            <h3>Inspect</h3>
-            <p>
-              Read the incident report and compare the broken interface with its
-              target.
-            </p>
-          </li>
-          <li>
-            <span>02</span>
-            <h3>Experiment</h3>
-            <p>
-              Edit the CSS and observe the rendered result as your hypothesis
-              changes.
-            </p>
-          </li>
-          <li>
-            <span>03</span>
-            <h3>Resolve</h3>
-            <p>
-              Check the visible outcome, then study the root cause in the
-              resolution report.
-            </p>
-          </li>
-        </ol>
-      </section>
-
-      <section class="curriculum-preview">
-        <div>
-          <p class="eyebrow">Complete learning map</p>
-          <h2>Sixteen collections.<br />One connected curriculum.</h2>
-          <p>
-            Cases are paired with concise Field Guide references drawn from your
-            CSS study notes—from fundamentals and selectors to Grid and
-            animations.
-          </p>
-        </div>
-        <div class="collection-stack">
-          <span>01 CSS Fundamentals</span><span>05 Pseudo-classes</span
-          ><span>09 CSS Flexbox</span><span>12 Positioning</span
-          ><span>15 CSS Grid</span><span>16 Animations</span>
-          <a href="cases.html">See all collections →</a>
-        </div>
-      </section>
+      <section class="open-book" id="open-book" aria-live="polite"></section>
     </main>
+
     <footer class="public-footer">
-      <span>CSS Casebook · MVP v1</span
-      ><span>Built for curious frontend investigators.</span>
+      <span>CSS Casebook</span><a href="field-guide.html">Field guide</a>
     </footer>
     <script src="curriculum-data.js?v=1"></script>
-    <script src="progress.js?v=5"></script>
+    <script src="case-data.js?v=7"></script>
+    <script src="progress.js?v=6"></script>
+    <script src="shelf.js?v=1"></script>
   </body>
 </html>

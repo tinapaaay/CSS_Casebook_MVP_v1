@@ -38,32 +38,25 @@ function renderLibrary(filter = "all") {
     .filter((item) => item[3].length > 0);
   library.innerHTML = visibleCollections
     .map(([number, title, description, cases]) => {
-      const playableCount = cases.filter((name) => playableCases[name]).length;
-      const completedCount = cases.filter((name) => {
-        const caseId = playableCases[name];
-        return (
-          caseId && window.CasebookProgress?.readCase(caseId).completed === true
-        );
-      }).length;
-      const available = playableCount > 0;
       const chapterState = window.CasebookProgress.getChapterState(number);
       const chapter = curriculum.get(number);
-      return `<article class="collection-card ${available ? "is-available" : ""}">
-      <header><span>${number}</span><small>${available ? `${chapterState.casesCompleted}/3 cases resolved` : "Planned"}</small></header>
-      <h2>${title}</h2><p>${description}</p>
-      <ul>${cases
+      return `<article class="book" data-chapter="${number}" id="chapter-${number}">
+      <a class="book-spine" href="${chapter.destination}" aria-label="Chapter ${number} guide: ${title}">
+        <span class="book-no">${number}</span>
+        <h2>${title}</h2>
+        <small>${chapterState.casesCompleted} of 3 fixed${chapterState.complete ? ", chapter finished" : ""}</small>
+      </a>
+      <ol class="case-list">${cases
         .map((name) => {
           const caseId = playableCases[name];
-          if (caseId)
-            return `<li class="${caseState(caseId) === "completed" ? "is-complete" : ""}"><a href="case.html?id=${caseId}">Case #${caseId} · ${name}</a>${caseState(caseId) === "completed" ? "<small>✓ Complete</small>" : caseState(caseId) === "in-progress" ? "<small>In progress</small>" : ""}</li>`;
-          return "";
+          if (!caseId) return "";
+          const state = caseState(caseId);
+          return `<li class="${state === "completed" ? "is-complete" : state === "in-progress" ? "is-started" : ""}"><a href="case.html?id=${caseId}"><span class="case-no">${caseId}</span>${name}</a>${state === "completed" ? "<small>Fixed</small>" : state === "in-progress" ? "<small>Started</small>" : ""}</li>`;
         })
-        .join("")}</ul>
-      <p class="chapter-progress">${chapterState.complete ? "✓ Chapter complete" : `${chapterState.lessonsCompleted}/3 lessons · Review ${chapterState.reviewCompleted ? "passed" : "pending"}`}</p>
-      <a class="collection-link" href="${chapter.destination}">Open chapter guide →</a>
+        .join("")}</ol>
     </article>`;
     })
-    .join("") || `<div class="library-empty"><h2>No cases here yet.</h2><p>${filter === "completed" ? "Resolved investigations will appear here once you check a successful fix." : filter === "in-progress" ? "Open any case to start an investigation. Your unfinished cases will appear here." : "You have visited every investigation. Continue a case or revisit a resolved one."}</p><a class="secondary-button button-link" href="case.html?id=${window.CasebookProgress.getState().nextId || "001"}">Open an investigation →</a></div>`;
+    .join("") || `<div class="library-empty"><h2>${filter === "completed" ? "No fixed cases yet" : filter === "in-progress" ? "No started cases" : "You've opened every case"}</h2><a class="primary-button button-link" href="case.html?id=${window.CasebookProgress.getState().nextId || "001"}">Open case ${window.CasebookProgress.getState().nextId || "001"}</a></div>`;
   const resultStatus = document.querySelector("#library-results");
   if (resultStatus) {
     const caseCount = visibleCollections.reduce(
@@ -93,7 +86,7 @@ function renderGuideNav(query = "") {
     .map(([number, title, description, cases]) => {
       const playableCount = cases.filter((name) => playableCases[name]).length;
       const guideHash = number === "09" ? "flexbox" : `chapter-${number}`;
-      return `<a class="guide-nav-item" href="field-guide.html#${guideHash}"><span>${number}</span>${title}<small>${playableCount} cases · Guide</small></a>`;
+      return `<a class="guide-nav-item" data-chapter="${number}" href="field-guide.html#${guideHash}"><span>${number}</span>${title}</a>`;
     })
     .join("");
 }
